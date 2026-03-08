@@ -1,6 +1,6 @@
 Added Seach and Sorting to Mod Manager
 
-
+![Banner](./Images/Screenshot1.png)
 
 
 > If anyone is interested in continuing development, feel free to fork it.
