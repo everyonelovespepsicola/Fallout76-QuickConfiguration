@@ -1,6 +1,8 @@
-> **Note**  
-> **This project is currently unmaintained.**
-> 
+Added Seach and Sorting to Mod Manager
+
+
+
+
 > If anyone is interested in continuing development, feel free to fork it.
 > I'll also try to merge pull requests, whenever I have the time.
 
