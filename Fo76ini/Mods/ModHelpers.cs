@@ -1,4 +1,4 @@
-﻿using Fo76ini.Utilities;
+﻿﻿using Fo76ini.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -114,6 +114,42 @@ namespace Fo76ini.Mods
                 }
             }
             return installedVersionStr == latestVersionStr ? 0 : -1;
+        }
+
+        /// <summary>
+        /// Compares two version strings for sorting purposes.
+        /// Tries to extract version numbers and compares them. Falls back to string comparison.
+        /// </summary>
+        public static int CompareVersionsForSorting(string v1, string v2)
+        {
+            Regex versionRegex = new Regex(@"\d+(?:\.\d+)+");
+            Match m1 = versionRegex.Match(v1 ?? "");
+            Match m2 = versionRegex.Match(v2 ?? "");
+
+            Version version1 = null;
+            Version version2 = null;
+
+            if (m1.Success) Version.TryParse(m1.Value, out version1);
+            if (m2.Success) Version.TryParse(m2.Value, out version2);
+
+            if (version1 != null && version2 != null)
+                return version1.CompareTo(version2);
+
+            return String.Compare(v1, v2, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Checks if the mod matches the given search term.
+        /// </summary>
+        public static bool MatchesSearchTerm(ManagedMod mod, string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return true;
+
+            return (mod.Title != null && mod.Title.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                   (mod.ArchiveName != null && mod.ArchiveName.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                   (mod.ManagedFolderName != null && mod.ManagedFolderName.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                   (mod.Version != null && mod.Version.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         /// <summary>

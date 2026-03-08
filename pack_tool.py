@@ -1,94 +1,75 @@
 from colorama import Fore, Back, Style, init
 import os, shutil
-import subprocess, shlex
+import subprocess
 from pathlib import Path
 from shutil import which
 import winreg
-import itertools
 import argparse
 init()
 
-PROJECT_GIT_DIR       = str(Path(__file__).parent.resolve())
+PROJECT_GIT_DIR       = Path(__file__).parent.resolve()
 
-TARGET_BASE_DIR       = os.path.join(PROJECT_GIT_DIR, "Publish")
-SOLUTION_PATH         = os.path.join(PROJECT_GIT_DIR, "Fo76ini\\Fo76ini.sln")
-PROGRAM_BIN_DIR       = os.path.join(PROJECT_GIT_DIR, "Fo76ini\\bin\\")
+TARGET_BASE_DIR       = PROJECT_GIT_DIR / "Publish"
+SOLUTION_PATH         = PROJECT_GIT_DIR / "Fo76ini" / "Fo76ini.sln"
+PROGRAM_BIN_DIR       = PROJECT_GIT_DIR / "Fo76ini" / "bin"
 EXECUTABLE_NAME       = "Fo76ini.exe"
-EXECUTABLE_PATH       = os.path.join(PROGRAM_BIN_DIR, "Release", EXECUTABLE_NAME)
-UPDATER_BIN_DIR       = os.path.join(PROJECT_GIT_DIR, "Fo76ini_Updater\\bin\\")
-UPDATER_SOLUTION_PATH = os.path.join(PROJECT_GIT_DIR, "Fo76ini_Updater\\Fo76ini_Updater.sln")
-DEPENDENCIES_DIR      = os.path.join(PROJECT_GIT_DIR, "Additional files")
-VERSION_PATH          = os.path.join(PROJECT_GIT_DIR, "VERSION")
-SETUP_ISS_PATH        = os.path.join(PROJECT_GIT_DIR, "setup.iss")
+EXECUTABLE_PATH       = PROGRAM_BIN_DIR / "Release" / EXECUTABLE_NAME
+UPDATER_BIN_DIR       = PROJECT_GIT_DIR / "Fo76ini_Updater" / "bin"
+UPDATER_SOLUTION_PATH = PROJECT_GIT_DIR / "Fo76ini_Updater" / "Fo76ini_Updater.sln"
+DEPENDENCIES_DIR      = PROJECT_GIT_DIR / "Additional files"
+VERSION_PATH          = PROJECT_GIT_DIR / "VERSION"
+SETUP_ISS_PATH        = PROJECT_GIT_DIR / "setup.iss"
 
 VERSION = "x.x.x"
 
 def get_binaries_path():
-    return os.path.join(TARGET_BASE_DIR, "v" + VERSION)
+    return TARGET_BASE_DIR / f"v{VERSION}"
 
 def get_msbuild_path():
     """Attempts to run 'which', then check common paths, and if all else fails, reads the registry and returns the path to MSBuild.exe as string or None."""
-    path = None
-
     if which("msbuild") is not None:
         return which("msbuild")
 
-    for drive in ["C:", "D:"]:
-        if os.path.isfile(drive + "\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"):
-            return drive + "\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"):
-            return drive + "\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"):
-            return drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"):
-            return drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"):
-            return drive + "\\Program Files\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"):
-            return drive + "\\Program Files\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"):
-            return drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"
-        elif os.path.isfile(drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"):
-            return drive + "\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"
+    # Use vswhere to find the latest Visual Studio installation with MSBuild
+    program_files_x86 = os.environ.get("ProgramFiles(x86)", "C:\\Program Files (x86)")
+    vswhere_path = os.path.join(program_files_x86, "Microsoft Visual Studio", "Installer", "vswhere.exe")
+    if os.path.exists(vswhere_path):
+        try:
+            # Find the latest installation of VS with MSBuild component
+            cmd = [vswhere_path, "-latest", "-products", "*", "-requires", "Microsoft.Component.MSBuild", "-property", "installationPath"]
+            vs_path = subprocess.check_output(cmd, text=True, encoding='utf-8').strip()
+            if vs_path:
+                msbuild_path = os.path.join(vs_path, "MSBuild", "Current", "Bin", "MSBuild.exe")
+                if os.path.isfile(msbuild_path):
+                    return msbuild_path
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            pass # Fallback to other methods
 
-    # https://stackoverflow.com/questions/328017/path-to-msbuild
-    with winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE) as reg:
-        with winreg.OpenKey(reg, "SOFTWARE\\Microsoft\\MSBuild\\ToolsVersions\\4.0") as key:
-            try:
-                for i in itertools.count(start = 0, step = 1):
-                    name, value, type = winreg.EnumValue(key, i)
-                    if name == "MSBuildToolsPath" and type == winreg.REG_SZ:
-                        path = value
-                        break
-            except OSError:
-                # No more values
-                pass
-
-    if path is not None:
-        path = os.path.join(path, "MSBuild.exe")
-        if os.path.isfile(path):
-            return path
+    # Fallback to registry check for older versions
+    try:
+        with winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE) as reg:
+            with winreg.OpenKey(reg, r"SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0") as key:
+                msbuild_path, _ = winreg.QueryValueEx(key, "MSBuildToolsPath")
+                path = os.path.join(msbuild_path, "MSBuild.exe")
+                if os.path.isfile(path):
+                    return path
+    except (FileNotFoundError, OSError):
+        pass
 
     return None
 
 def get_7zip_path():
-    sevenzip = which("7z")
-    if sevenzip is not None:
-        return sevenzip
-
-    sevenzip_alt = which("7za")
-    if sevenzip_alt is not None:
-        return sevenzip_alt
-
-    return None
+    return which("7z") or which("7za")
 
 def get_version():
     global VERSION
     try:
         with open(VERSION_PATH, "r") as f:
             VERSION = f.read().strip()
-    except:
-        print(Fore.RED + "ERROR: Couldn't read VERSION" + Fore.RESET)
+    except FileNotFoundError:
+        print(Fore.RED + f"ERROR: Version file not found at '{VERSION_PATH}'" + Fore.RESET)
+    except IOError as e:
+        print(Fore.RED + f"ERROR: Couldn't read VERSION file: {e}" + Fore.RESET)
 
 def set_version():
     global VERSION
@@ -102,41 +83,89 @@ def set_version():
         return
 
 def restore_nuget():
-    os.system("{0} restore \"{1}\"".format(which("nuget"), SOLUTION_PATH, VERSION))
-    os.system("{0} restore \"{1}\"".format(which("nuget"), UPDATER_SOLUTION_PATH, VERSION))
+    nuget_path = which("nuget")
+    if nuget_path is None:
+        print(Fore.RED + "ERROR: NuGet not found! Please install NuGet and add it to your PATH." + Fore.RESET)
+        return
+
+    subprocess.run([nuget_path, "restore", str(SOLUTION_PATH)])
+    subprocess.run([nuget_path, "restore", str(UPDATER_SOLUTION_PATH)])
+
+def update_nuget_packages():
+    print("Updating NuGet packages to their latest versions...")
+    nuget_path = which("nuget")
+    if nuget_path is None:
+        print(Fore.RED + "ERROR: NuGet not found! Please install NuGet and add it to your PATH." + Fore.RESET)
+        return
+
+    # This will update all packages in the solution to their latest stable version.
+    print(f"Updating packages for {str(SOLUTION_PATH)}...")
+    subprocess.run([nuget_path, "update", str(SOLUTION_PATH)])
+    print(f"Updating packages for {str(UPDATER_SOLUTION_PATH)}...")
+    subprocess.run([nuget_path, "update", str(UPDATER_SOLUTION_PATH)])
+    print("NuGet package update process finished.")
+
+def install_dependencies():
+    print("Installing dependencies using Scoop...")
+    scoop_path = which("scoop")
+    if scoop_path is None:
+        print(Fore.RED + "ERROR: Scoop not found! Please install Scoop first (Run 'irm get.scoop.sh | iex' in PowerShell)." + Fore.RESET)
+        return
+
+    print("Adding 'extras' bucket (for rcedit)...")
+    subprocess.run([scoop_path, "bucket", "add", "extras"])
+    print("Installing tools...")
+    subprocess.run([scoop_path, "install", "7zip", "git", "rcedit", "inno-setup", "pandoc", "nuget"])
 
 def build_updater(debug = False):
     print("Building updater...")
     configuration = "Debug" if debug else "Release"
-    subprocess.run(shlex.split(f"\"{get_msbuild_path()}\" \"{SOLUTION_PATH}\" /p:Configuration={configuration} /t:Fo76ini_Updater"))
+    msbuild_path = get_msbuild_path()
+    if msbuild_path is None:
+        print(Fore.RED + "ERROR: MSBuild not found!" + Fore.RESET)
+        return
+    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/t:Fo76ini_Updater"])
     if debug:
-        copytree(UPDATER_BIN_DIR + configuration, PROGRAM_BIN_DIR + configuration)
+        copytree(str(UPDATER_BIN_DIR / configuration), str(PROGRAM_BIN_DIR / configuration))
     else:
-        copytree(UPDATER_BIN_DIR + configuration, get_binaries_path())
+        copytree(str(UPDATER_BIN_DIR / configuration), str(get_binaries_path()))
 
 def build_app(debug = False):
     print("Building app...")
     configuration = "Debug" if debug else "Release"
-    subprocess.run(shlex.split(f"\"{get_msbuild_path()}\" \"{SOLUTION_PATH}\" /p:Configuration={configuration} /t:Fo76ini"))
+    msbuild_path = get_msbuild_path()
+    if msbuild_path is None:
+        print(Fore.RED + "ERROR: MSBuild not found!" + Fore.RESET)
+        return
+    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/t:Fo76ini"])
     if not debug:
-        copytree(PROGRAM_BIN_DIR + "Release", get_binaries_path())
+        copytree(str(PROGRAM_BIN_DIR / "Release"), str(get_binaries_path()))
 
 def copy_additions(debug = False):
     print("Copying additional files...")
     if debug:
-        copytree(DEPENDENCIES_DIR, PROGRAM_BIN_DIR + "Debug")
+        copytree(str(DEPENDENCIES_DIR), str(PROGRAM_BIN_DIR / "Debug"))
     else:
-        copytree(DEPENDENCIES_DIR, get_binaries_path())
+        copytree(str(DEPENDENCIES_DIR), str(get_binaries_path()))
 
 def pack_release():
     print("Packing to v{0}.zip...".format(VERSION))
-    os.system("{0} a \"{1}\" \"{2}\\*\"".format(get_7zip_path(), os.path.join(TARGET_BASE_DIR, "v" + VERSION + ".zip"), get_binaries_path()))
+    sevenzip_path = get_7zip_path()
+    if sevenzip_path is None:
+        print(Fore.RED + "ERROR: 7-Zip not found!" + Fore.RESET)
+        return
+    archive_path = str(TARGET_BASE_DIR / f"v{VERSION}.zip")
+    source_path = str(get_binaries_path() / "*")
+    subprocess.run([sevenzip_path, "a", archive_path, source_path])
     print("Done.")
 
 def use_rcedit():
     print("Setting executable version to '{0}'...".format(VERSION))
-    os.system("{0} \"{1}\" --set-file-version {2} --set-product-version {2}".format(which("rcedit"), EXECUTABLE_PATH, VERSION))
-    os.system("{0} \"{1}\" --set-file-version {2} --set-product-version {2}".format(which("rcedit"), os.path.join(get_binaries_path(), EXECUTABLE_NAME), VERSION))
+    rcedit_path = which("rcedit")
+    if rcedit_path is None:
+        print(Fore.RED + "ERROR: rcedit not found!" + Fore.RESET)
+        return
+    subprocess.run([rcedit_path, str(get_binaries_path() / EXECUTABLE_NAME), "--set-file-version", VERSION, "--set-product-version", VERSION])
 
 def update_inno():
     print("Changing version number in setup.iss ...")
@@ -150,7 +179,7 @@ def update_inno():
                 line = "#define MyAppExeName \"" + EXECUTABLE_NAME + "\"\n"
                 print("Line changed: " + line, end="")
             if line.startswith("#define ProjectGitDir"):
-                line = "#define ProjectGitDir \"" + PROJECT_GIT_DIR.rstrip("\\") + "\"\n"
+                line = "#define ProjectGitDir \"" + str(PROJECT_GIT_DIR).rstrip("\\") + "\"\n"
                 print("Line changed: " + line, end="")
             #if line.startswith("#define ProjectPackTargetDir"):
             #    line = "#define ProjectPackTargetDir \"" + TARGET_BASE_DIR.rstrip("\\") + "\"\n"
@@ -161,38 +190,32 @@ def update_inno():
 
 def build_inno():
     print("Building setup using ISCC...")
-    subprocess.run(shlex.split("\"" + which("iscc") + "\" \"" + SETUP_ISS_PATH + "\""))
+    iscc_path = which("iscc")
+    if iscc_path is None:
+        print(Fore.RED + "ERROR: ISCC (Inno Setup) not found!" + Fore.RESET)
+        return
+    subprocess.run([iscc_path, str(SETUP_ISS_PATH)])
 
 def convert_md():
     print("Converting Markdown to HTML and RTF")
-    subprocess.run(shlex.split("\"" + which("pandoc") + "\" --standalone -f gfm \"What's new.md\" -o \"whatsnew.html\" --css=Pandoc/pandoc-style.css -H Pandoc/pandoc-header.html"))
-    subprocess.run(shlex.split("\"" + which("pandoc") + "\" --standalone -f gfm \"What's new.md\" -o \"whatsnewdark.html\" --css=Pandoc/pandoc-style-dark.css -H Pandoc/pandoc-header.html"))
-    subprocess.run(shlex.split("\"" + which("pandoc") + "\" --standalone \"What's new.md\" -o \"What's new.rtf\""))
+    pandoc_path = which("pandoc")
+    if pandoc_path is None:
+        print(Fore.RED + "ERROR: Pandoc not found!" + Fore.RESET)
+        return
+    subprocess.run([pandoc_path, "--standalone", "-f", "gfm", "What's new.md", "-o", "whatsnew.html", "--css=Pandoc/pandoc-style.css", "-H", "Pandoc/pandoc-header.html"])
+    subprocess.run([pandoc_path, "--standalone", "-f", "gfm", "What's new.md", "-o", "whatsnewdark.html", "--css=Pandoc/pandoc-style-dark.css", "-H", "Pandoc/pandoc-header.html"])
+    subprocess.run([pandoc_path, "--standalone", "What's new.md", "-o", "What's new.rtf"])
 
 def open_dir():
     if os.path.exists(TARGET_BASE_DIR):
-        os.system("explorer.exe \"{0}\"".format(TARGET_BASE_DIR))
+        os.startfile(str(TARGET_BASE_DIR))
     else:
         print("ERROR: Path does not exist.")
 
 # https://stackoverflow.com/a/7550424
 def mkdir(newdir):
-    """works the way a good mkdir should :)
-        - already exists, silently complete
-        - regular file in the way, raise an exception
-        - parent directory(ies) does not exist, make them as well
-    """
-    if os.path.isdir(newdir):
-        pass
-    elif os.path.isfile(newdir):
-        raise OSError("a file with the same name as the desired " \
-                      "dir, '%s', already exists." % newdir)
-    else:
-        head, tail = os.path.split(newdir)
-        if head and not os.path.isdir(head):
-            mkdir(head)
-        if tail:
-            os.mkdir(newdir)
+    """Create a directory, including parent directories, if it doesn't exist."""
+    os.makedirs(newdir, exist_ok=True)
 
 # https://stackoverflow.com/a/7550424
 def copytree(src, dst, symlinks=False):
@@ -232,8 +255,8 @@ def copytree(src, dst, symlinks=False):
             errors.extend(err.args[0])
     try:
         shutil.copystat(src, dst)
-    except WindowsError:
-        # can't copy file access times on Windows
+    except OSError:
+        # can't copy file access times on Windows, or other errors
         pass
 
 def run_interactive():
@@ -255,16 +278,18 @@ def run_interactive():
 
 {Fore.BLUE}Building
 {Fore.MAGENTA}(2){Fore.RESET} Restore NuGet packages
-{Fore.MAGENTA}(3){Fore.RESET} Build app (Debug)
-{Fore.MAGENTA}(4){Fore.RESET} Build app (Release)
-{Fore.MAGENTA}(5){Fore.RESET} Pack app to *.zip
-{Fore.MAGENTA}(6){Fore.RESET} Build setup
+{Fore.MAGENTA}(i){Fore.RESET} Install build dependencies (via Scoop)
+{Fore.MAGENTA}(3){Fore.RESET} Update NuGet packages
+{Fore.MAGENTA}(4){Fore.RESET} Build app (Debug)
+{Fore.MAGENTA}(5){Fore.RESET} Build app (Release)
+{Fore.MAGENTA}(6){Fore.RESET} Pack app to *.zip
+{Fore.MAGENTA}(7){Fore.RESET} Build setup
 
 {Fore.BLUE}What's new.md
-{Fore.MAGENTA}(7){Fore.RESET} Convert Markdown to HTML and RTF using Pandoc
+{Fore.MAGENTA}(8){Fore.RESET} Convert Markdown to HTML and RTF using Pandoc
 
 {Fore.BLUE}Others
-{Fore.MAGENTA}(8){Fore.RESET} Open target folder
+{Fore.MAGENTA}(9){Fore.RESET} Open target folder
 {Fore.MAGENTA}(0){Fore.RESET} Exit (Ctrl+C)
 -----------------------------------------""")
         try:
@@ -279,23 +304,27 @@ def run_interactive():
             # use_rcedit()
         elif i == "2":
             restore_nuget()
+        elif i == "i":
+            install_dependencies()
         elif i == "3":
+            update_nuget_packages()
+        elif i == "4":
             build_updater(debug=True)
             build_app(debug=True)
             copy_additions(debug=True)
-        elif i == "4":
+        elif i == "5":
             build_updater()
             build_app()
             copy_additions()
             use_rcedit()
-        elif i == "5":
-            pack_release()
         elif i == "6":
+            pack_release()
+        elif i == "7":
             update_inno()
             build_inno()
-        elif i == "7":
-            convert_md()
         elif i == "8":
+            convert_md()
+        elif i == "9":
             open_dir()
         elif i == "0" or i == "":
             print("""Bye bye!
@@ -308,6 +337,10 @@ def run_args(args):
     if args.set_version:
         set_version()
         # use_rcedit()
+    if args.install_deps:
+        install_dependencies()
+    if args.update:
+        update_nuget_packages()
     if args.restore:
         restore_nuget()
     if args.build_debug:
@@ -330,7 +363,7 @@ def run_args(args):
 def get_warn_text():
     warn_text = ""
     if not os.path.exists(PROJECT_GIT_DIR):
-        warn_text += Fore.YELLOW + "WARN: Project folder doesn't exist!\n"
+        warn_text += Fore.YELLOW + f"WARN: Project folder '{PROJECT_GIT_DIR}' doesn't exist!\n"
     if not os.path.isdir(os.path.join(PROJECT_GIT_DIR, "Fo76ini")):
         warn_text += Fore.YELLOW + "WARN: " + Fore.RESET + "\"Fo76ini\" folder doesn't exist!\n      Please run the script within the git repo folder."
     if which("rcedit") is None:
@@ -354,6 +387,8 @@ def get_warn_text():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Helper script for building Fallout 76 Quick Configuration')
     parser.add_argument('-v', '--set-version', help='set the current version', required=False, action='store_true')
+    parser.add_argument('-i', '--install-deps', help='install dependencies using Scoop', required=False, action='store_true')
+    parser.add_argument('-u', '--update', help='update nuget packages to their latest version', required=False, action='store_true')
     parser.add_argument('-r', '--restore', help='restore nuget packages', required=False, action='store_true')
     parser.add_argument('-b', '--build', help='build the app and updater', required=False, action='store_true')
     parser.add_argument('-d', '--build-debug', help='build the app and updater (Debug configuration)', required=False, action='store_true')
@@ -362,10 +397,10 @@ if __name__ == "__main__":
     parser.add_argument('-w', '--whatsnew', help='update the "What\'s new?" files', required=False, action='store_true')
     args = parser.parse_args()
 
-    mkdir(TARGET_BASE_DIR)
+    mkdir(str(TARGET_BASE_DIR))
     get_version()
 
-    args_list = [args.restore, args.build_debug, args.build, args.build_setup, args.pack, args.set_version, args.whatsnew]
+    args_list = [args.install_deps, args.update, args.restore, args.build_debug, args.build, args.build_setup, args.pack, args.set_version, args.whatsnew]
     #if args_list.count(True) > 1:
     #    print("ERROR: Only one argument allowed")
     if args_list.count(True) >= 1:

@@ -1,4 +1,5 @@
-﻿using BrightIdeasSoftware;
+﻿﻿using BrightIdeasSoftware;
+using System.Collections;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -26,6 +27,7 @@ namespace Fo76ini
 
             public bool Enabled = false;
             public bool IsUpdateAvailable = false;
+            public int? LoadOrder = null;
 
             /*
              * Standard style columns
@@ -334,7 +336,7 @@ namespace Fo76ini
                 case ModListStyle.Standard:
                     this.objectListViewMods.Columns.AddRange(StandardStyleHeaders.ToArray());
                     this.olvColumnModInfo.Renderer = this.describedTaskRenderer;
-                    this.objectListViewMods.RowHeight = 36;
+                    this.objectListViewMods.RowHeight = 52;
                     break;
                 case ModListStyle.Alternative:
                     this.objectListViewMods.Columns.AddRange(AlternativeStyleHeaders.ToArray());
@@ -377,9 +379,19 @@ namespace Fo76ini
             describedTaskRenderer.DescriptionFont = new Font("Tahoma", 9);
             describedTaskRenderer.UseGdiTextRendering = true;
             describedTaskRenderer.DescriptionAspectName = "ModDescription";
+            describedTaskRenderer.ImageTextSpace = 50;
+
+            // Custom sorter for Load Order column
+            this.objectListViewMods.BeforeSorting += (sender, e) => {
+                if (e.ColumnToSort == this.olvColumnLoadOrder) {
+                    this.objectListViewMods.ListViewItemSorter = new LoadOrderComparer(e.SortOrder);
+                    e.Handled = true;
+                }
+            };
 
             // Mod list style
             CommonHeaders.Add(this.olvColumnCheckbox);
+            CommonHeaders.Add(this.olvColumnLoadOrder);
             CommonHeaders.Add(this.olvColumnModInfo);
 
             StandardStyleHeaders.Add(this.olvColumnInstallStatus);
@@ -443,9 +455,13 @@ namespace Fo76ini
 
             // Generate a list of rows:
             List<ModListRow> list = new List<ModListRow>();
+            int loadOrder = 1;
             foreach (ManagedMod mod in this.Mods)
             {
-                list.Add(new ModListRow(mod));
+                ModListRow row = new ModListRow(mod);
+                if (mod.Enabled)
+                    row.LoadOrder = loadOrder++;
+                list.Add(row);
             }
 
             // Populate list view:
@@ -798,5 +814,36 @@ namespace Fo76ini
         }
 
         #endregion
+
+        private class LoadOrderComparer : IComparer
+        {
+            private SortOrder order;
+
+            public LoadOrderComparer(SortOrder order)
+            {
+                this.order = order;
+            }
+
+            public int Compare(object x, object y)
+            {
+                OLVListItem item1 = (OLVListItem)x;
+                OLVListItem item2 = (OLVListItem)y;
+                ModListRow row1 = (ModListRow)item1.RowObject;
+                ModListRow row2 = (ModListRow)item2.RowObject;
+
+                // Always put nulls at the bottom
+                if (row1.LoadOrder == null && row2.LoadOrder == null) return 0;
+                if (row1.LoadOrder == null) return 1;
+                if (row2.LoadOrder == null) return -1;
+
+                // Compare values
+                int result = row1.LoadOrder.Value.CompareTo(row2.LoadOrder.Value);
+
+                if (this.order == SortOrder.Descending)
+                    result = -result;
+
+                return result;
+            }
+        }
     }
 }

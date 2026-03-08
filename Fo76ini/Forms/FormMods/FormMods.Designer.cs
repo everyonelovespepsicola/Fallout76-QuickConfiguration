@@ -1,4 +1,4 @@
-﻿namespace Fo76ini
+﻿﻿namespace Fo76ini
 {
     partial class FormMods
     {
@@ -166,6 +166,7 @@
             this.toolStripButtonDeleteMod = new System.Windows.Forms.ToolStripButton();
             this.objectListViewMods = new BrightIdeasSoftware.ObjectListView();
             this.olvColumnCheckbox = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnLoadOrder = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnModInfo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnInstallStatus = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnInstallInfo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -976,7 +977,7 @@
             this.pictureBoxCollapseDetails.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxCollapseDetails.Image")));
             this.pictureBoxCollapseDetails.Location = new System.Drawing.Point(333, 0);
             this.pictureBoxCollapseDetails.Name = "pictureBoxCollapseDetails";
-            this.pictureBoxCollapseDetails.Size = new System.Drawing.Size(24, 464);
+            this.pictureBoxCollapseDetails.Size = new System.Drawing.Size(24, 433);
             this.pictureBoxCollapseDetails.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxCollapseDetails.TabIndex = 59;
             this.pictureBoxCollapseDetails.TabStop = false;
@@ -994,7 +995,7 @@
             this.panelModDetails.Controls.Add(this.pictureBoxModThumbnail);
             this.panelModDetails.Location = new System.Drawing.Point(356, 0);
             this.panelModDetails.Name = "panelModDetails";
-            this.panelModDetails.Size = new System.Drawing.Size(396, 464);
+            this.panelModDetails.Size = new System.Drawing.Size(396, 433);
             this.panelModDetails.TabIndex = 58;
             // 
             // panelModDetailsHeader
@@ -1526,7 +1527,7 @@
             // 
             // toolStrip1
             // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonAddMod,
@@ -1543,10 +1544,10 @@
             this.toolStripButtonModUnfreeze,
             this.toolStripSeparator6,
             this.toolStripButtonDeleteMod});
-            this.toolStrip1.Location = new System.Drawing.Point(3, 3);
+            this.toolStrip1.Location = new System.Drawing.Point(3, 433);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(31, 455);
+            this.toolStrip1.Size = new System.Drawing.Size(746, 25);
             this.toolStrip1.TabIndex = 44;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -1692,6 +1693,7 @@
             // objectListViewMods
             // 
             this.objectListViewMods.AllColumns.Add(this.olvColumnCheckbox);
+            this.objectListViewMods.AllColumns.Add(this.olvColumnLoadOrder);
             this.objectListViewMods.AllColumns.Add(this.olvColumnModInfo);
             this.objectListViewMods.AllColumns.Add(this.olvColumnInstallStatus);
             this.objectListViewMods.AllColumns.Add(this.olvColumnInstallInfo);
@@ -1709,6 +1711,7 @@
             this.objectListViewMods.CheckedAspectName = "Enabled";
             this.objectListViewMods.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnCheckbox,
+            this.olvColumnLoadOrder,
             this.olvColumnModInfo,
             this.olvColumnInstallStatus,
             this.olvColumnInstallInfo,
@@ -1723,13 +1726,14 @@
             this.objectListViewMods.FullRowSelect = true;
             this.objectListViewMods.GridLines = true;
             this.objectListViewMods.HasCollapsibleGroups = false;
-            this.objectListViewMods.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.objectListViewMods.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
             this.objectListViewMods.HideSelection = false;
-            this.objectListViewMods.Location = new System.Drawing.Point(39, 0);
+            this.objectListViewMods.Location = new System.Drawing.Point(3, 0);
             this.objectListViewMods.Margin = new System.Windows.Forms.Padding(0);
             this.objectListViewMods.Name = "objectListViewMods";
             this.objectListViewMods.OwnerDraw = true;
-            this.objectListViewMods.Size = new System.Drawing.Size(291, 464);
+            this.objectListViewMods.ShowGroups = false;
+            this.objectListViewMods.Size = new System.Drawing.Size(291, 433);
             this.objectListViewMods.TabIndex = 60;
             this.objectListViewMods.UseCellFormatEvents = true;
             this.objectListViewMods.UseCompatibleStateImageBehavior = false;
@@ -1747,6 +1751,15 @@
             this.olvColumnCheckbox.Text = "";
             this.olvColumnCheckbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.olvColumnCheckbox.Width = 32;
+            // 
+            // olvColumnLoadOrder
+            // 
+            this.olvColumnLoadOrder.AspectName = "LoadOrder";
+            this.olvColumnLoadOrder.Groupable = false;
+            this.olvColumnLoadOrder.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvColumnLoadOrder.Text = "Order";
+            this.olvColumnLoadOrder.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.olvColumnLoadOrder.Width = 45;
             // 
             // olvColumnModInfo
             // 
@@ -2140,6 +2153,7 @@
         private Fo76ini.Controls.StyledTabControl tabControl1;
         private BrightIdeasSoftware.ObjectListView objectListViewMods;
         private BrightIdeasSoftware.OLVColumn olvColumnCheckbox;
+        private BrightIdeasSoftware.OLVColumn olvColumnLoadOrder;
         private BrightIdeasSoftware.OLVColumn olvColumnModInfo;
         private BrightIdeasSoftware.OLVColumn olvColumnInstallStatus;
         private BrightIdeasSoftware.OLVColumn olvColumnInstallInfo;

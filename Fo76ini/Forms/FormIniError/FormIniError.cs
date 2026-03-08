@@ -1,4 +1,4 @@
-﻿using Fo76ini.Ini;
+﻿﻿using Fo76ini.Ini;
 using Fo76ini.Interface;
 using Fo76ini.Utilities;
 using System;
@@ -108,7 +108,7 @@ namespace Fo76ini.Forms.FormIniError
         {
             // this.DialogResult = DialogResult.Abort;
             // Application.Exit(); // Doesn't immediately terminate program.
-            Environment.Exit(Exception.HResult); // Does immediately terminate program.
+            Environment.Exit(Exception?.HResult ?? -1); // Does immediately terminate program.
         }
 
         private void buttonTryAgain_Click(object sender, EventArgs e)
@@ -133,7 +133,7 @@ namespace Fo76ini.Forms.FormIniError
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                Environment.Exit(Exception.HResult);
+                Environment.Exit(Exception?.HResult ?? -1);
             }
         }
 

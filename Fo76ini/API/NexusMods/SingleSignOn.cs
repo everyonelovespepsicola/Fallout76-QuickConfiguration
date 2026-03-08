@@ -1,4 +1,4 @@
-﻿using Fo76ini.Utilities;
+﻿﻿using Fo76ini.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -7,10 +7,6 @@ using Websocket.Client.Models;
 
 namespace Fo76ini.API
 {
-    // TODO: Possible bug in SingleSignOn
-    // There might be a bug where if no message is received from the server within 30 seconds (see TimeSpan ReconnectTimeout),
-    // the client will try to reconnect and the login fails.
-
     public static class SingleSignOn
     {
         public static event SSOEventHandler SSOFinished;
@@ -86,6 +82,7 @@ namespace Fo76ini.API
         private static void OnReconnect(ReconnectionInfo info)
         {
             Console.WriteLine($"Reconnection happened, type: {info.Type}");
+            client.Send(BuildLoginData());
         }
 
         private static void OnDisconnect(DisconnectionInfo info)

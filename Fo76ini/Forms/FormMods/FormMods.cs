@@ -1,4 +1,5 @@
-﻿using Fo76ini.Controls;
+﻿﻿﻿﻿using Fo76ini.Controls;
+using BrightIdeasSoftware;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -43,6 +44,7 @@ namespace Fo76ini
             InitializeComponent();
             InitializeSidePanelControls();
             InitializeObjectListView();
+            InitializeSearchAndSort();
 
             // Handle changes:
             ProfileManager.ProfileChanged += OnProfileChanged;
@@ -225,6 +227,53 @@ namespace Fo76ini
         #endregion
 
         #region User interface
+        private ToolStripTextBox toolStripTextBoxSearch;
+
+        private void InitializeSearchAndSort()
+        {
+            // Search
+            this.toolStripTextBoxSearch = new ToolStripTextBox();
+            this.toolStripTextBoxSearch.Name = "toolStripTextBoxSearch";
+            this.toolStripTextBoxSearch.Size = new System.Drawing.Size(150, 25);
+            this.toolStripTextBoxSearch.Alignment = ToolStripItemAlignment.Right;
+            this.toolStripTextBoxSearch.ForeColor = Color.Gray;
+            this.toolStripTextBoxSearch.Text = "Search...";
+            this.toolStripTextBoxSearch.GotFocus += (s, e) => {
+                if (this.toolStripTextBoxSearch.Text == "Search...")
+                {
+                    this.toolStripTextBoxSearch.Text = "";
+                    this.toolStripTextBoxSearch.ForeColor = SystemColors.WindowText;
+                }
+            };
+            this.toolStripTextBoxSearch.LostFocus += (s, e) => {
+                if (string.IsNullOrWhiteSpace(this.toolStripTextBoxSearch.Text))
+                {
+                    this.toolStripTextBoxSearch.Text = "Search...";
+                    this.toolStripTextBoxSearch.ForeColor = Color.Gray;
+                }
+            };
+            this.toolStripTextBoxSearch.TextChanged += ToolStripTextBoxSearch_TextChanged;
+
+            this.toolStrip1.Items.Add(new ToolStripSeparator { Alignment = ToolStripItemAlignment.Right });
+            this.toolStrip1.Items.Add(this.toolStripTextBoxSearch);
+        }
+
+        private void ToolStripTextBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            string text = this.toolStripTextBoxSearch.Text;
+            if (text == "Search...") text = "";
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                this.objectListViewMods.ModelFilter = null;
+            }
+            else
+            {
+                this.objectListViewMods.UseFiltering = true;
+                this.objectListViewMods.ModelFilter = TextMatchFilter.Contains(this.objectListViewMods, text);
+            }
+        }
+
         /// <summary>
         /// Goes through the mod list and updates the list view.
         /// </summary>

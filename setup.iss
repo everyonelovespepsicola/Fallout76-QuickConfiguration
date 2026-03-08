@@ -7,7 +7,7 @@
 #define MyAppExeName "Fo76ini.exe"
 
 #define ProjectVersion "1.12.9"
-#define ProjectGitDir "E:\Workspace\Fallout76-QuickConfiguration"
+#define ProjectGitDir "C:\Users\Administrator\Desktop\projects\Fallout76-QuickConfiguration"
 
 #define AppConfigDir "{localappdata}\Fallout 76 Quick Configuration"
 #define INIBackupDir "{userdocs}\My Games\Fallout 76\Backups"

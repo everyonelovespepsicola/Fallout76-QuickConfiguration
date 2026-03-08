@@ -1,4 +1,4 @@
-﻿using Fo76ini;
+﻿﻿using Fo76ini;
 using Fo76ini.Utilities;
 using Newtonsoft.Json.Linq;
 using System;
@@ -269,7 +269,7 @@ namespace Fo76ini_Updater
             }
             catch (WebException ex)
             {
-
+                log.WriteLine($"Warning: Could not check rate limit.\n{ex}");
             }
             return true;
         }
