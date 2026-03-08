@@ -1,4 +1,4 @@
-﻿﻿using BrightIdeasSoftware;
+﻿﻿﻿﻿using BrightIdeasSoftware;
 using System.Collections;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
@@ -20,6 +20,7 @@ namespace Fo76ini
         #region Rendering
 
         public DescribedTaskRenderer describedTaskRenderer;
+        public OLVColumn olvColumnDateCreated;
 
         class ModListRow
         {
@@ -28,6 +29,7 @@ namespace Fo76ini
             public bool Enabled = false;
             public bool IsUpdateAvailable = false;
             public int? LoadOrder = null;
+            public DateTime? DateCreated = null;
 
             /*
              * Standard style columns
@@ -61,6 +63,9 @@ namespace Fo76ini
                 NMMod remoteMod = mod.RemoteInfo;
 
                 this.Enabled = mod.Enabled;
+
+                if (Directory.Exists(mod.ManagedFolderPath))
+                    this.DateCreated = Directory.GetCreationTime(mod.ManagedFolderPath);
 
                 bool showRemoteModNames = Configuration.Mods.ShowRemoteModNames;
 
@@ -381,6 +386,16 @@ namespace Fo76ini
             describedTaskRenderer.DescriptionAspectName = "ModDescription";
             describedTaskRenderer.ImageTextSpace = 50;
 
+            // Date Created column
+            this.olvColumnDateCreated = new OLVColumn();
+            this.olvColumnDateCreated.AspectName = "DateCreated";
+            this.olvColumnDateCreated.Text = "Date Created";
+            this.olvColumnDateCreated.Width = 120;
+            this.olvColumnDateCreated.TextAlign = HorizontalAlignment.Center;
+            this.olvColumnDateCreated.AspectToStringConverter = delegate (object value) {
+                return value == null ? "" : ((DateTime)value).ToString("g");
+            };
+
             // Custom sorter for Load Order column
             this.objectListViewMods.BeforeSorting += (sender, e) => {
                 if (e.ColumnToSort == this.olvColumnLoadOrder) {
@@ -393,6 +408,7 @@ namespace Fo76ini
             CommonHeaders.Add(this.olvColumnCheckbox);
             CommonHeaders.Add(this.olvColumnLoadOrder);
             CommonHeaders.Add(this.olvColumnModInfo);
+            CommonHeaders.Add(this.olvColumnDateCreated);
 
             StandardStyleHeaders.Add(this.olvColumnInstallStatus);
             StandardStyleHeaders.Add(this.olvColumnInstallInfo);

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using Fo76ini.Controls;
+﻿﻿﻿﻿﻿﻿using Fo76ini.Controls;
 using BrightIdeasSoftware;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
@@ -102,6 +102,11 @@ namespace Fo76ini
 
             this.menuStrip1.RenderMode = ToolStripRenderMode.Professional;
             this.menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomToolStripColorTable());
+            
+            // Ensure renderer and alignment are set after state is loaded
+            this.olvColumnModInfo.Renderer = this.describedTaskRenderer;
+            this.olvColumnModInfo.TextAlign = HorizontalAlignment.Center;
+            this.olvColumnDateCreated.TextAlign = HorizontalAlignment.Center;
 
             this.toolStrip1.RenderMode = ToolStripRenderMode.Professional;
             this.toolStrip1.Renderer = new CustomToolStripProfessionalRenderer(new CustomToolStripColorTable());
@@ -746,6 +751,12 @@ namespace Fo76ini
             }
         }
 
+        // Tools > Archive2 > Archive Tool (Pack/Unpack)
+        private void archiveToolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormArchiveTool().Show();
+        }
+
         // Tools > Archive2 > Detect format and compression
         private void detectFormatAndCompressionToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1300,5 +1311,216 @@ namespace Fo76ini
     public class NuclearWinterEventArgs : EventArgs
     {
         public bool NuclearWinterModeEnabled;
+    }
+
+    public class FormArchiveTool : Form
+    {
+        private ComboBox comboBoxFormat;
+        private ComboBox comboBoxCompression;
+        private Label labelInstruction;
+        private ListBox listBoxLog;
+
+        public FormArchiveTool()
+        {
+            this.Text = "Archive Tool";
+            this.Size = new Size(450, 400);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.AllowDrop = true;
+            this.DragEnter += FormArchiveTool_DragEnter;
+            this.DragDrop += FormArchiveTool_DragDrop;
+
+            InitializeControls();
+        }
+
+        private void InitializeControls()
+        {
+            Label labelFormat = new Label();
+            labelFormat.Text = "Format:";
+            labelFormat.Location = new Point(12, 15);
+            labelFormat.AutoSize = true;
+            this.Controls.Add(labelFormat);
+
+            comboBoxFormat = new ComboBox();
+            comboBoxFormat.Location = new Point(100, 12);
+            comboBoxFormat.Size = new Size(150, 25);
+            comboBoxFormat.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxFormat.Items.AddRange(Enum.GetNames(typeof(Archive2.Format)));
+            comboBoxFormat.SelectedIndex = 0; // General
+            this.Controls.Add(comboBoxFormat);
+
+            Label labelCompression = new Label();
+            labelCompression.Text = "Compression:";
+            labelCompression.Location = new Point(12, 45);
+            labelCompression.AutoSize = true;
+            this.Controls.Add(labelCompression);
+
+            comboBoxCompression = new ComboBox();
+            comboBoxCompression.Location = new Point(100, 42);
+            comboBoxCompression.Size = new Size(150, 25);
+            comboBoxCompression.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCompression.Items.AddRange(Enum.GetNames(typeof(Archive2.Compression)));
+            comboBoxCompression.SelectedIndex = 0; // Default
+            this.Controls.Add(comboBoxCompression);
+
+            labelInstruction = new Label();
+            labelInstruction.Text = "Drop folders to PACK, or .ba2 files to UNPACK.";
+            labelInstruction.Location = new Point(12, 85);
+            labelInstruction.AutoSize = true;
+            labelInstruction.Font = new Font(this.Font.FontFamily, 10, FontStyle.Bold);
+            this.Controls.Add(labelInstruction);
+
+            listBoxLog = new ListBox();
+            listBoxLog.Location = new Point(12, 115);
+            listBoxLog.Size = new Size(410, 230);
+            listBoxLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            this.Controls.Add(listBoxLog);
+        }
+
+        private void Log(string message)
+        {
+            listBoxLog.Items.Add($"[{DateTime.Now.ToShortTimeString()}] {message}");
+            listBoxLog.TopIndex = listBoxLog.Items.Count - 1;
+        }
+
+        private void FormArchiveTool_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void FormArchiveTool_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files)
+            {
+                if (Directory.Exists(file))
+                {
+                    PackFolder(file);
+                }
+                else if (File.Exists(file))
+                {
+                    string ext = Path.GetExtension(file).ToLower();
+                    if (ext == ".ba2" || ext == ".bsa")
+                    {
+                        UnpackArchive(file);
+                    }
+                    else
+                    {
+                        Log($"Skipped {Path.GetFileName(file)}: Not a folder or .ba2/.bsa file.");
+                    }
+                }
+            }
+        }
+
+        private void PackFolder(string folderPath)
+        {
+            try
+            {
+                string folderName = Path.GetFileName(folderPath);
+                string parentDir = Path.GetDirectoryName(folderPath);
+                string archiveName = folderName + ".ba2";
+                string archivePath = Path.Combine(parentDir, archiveName);
+
+                Archive2.Format format = (Archive2.Format)Enum.Parse(typeof(Archive2.Format), comboBoxFormat.SelectedItem.ToString());
+                Archive2.Compression compression = (Archive2.Compression)Enum.Parse(typeof(Archive2.Compression), comboBoxCompression.SelectedItem.ToString());
+
+                Log($"Packing '{folderName}' to '{archiveName}'...");
+                
+                Archive2.Create(archivePath, folderPath, compression, format);
+
+                Log("Done.");
+            }
+            catch (Exception ex)
+            {
+                Log($"Error packing {folderPath}: {ex.Message}");
+            }
+        }
+
+        private void UnpackArchive(string archivePath)
+        {
+            try
+            {
+                string archiveName = Path.GetFileName(archivePath);
+                string parentDir = Path.GetDirectoryName(archivePath);
+                string folderName = Path.GetFileNameWithoutExtension(archivePath);
+                string destinationPath = Path.Combine(parentDir, folderName);
+
+                Log($"Unpacking '{archiveName}' to '{folderName}'...");
+
+                if (!Directory.Exists(destinationPath))
+                    Directory.CreateDirectory(destinationPath);
+
+                string ext = Path.GetExtension(archivePath).ToLower();
+                if (ext != ".ba2")
+                {
+                    UnpackWith7Zip(archivePath, destinationPath);
+                    return;
+                }
+
+                if (!File.Exists(Configuration.Archive2Path))
+                {
+                    Log("Archive2.exe not found. Trying 7-Zip...");
+                    UnpackWith7Zip(archivePath, destinationPath);
+                    return;
+                }
+
+                // Attempt to unpack using Archive2.exe via CLI
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                startInfo.FileName = Configuration.Archive2Path;
+                startInfo.Arguments = $"\"{archivePath}\" -extract=\"{destinationPath}\"";
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                
+                using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(startInfo))
+                {
+                    process.WaitForExit();
+                    if (process.ExitCode == 0)
+                        Log("Done.");
+                    else
+                    {
+                        Log($"Archive2.exe exited with code {process.ExitCode}. It might not support extraction via CLI.");
+                        Log("Trying 7-Zip...");
+                        UnpackWith7Zip(archivePath, destinationPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error unpacking {archivePath}: {ex.Message}");
+            }
+        }
+
+        private void UnpackWith7Zip(string archivePath, string destinationPath)
+        {
+            if (!File.Exists(SevenZip.ExecPath))
+            {
+                Log("7-Zip executable not found.");
+                return;
+            }
+
+            try
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = SevenZip.ExecPath;
+                startInfo.Arguments = $"x \"{archivePath}\" -o\"{destinationPath}\" -y";
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                
+                using (Process process = Process.Start(startInfo))
+                {
+                    process.WaitForExit();
+                    if (process.ExitCode == 0)
+                        Log("Done (7-Zip).");
+                    else
+                        Log($"7-Zip exited with code {process.ExitCode}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Error running 7-Zip: {ex.Message}");
+            }
+        }
     }
 }

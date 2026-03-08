@@ -1,4 +1,4 @@
-﻿﻿namespace Fo76ini
+﻿﻿﻿﻿namespace Fo76ini
 {
     partial class FormMods
     {
@@ -48,6 +48,7 @@
             this.archive2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openArchive2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exploreba2ArchiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.archiveToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detectFormatAndCompressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nexusModsAPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateModInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -349,6 +350,7 @@
             this.archive2ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openArchive2ToolStripMenuItem,
             this.exploreba2ArchiveToolStripMenuItem,
+            this.archiveToolToolStripMenuItem,
             this.detectFormatAndCompressionToolStripMenuItem});
             this.archive2ToolStripMenuItem.Name = "archive2ToolStripMenuItem";
             this.archive2ToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
@@ -367,6 +369,13 @@
             this.exploreba2ArchiveToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.exploreba2ArchiveToolStripMenuItem.Text = "Explore *.ba2 archive";
             this.exploreba2ArchiveToolStripMenuItem.Click += new System.EventHandler(this.exploreba2ArchiveToolStripMenuItem_Click);
+            // 
+            // archiveToolToolStripMenuItem
+            // 
+            this.archiveToolToolStripMenuItem.Name = "archiveToolToolStripMenuItem";
+            this.archiveToolToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.archiveToolToolStripMenuItem.Text = "Archive Tool (Pack/Unpack)";
+            this.archiveToolToolStripMenuItem.Click += new System.EventHandler(this.archiveToolToolStripMenuItem_Click);
             // 
             // detectFormatAndCompressionToolStripMenuItem
             // 
@@ -2062,6 +2071,7 @@
         private System.Windows.Forms.ToolStripMenuItem archive2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openArchive2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exploreba2ArchiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem archiveToolToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showModmanagerlogtxtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showArchive2logtxtToolStripMenuItem;
