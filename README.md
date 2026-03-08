@@ -1,3 +1,5 @@
+Added Search and Sorting to Mod Manager
+
 > **Note**  
 > **This project is currently unmaintained.**
 > 
