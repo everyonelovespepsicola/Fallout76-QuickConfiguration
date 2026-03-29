@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using BrightIdeasSoftware;
+﻿﻿﻿﻿﻿﻿﻿﻿using BrightIdeasSoftware;
 using System.Collections;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
@@ -702,10 +702,17 @@ namespace Fo76ini
             if (isUpdating)
                 return;
 
+            // The e.Item.Index is the index of the item in the sorted list.
+            // This is not the index of the mod in the 'Mods' list.
+            // We have to get the model object and find its index.
+            OLVListItem item = (OLVListItem)e.Item;
+            ModListRow row = (ModListRow)item.RowObject;
+            int modIndex = this.Mods.IndexOf(row.mod);
+
             if (e.Item.Checked)
-                Mods.EnableMod(e.Item.Index);
+                Mods.EnableMod(modIndex);
             else
-                Mods.DisableMod(e.Item.Index);
+                Mods.DisableMod(modIndex);
 
             UpdateUI();
         }
@@ -842,18 +849,36 @@ namespace Fo76ini
 
             public int Compare(object x, object y)
             {
-                OLVListItem item1 = (OLVListItem)x;
-                OLVListItem item2 = (OLVListItem)y;
-                ModListRow row1 = (ModListRow)item1.RowObject;
-                ModListRow row2 = (ModListRow)item2.RowObject;
+                OLVListItem item1 = x as OLVListItem;
+                OLVListItem item2 = y as OLVListItem;
+                ModListRow row1 = item1?.RowObject as ModListRow;
+                ModListRow row2 = item2?.RowObject as ModListRow;
+
+                if (row1 == null || row2 == null) return 0;
 
                 // Always put nulls at the bottom
-                if (row1.LoadOrder == null && row2.LoadOrder == null) return 0;
+                if (row1.LoadOrder == null && row2.LoadOrder == null)
+                {
+                    int res = String.Compare(row1.ModTitle, row2.ModTitle, StringComparison.OrdinalIgnoreCase);
+                    if (res == 0)
+                        res = String.Compare(row1.ArchiveName, row2.ArchiveName, StringComparison.OrdinalIgnoreCase);
+                    if (res == 0)
+                        res = String.Compare(row1.mod.ManagedFolderName, row2.mod.ManagedFolderName, StringComparison.OrdinalIgnoreCase);
+                    return res; // Always sort unchecked mods A to Z
+                }
                 if (row1.LoadOrder == null) return 1;
                 if (row2.LoadOrder == null) return -1;
 
                 // Compare values
                 int result = row1.LoadOrder.Value.CompareTo(row2.LoadOrder.Value);
+                if (result == 0)
+                {
+                    result = String.Compare(row1.ModTitle, row2.ModTitle, StringComparison.OrdinalIgnoreCase);
+                    if (result == 0)
+                        result = String.Compare(row1.ArchiveName, row2.ArchiveName, StringComparison.OrdinalIgnoreCase);
+                    if (result == 0)
+                        result = String.Compare(row1.mod.ManagedFolderName, row2.mod.ManagedFolderName, StringComparison.OrdinalIgnoreCase);
+                }
 
                 if (this.order == SortOrder.Descending)
                     result = -result;

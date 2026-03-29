@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿using Fo76ini.Controls;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using Fo76ini.Controls;
 using BrightIdeasSoftware;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
@@ -104,12 +104,31 @@ namespace Fo76ini
             this.menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomToolStripColorTable());
             
             // Ensure renderer and alignment are set after state is loaded
-            this.olvColumnModInfo.Renderer = this.describedTaskRenderer;
+            this.olvColumnModInfo.Renderer = null;
+            this.objectListViewMods.RowHeight = -1;
             this.olvColumnModInfo.TextAlign = HorizontalAlignment.Center;
             this.olvColumnDateCreated.TextAlign = HorizontalAlignment.Center;
 
             this.toolStrip1.RenderMode = ToolStripRenderMode.Professional;
             this.toolStrip1.Renderer = new CustomToolStripProfessionalRenderer(new CustomToolStripColorTable());
+            
+            this.toolStrip1.GripStyle = ToolStripGripStyle.Hidden;
+            this.toolStrip1.Dock = DockStyle.None;
+            if (this.toolStrip1.Parent != null)
+            {
+                // We want to place the toolstrip directly above the list view
+                this.toolStrip1.Location = new Point(this.objectListViewMods.Left, this.objectListViewMods.Top);
+                this.toolStrip1.Width = this.objectListViewMods.Width;
+                this.toolStrip1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+
+                // Bring to front just in case
+                this.toolStrip1.Parent.Controls.SetChildIndex(this.toolStrip1, 0);
+
+                // Push the list view down so it doesn't overlap
+                int overlap = this.toolStrip1.Height;
+                this.objectListViewMods.Top += overlap;
+                this.objectListViewMods.Height -= overlap;
+            }
 
             this.statusStrip1.RenderMode = ToolStripRenderMode.Professional;
             this.statusStrip1.Renderer = new CustomToolStripProfessionalRenderer(new CustomToolStripColorTable());
@@ -286,6 +305,8 @@ namespace Fo76ini
         {
             isUpdating = true;
             UpdateObjectListView();
+            this.olvColumnModInfo.Renderer = null;
+            this.objectListViewMods.RowHeight = -1;
             isUpdating = false;
         }
 

@@ -1,0 +1,40 @@
+Method 1: Using the build script (pack_tool.py) - Recommended
+Requirements:
+
+Windows 10 or later
+Visual Studio 2022 Community edition (with ".NET Desktop Development" workload)
+Python 3.3+ (with the colorama package)
+Tools: rcedit, 7-Zip, Pandoc, Inno Setup, and NuGet
+If you have Scoop installed, the build script can actually install all the necessary dependencies for you.
+
+Steps:
+
+Open a terminal (like PowerShell) in the root directory of the project.
+If you need to install the dependencies, you can run:
+powershell
+python pack_tool.py -i
+To start the interactive mode, simply run:
+powershell
+python pack_tool.py
+This will bring up a menu where you can restore packages, build the app, pack it into a .zip, or build the setup executable.
+Alternatively, to perform a quick release build (restores packages, builds, packs, and builds the installer) in one command, run:
+powershell
+python pack_tool.py -r -b -p -s
+The final build output will be placed in the Publish folder.
+Method 2: Manual Build Process
+If you prefer to build it entirely by hand, you can use Visual Studio.
+
+Requirements:
+
+Windows 10 or later
+Visual Studio 2022 Community edition (with ".NET Desktop Development" workload)
+Steps:
+
+Open the solution file Fallout76-QuickConfiguration\Fo76ini\Fo76ini.sln in Visual Studio 2022.
+Set the build target to Release, Any CPU, and the startup project to Fo76ini_Updater.
+Go to Build → Build Solution (or press F6).
+Copy (and replace) the contents of Fallout76-QuickConfiguration\Fo76ini_Updater\bin\Release\ into the Fallout76-QuickConfiguration\Fo76ini\bin\Release\ directory. (Note: You may need to create this directory if it doesn't exist yet).
+Change the build target to Release, Any CPU, and the startup project to Fo76ini.
+Again, go to Build → Build Solution (or press F6).
+Finally, copy the contents of the Fallout76-QuickConfiguration\Additional files\ directory into Fallout76-QuickConfiguration\Fo76ini\bin\Release\.
+Your built application will now be ready inside the Fo76ini\bin\Release\ directory!

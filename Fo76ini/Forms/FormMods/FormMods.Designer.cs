@@ -1,4 +1,4 @@
-﻿﻿﻿﻿namespace Fo76ini
+﻿﻿﻿﻿﻿﻿namespace Fo76ini
 {
     partial class FormMods
     {
@@ -1775,7 +1775,7 @@
             this.olvColumnModInfo.AspectName = "ModTitle";
             this.olvColumnModInfo.Groupable = false;
             this.olvColumnModInfo.MinimumWidth = 50;
-            this.olvColumnModInfo.Text = "Mod name & info";
+            this.olvColumnModInfo.Text = "Mod Name";
             this.olvColumnModInfo.Width = 300;
             // 
             // olvColumnInstallStatus
