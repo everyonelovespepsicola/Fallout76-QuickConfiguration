@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿namespace Fo76ini
+﻿﻿namespace Fo76ini
 {
     partial class FormMods
     {
@@ -165,19 +165,7 @@
             this.toolStripButtonModUnfreeze = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonDeleteMod = new System.Windows.Forms.ToolStripButton();
-            this.objectListViewMods = new BrightIdeasSoftware.ObjectListView();
-            this.olvColumnCheckbox = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnLoadOrder = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnModInfo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnInstallStatus = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnInstallInfo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnAltModVersion = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnAltInstallMethod = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnAltInstallInto = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnAltArchiveName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnAltArchivePreset = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnAltIsFrozen = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnLastDummy = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.dataGridViewMods = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new Fo76ini.Controls.StyledTabControl();
             this.tabPageResourceList = new System.Windows.Forms.TabPage();
             this.groupBoxLists = new Fo76ini.Controls.StyledGroupBox();
@@ -209,15 +197,15 @@
             this.panelModDetailsNexusMods.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxModThumbnail)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.objectListViewMods)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMods)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPageResourceList.SuspendLayout();
             this.groupBoxLists.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxModsLoadingGIF)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // menuStrip1
-            // 
+            //
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
@@ -228,9 +216,9 @@
             this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 49;
             this.menuStrip1.Text = "menuStrip1";
-            // 
+            //
             // fileToolStripMenuItem
-            // 
+            //
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addModarchiveToolStripMenuItem,
             this.toolStripMenuItemModsImport,
@@ -240,9 +228,9 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.fileToolStripMenuItem.Text = "File";
-            // 
+            //
             // addModarchiveToolStripMenuItem
-            // 
+            //
             this.addModarchiveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.emptyModToolStripMenuItem,
             this.fromArchiveToolStripMenuItem,
@@ -252,101 +240,101 @@
             this.addModarchiveToolStripMenuItem.Name = "addModarchiveToolStripMenuItem";
             this.addModarchiveToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.addModarchiveToolStripMenuItem.Text = "Add mod";
-            // 
+            //
             // emptyModToolStripMenuItem
-            // 
+            //
             this.emptyModToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.plus_24;
             this.emptyModToolStripMenuItem.Name = "emptyModToolStripMenuItem";
             this.emptyModToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.emptyModToolStripMenuItem.Text = "Empty mod";
             this.emptyModToolStripMenuItem.Click += new System.EventHandler(this.emptyModToolStripMenuItem_Click);
-            // 
+            //
             // fromArchiveToolStripMenuItem
-            // 
+            //
             this.fromArchiveToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.add_archive_3_24;
             this.fromArchiveToolStripMenuItem.Name = "fromArchiveToolStripMenuItem";
             this.fromArchiveToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.fromArchiveToolStripMenuItem.Text = "From archive";
             this.fromArchiveToolStripMenuItem.Click += new System.EventHandler(this.fromArchiveToolStripMenuItem_Click);
-            // 
+            //
             // fromba2ArchivefrozenToolStripMenuItem
-            // 
+            //
             this.fromba2ArchivefrozenToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.add_snowflake_24;
             this.fromba2ArchivefrozenToolStripMenuItem.Name = "fromba2ArchivefrozenToolStripMenuItem";
             this.fromba2ArchivefrozenToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.fromba2ArchivefrozenToolStripMenuItem.Text = "From *.ba2 archive (frozen)";
             this.fromba2ArchivefrozenToolStripMenuItem.Click += new System.EventHandler(this.fromba2ArchivefrozenToolStripMenuItem_Click);
-            // 
+            //
             // fromFolderToolStripMenuItem
-            // 
+            //
             this.fromFolderToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.add_folder_24;
             this.fromFolderToolStripMenuItem.Name = "fromFolderToolStripMenuItem";
             this.fromFolderToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.fromFolderToolStripMenuItem.Text = "From folder";
             this.fromFolderToolStripMenuItem.Click += new System.EventHandler(this.fromFolderToolStripMenuItem_Click);
-            // 
+            //
             // toolStripMenuItemModsImport
-            // 
+            //
             this.toolStripMenuItemModsImport.Name = "toolStripMenuItemModsImport";
             this.toolStripMenuItemModsImport.Size = new System.Drawing.Size(195, 22);
             this.toolStripMenuItemModsImport.Text = "Import installed mods";
             this.toolStripMenuItemModsImport.Click += new System.EventHandler(this.toolStripMenuItemModsImport_Click);
-            // 
+            //
             // toolStripSeparator1
-            // 
+            //
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(192, 6);
-            // 
+            //
             // saveToolStripMenuItem
-            // 
+            //
             this.saveToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.save_24;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.saveToolStripMenuItem.Text = "Save changes";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
+            //
             // deployToolStripMenuItem
-            // 
+            //
             this.deployToolStripMenuItem.Name = "deployToolStripMenuItem";
             this.deployToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.deployToolStripMenuItem.Text = "Deploy mods";
             this.deployToolStripMenuItem.Click += new System.EventHandler(this.deployToolStripMenuItem_Click);
-            // 
+            //
             // editToolStripMenuItem
-            // 
+            //
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showConflictingFilesToolStripMenuItem,
             this.reloadUIToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.editToolStripMenuItem.Text = "View";
-            // 
+            //
             // showConflictingFilesToolStripMenuItem
-            // 
+            //
             this.showConflictingFilesToolStripMenuItem.Name = "showConflictingFilesToolStripMenuItem";
             this.showConflictingFilesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.showConflictingFilesToolStripMenuItem.Text = "Show conflicting files";
             this.showConflictingFilesToolStripMenuItem.Click += new System.EventHandler(this.showConflictingFilesToolStripMenuItem_Click);
-            // 
+            //
             // reloadUIToolStripMenuItem
-            // 
+            //
             this.reloadUIToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.available_updates;
             this.reloadUIToolStripMenuItem.Name = "reloadUIToolStripMenuItem";
             this.reloadUIToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.reloadUIToolStripMenuItem.Text = "Reload UI";
             this.reloadUIToolStripMenuItem.Click += new System.EventHandler(this.reloadUIToolStripMenuItem_Click);
-            // 
+            //
             // toolsToolStripMenuItem
-            // 
+            //
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.archive2ToolStripMenuItem,
             this.nexusModsAPIToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
-            // 
+            //
             // archive2ToolStripMenuItem
-            // 
+            //
             this.archive2ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openArchive2ToolStripMenuItem,
             this.exploreba2ArchiveToolStripMenuItem,
@@ -355,37 +343,37 @@
             this.archive2ToolStripMenuItem.Name = "archive2ToolStripMenuItem";
             this.archive2ToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.archive2ToolStripMenuItem.Text = "Archive2";
-            // 
+            //
             // openArchive2ToolStripMenuItem
-            // 
+            //
             this.openArchive2ToolStripMenuItem.Name = "openArchive2ToolStripMenuItem";
             this.openArchive2ToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.openArchive2ToolStripMenuItem.Text = "Open Archive2";
             this.openArchive2ToolStripMenuItem.Click += new System.EventHandler(this.openArchive2ToolStripMenuItem_Click);
-            // 
+            //
             // exploreba2ArchiveToolStripMenuItem
-            // 
+            //
             this.exploreba2ArchiveToolStripMenuItem.Name = "exploreba2ArchiveToolStripMenuItem";
             this.exploreba2ArchiveToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.exploreba2ArchiveToolStripMenuItem.Text = "Explore *.ba2 archive";
             this.exploreba2ArchiveToolStripMenuItem.Click += new System.EventHandler(this.exploreba2ArchiveToolStripMenuItem_Click);
-            // 
+            //
             // archiveToolToolStripMenuItem
-            // 
+            //
             this.archiveToolToolStripMenuItem.Name = "archiveToolToolStripMenuItem";
             this.archiveToolToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.archiveToolToolStripMenuItem.Text = "Archive Tool (Pack/Unpack)";
             this.archiveToolToolStripMenuItem.Click += new System.EventHandler(this.archiveToolToolStripMenuItem_Click);
-            // 
+            //
             // detectFormatAndCompressionToolStripMenuItem
-            // 
+            //
             this.detectFormatAndCompressionToolStripMenuItem.Name = "detectFormatAndCompressionToolStripMenuItem";
             this.detectFormatAndCompressionToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.detectFormatAndCompressionToolStripMenuItem.Text = "Display info about *.ba2 archive";
             this.detectFormatAndCompressionToolStripMenuItem.Click += new System.EventHandler(this.detectFormatAndCompressionToolStripMenuItem_Click);
-            // 
+            //
             // nexusModsAPIToolStripMenuItem
-            // 
+            //
             this.nexusModsAPIToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.updateModInformationToolStripMenuItem,
             this.endorseModsToolStripMenuItem,
@@ -393,80 +381,80 @@
             this.nexusModsAPIToolStripMenuItem.Name = "nexusModsAPIToolStripMenuItem";
             this.nexusModsAPIToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.nexusModsAPIToolStripMenuItem.Text = "NexusMods API";
-            // 
+            //
             // updateModInformationToolStripMenuItem
-            // 
+            //
             this.updateModInformationToolStripMenuItem.Name = "updateModInformationToolStripMenuItem";
             this.updateModInformationToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.updateModInformationToolStripMenuItem.Text = "Update mod information";
             this.updateModInformationToolStripMenuItem.Click += new System.EventHandler(this.updateModInformationToolStripMenuItem_Click);
-            // 
+            //
             // endorseModsToolStripMenuItem
-            // 
+            //
             this.endorseModsToolStripMenuItem.Name = "endorseModsToolStripMenuItem";
             this.endorseModsToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.endorseModsToolStripMenuItem.Text = "Endorse mods";
             this.endorseModsToolStripMenuItem.Click += new System.EventHandler(this.endorseModsToolStripMenuItem_Click);
-            // 
+            //
             // checkForUpdatesToolStripMenuItem
-            // 
+            //
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for updates";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
-            // 
+            //
             // helpToolStripMenuItem
-            // 
+            //
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showGuideToolStripMenuItem,
             this.logFilesToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            // 
+            //
             // showGuideToolStripMenuItem
-            // 
+            //
             this.showGuideToolStripMenuItem.Image = global::Fo76ini.Properties.Resources.help_24;
             this.showGuideToolStripMenuItem.Name = "showGuideToolStripMenuItem";
             this.showGuideToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.showGuideToolStripMenuItem.Text = "Show guide";
             this.showGuideToolStripMenuItem.Click += new System.EventHandler(this.showGuideToolStripMenuItem_Click);
-            // 
+            //
             // logFilesToolStripMenuItem
-            // 
+            //
             this.logFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showModmanagerlogtxtToolStripMenuItem,
             this.showArchive2logtxtToolStripMenuItem});
             this.logFilesToolStripMenuItem.Name = "logFilesToolStripMenuItem";
             this.logFilesToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.logFilesToolStripMenuItem.Text = "Log files";
-            // 
+            //
             // showModmanagerlogtxtToolStripMenuItem
-            // 
+            //
             this.showModmanagerlogtxtToolStripMenuItem.Name = "showModmanagerlogtxtToolStripMenuItem";
             this.showModmanagerlogtxtToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.showModmanagerlogtxtToolStripMenuItem.Text = "Show modmanager.log.txt";
             this.showModmanagerlogtxtToolStripMenuItem.Click += new System.EventHandler(this.showModmanagerlogtxtToolStripMenuItem_Click);
-            // 
+            //
             // showArchive2logtxtToolStripMenuItem
-            // 
+            //
             this.showArchive2logtxtToolStripMenuItem.Name = "showArchive2logtxtToolStripMenuItem";
             this.showArchive2logtxtToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.showArchive2logtxtToolStripMenuItem.Text = "Show archive2.log.txt";
             this.showArchive2logtxtToolStripMenuItem.Click += new System.EventHandler(this.showArchive2logtxtToolStripMenuItem_Click);
-            // 
+            //
             // progressBarMods
-            // 
-            this.progressBarMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.progressBarMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBarMods.Location = new System.Drawing.Point(12, 543);
             this.progressBarMods.MarqueeAnimationSpeed = 15;
             this.progressBarMods.Name = "progressBarMods";
             this.progressBarMods.Size = new System.Drawing.Size(600, 23);
             this.progressBarMods.TabIndex = 51;
-            // 
+            //
             // buttonModsDeploy
-            // 
+            //
             this.buttonModsDeploy.Location = new System.Drawing.Point(3, 21);
             this.buttonModsDeploy.Name = "buttonModsDeploy";
             this.buttonModsDeploy.Size = new System.Drawing.Size(154, 25);
@@ -474,9 +462,9 @@
             this.buttonModsDeploy.Text = "Deploy";
             this.buttonModsDeploy.UseVisualStyleBackColor = true;
             this.buttonModsDeploy.Click += new System.EventHandler(this.buttonModsDeploy_Click);
-            // 
+            //
             // labelModsDeploy
-            // 
+            //
             this.labelModsDeploy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelModsDeploy.AutoSize = true;
             this.labelModsDeploy.ForeColor = System.Drawing.Color.DarkGreen;
@@ -485,9 +473,9 @@
             this.labelModsDeploy.Size = new System.Drawing.Size(38, 13);
             this.labelModsDeploy.TabIndex = 52;
             this.labelModsDeploy.Text = "Ready";
-            // 
+            //
             // checkBoxFreezeBundledArchives
-            // 
+            //
             this.checkBoxFreezeBundledArchives.AutoSize = true;
             this.checkBoxFreezeBundledArchives.Location = new System.Drawing.Point(9, 332);
             this.checkBoxFreezeBundledArchives.Name = "checkBoxFreezeBundledArchives";
@@ -498,9 +486,9 @@
         "f you want to update it on deploy.");
             this.checkBoxFreezeBundledArchives.UseVisualStyleBackColor = true;
             this.checkBoxFreezeBundledArchives.CheckedChanged += new System.EventHandler(this.checkBoxFreezeBundledArchives_CheckedChanged);
-            // 
+            //
             // checkBoxFreezeArchive
-            // 
+            //
             this.checkBoxFreezeArchive.AutoSize = true;
             this.checkBoxFreezeArchive.Location = new System.Drawing.Point(10, 130);
             this.checkBoxFreezeArchive.Name = "checkBoxFreezeArchive";
@@ -512,9 +500,9 @@
         "or more) and the files aren\'t changing.");
             this.checkBoxFreezeArchive.UseVisualStyleBackColor = true;
             this.checkBoxFreezeArchive.CheckedChanged += new System.EventHandler(this.checkBoxFreezeArchive_CheckedChanged);
-            // 
+            //
             // checkBoxModsUseRemoteModNames
-            // 
+            //
             this.checkBoxModsUseRemoteModNames.AutoSize = true;
             this.checkBoxModsUseRemoteModNames.Location = new System.Drawing.Point(9, 19);
             this.checkBoxModsUseRemoteModNames.Name = "checkBoxModsUseRemoteModNames";
@@ -526,9 +514,9 @@
         "ference.");
             this.checkBoxModsUseRemoteModNames.UseVisualStyleBackColor = true;
             this.checkBoxModsUseRemoteModNames.CheckedChanged += new System.EventHandler(this.checkBoxModsUseRemoteModNames_CheckedChanged);
-            // 
+            //
             // buttonModAbstain
-            // 
+            //
             this.buttonModAbstain.BackColor = System.Drawing.Color.Transparent;
             this.buttonModAbstain.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.buttonModAbstain.FlatAppearance.BorderSize = 0;
@@ -543,9 +531,9 @@
             this.toolTip.SetToolTip(this.buttonModAbstain, "Abstain from endorsing this mod.");
             this.buttonModAbstain.UseVisualStyleBackColor = false;
             this.buttonModAbstain.Click += new System.EventHandler(this.buttonModAbstain_Click);
-            // 
+            //
             // buttonModEndorse
-            // 
+            //
             this.buttonModEndorse.BackColor = System.Drawing.Color.Transparent;
             this.buttonModEndorse.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.buttonModEndorse.FlatAppearance.BorderSize = 0;
@@ -560,9 +548,9 @@
             this.toolTip.SetToolTip(this.buttonModEndorse, "Endorse this mod.");
             this.buttonModEndorse.UseVisualStyleBackColor = false;
             this.buttonModEndorse.Click += new System.EventHandler(this.buttonModEndorse_Click);
-            // 
+            //
             // buttonModOpenFolder
-            // 
+            //
             this.buttonModOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonModOpenFolder.BackColor = System.Drawing.Color.Transparent;
             this.buttonModOpenFolder.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -578,9 +566,9 @@
             this.toolTip.SetToolTip(this.buttonModOpenFolder, "Open folder to mod");
             this.buttonModOpenFolder.UseVisualStyleBackColor = false;
             this.buttonModOpenFolder.Click += new System.EventHandler(this.buttonModOpenFolder_Click);
-            // 
+            //
             // buttonModOpenPage
-            // 
+            //
             this.buttonModOpenPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonModOpenPage.BackColor = System.Drawing.Color.Transparent;
             this.buttonModOpenPage.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -596,9 +584,9 @@
             this.toolTip.SetToolTip(this.buttonModOpenPage, "Open link in browser");
             this.buttonModOpenPage.UseVisualStyleBackColor = false;
             this.buttonModOpenPage.Click += new System.EventHandler(this.buttonModOpenPage_Click);
-            // 
+            //
             // radioButtonModsCopyFiles
-            // 
+            //
             this.radioButtonModsCopyFiles.AutoSize = true;
             this.radioButtonModsCopyFiles.Location = new System.Drawing.Point(3, 64);
             this.radioButtonModsCopyFiles.Name = "radioButtonModsCopyFiles";
@@ -610,9 +598,9 @@
         "his option if you\'re experiencing issues.");
             this.radioButtonModsCopyFiles.UseVisualStyleBackColor = true;
             this.radioButtonModsCopyFiles.CheckedChanged += new System.EventHandler(this.radioButtonModsCopyFiles_CheckedChanged);
-            // 
+            //
             // radioButtonModsUseSymlinks
-            // 
+            //
             this.radioButtonModsUseSymlinks.AutoSize = true;
             this.radioButtonModsUseSymlinks.Location = new System.Drawing.Point(3, 41);
             this.radioButtonModsUseSymlinks.Name = "radioButtonModsUseSymlinks";
@@ -623,9 +611,9 @@
             this.toolTip.SetToolTip(this.radioButtonModsUseSymlinks, resources.GetString("radioButtonModsUseSymlinks.ToolTip"));
             this.radioButtonModsUseSymlinks.UseVisualStyleBackColor = true;
             this.radioButtonModsUseSymlinks.CheckedChanged += new System.EventHandler(this.radioButtonModsUseSymlinks_CheckedChanged);
-            // 
+            //
             // radioButtonModsUseHardlinks
-            // 
+            //
             this.radioButtonModsUseHardlinks.AutoSize = true;
             this.radioButtonModsUseHardlinks.Location = new System.Drawing.Point(3, 18);
             this.radioButtonModsUseHardlinks.Name = "radioButtonModsUseHardlinks";
@@ -637,9 +625,9 @@
         ".\r\n\r\nThis is the recommended option.");
             this.radioButtonModsUseHardlinks.UseVisualStyleBackColor = true;
             this.radioButtonModsUseHardlinks.CheckedChanged += new System.EventHandler(this.radioButtonModsUseHardlinks_CheckedChanged);
-            // 
+            //
             // radioButtonBundledFirstinLO
-            // 
+            //
             this.radioButtonBundledFirstinLO.AutoSize = true;
             this.radioButtonBundledFirstinLO.Location = new System.Drawing.Point(3, 17);
             this.radioButtonBundledFirstinLO.Name = "radioButtonBundledFirstinLO";
@@ -650,9 +638,9 @@
             this.toolTip.SetToolTip(this.radioButtonBundledFirstinLO, "Bundled archives will appear first in the load order.");
             this.radioButtonBundledFirstinLO.UseVisualStyleBackColor = true;
             this.radioButtonBundledFirstinLO.CheckedChanged += new System.EventHandler(this.radioButtonBundledFirstinLO_CheckedChanged);
-            // 
+            //
             // radioButtonBundledLastinLO
-            // 
+            //
             this.radioButtonBundledLastinLO.AutoSize = true;
             this.radioButtonBundledLastinLO.Location = new System.Drawing.Point(3, 40);
             this.radioButtonBundledLastinLO.Name = "radioButtonBundledLastinLO";
@@ -663,14 +651,14 @@
             this.toolTip.SetToolTip(this.radioButtonBundledLastinLO, "Bundled archives will appear last in the load order.");
             this.radioButtonBundledLastinLO.UseVisualStyleBackColor = true;
             this.radioButtonBundledLastinLO.CheckedChanged += new System.EventHandler(this.radioButtonBundledLastinLO_CheckedChanged);
-            // 
+            //
             // openFileDialogMod
-            // 
+            //
             this.openFileDialogMod.Filter = "All Archives|*.zip;*.rar;*.7z;*.tar;*.ba2";
             this.openFileDialogMod.Title = "Add *.ba2 or any other archive.";
-            // 
+            //
             // checkBoxDisableMods
-            // 
+            //
             this.checkBoxDisableMods.AutoSize = true;
             this.checkBoxDisableMods.Location = new System.Drawing.Point(4, 3);
             this.checkBoxDisableMods.Name = "checkBoxDisableMods";
@@ -679,9 +667,9 @@
             this.checkBoxDisableMods.Text = "Disable mods";
             this.checkBoxDisableMods.UseVisualStyleBackColor = true;
             this.checkBoxDisableMods.CheckedChanged += new System.EventHandler(this.checkBoxDisableMods_CheckedChanged);
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.buttonModsDeploy);
             this.panel1.Controls.Add(this.checkBoxDisableMods);
@@ -689,15 +677,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(166, 51);
             this.panel1.TabIndex = 56;
-            // 
+            //
             // openFileDialogBA2
-            // 
+            //
             this.openFileDialogBA2.DefaultExt = "ba2";
             this.openFileDialogBA2.Filter = "Archive2|*.ba2";
             this.openFileDialogBA2.Title = "Add *.ba2 archive.";
-            // 
+            //
             // statusStrip1
-            // 
+            //
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelDescModCount,
             this.toolStripStatusLabelModCount,
@@ -710,57 +698,57 @@
             this.statusStrip1.Size = new System.Drawing.Size(784, 22);
             this.statusStrip1.TabIndex = 57;
             this.statusStrip1.Text = "statusStrip1";
-            // 
+            //
             // toolStripStatusLabelDescModCount
-            // 
+            //
             this.toolStripStatusLabelDescModCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabelDescModCount.Margin = new System.Windows.Forms.Padding(8, 3, 3, 2);
             this.toolStripStatusLabelDescModCount.Name = "toolStripStatusLabelDescModCount";
             this.toolStripStatusLabelDescModCount.Size = new System.Drawing.Size(72, 17);
             this.toolStripStatusLabelDescModCount.Text = "Mod count:";
-            // 
+            //
             // toolStripStatusLabelModCount
-            // 
+            //
             this.toolStripStatusLabelModCount.Name = "toolStripStatusLabelModCount";
             this.toolStripStatusLabelModCount.Size = new System.Drawing.Size(15, 17);
             this.toolStripStatusLabelModCount.Text = "0";
-            // 
+            //
             // toolStripStatusLabelDescEnabledCount
-            // 
+            //
             this.toolStripStatusLabelDescEnabledCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabelDescEnabledCount.Margin = new System.Windows.Forms.Padding(50, 3, 3, 2);
             this.toolStripStatusLabelDescEnabledCount.Name = "toolStripStatusLabelDescEnabledCount";
             this.toolStripStatusLabelDescEnabledCount.Size = new System.Drawing.Size(58, 17);
             this.toolStripStatusLabelDescEnabledCount.Text = "Enabled:";
-            // 
+            //
             // toolStripStatusLabelEnabledCount
-            // 
+            //
             this.toolStripStatusLabelEnabledCount.Name = "toolStripStatusLabelEnabledCount";
             this.toolStripStatusLabelEnabledCount.Size = new System.Drawing.Size(15, 17);
             this.toolStripStatusLabelEnabledCount.Text = "0";
-            // 
+            //
             // toolStripStatusLabelSpacer
-            // 
+            //
             this.toolStripStatusLabelSpacer.Name = "toolStripStatusLabelSpacer";
             this.toolStripStatusLabelSpacer.Size = new System.Drawing.Size(404, 17);
             this.toolStripStatusLabelSpacer.Spring = true;
             this.toolStripStatusLabelSpacer.Text = " ";
-            // 
+            //
             // toolStripStatusLabelDeploymentStatus
-            // 
+            //
             this.toolStripStatusLabelDeploymentStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabelDeploymentStatus.ForeColor = System.Drawing.Color.Crimson;
             this.toolStripStatusLabelDeploymentStatus.Name = "toolStripStatusLabelDeploymentStatus";
             this.toolStripStatusLabelDeploymentStatus.Size = new System.Drawing.Size(141, 17);
             this.toolStripStatusLabelDeploymentStatus.Text = "Deployment necessary";
-            // 
+            //
             // timerCheckForNXM
-            // 
+            //
             this.timerCheckForNXM.Interval = 1000;
             this.timerCheckForNXM.Tick += new System.EventHandler(this.timerCheckForNXM_Tick);
-            // 
+            //
             // tabPageModsSettings
-            // 
+            //
             this.tabPageModsSettings.Controls.Add(this.panel2);
             this.tabPageModsSettings.Location = new System.Drawing.Point(4, 25);
             this.tabPageModsSettings.Name = "tabPageModsSettings";
@@ -769,11 +757,11 @@
             this.tabPageModsSettings.TabIndex = 1;
             this.tabPageModsSettings.Text = "Settings";
             this.tabPageModsSettings.UseVisualStyleBackColor = true;
-            // 
+            //
             // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.AutoScroll = true;
             this.panel2.Controls.Add(this.groupBoxModsBehavior);
@@ -783,9 +771,9 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(752, 461);
             this.panel2.TabIndex = 62;
-            // 
+            //
             // groupBoxModsBehavior
-            // 
+            //
             this.groupBoxModsBehavior.BackColor = System.Drawing.Color.White;
             this.groupBoxModsBehavior.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxModsBehavior.BorderWidth = 1;
@@ -805,9 +793,9 @@
             this.groupBoxModsBehavior.TitleBorderMargin = 6;
             this.groupBoxModsBehavior.TitleBorderPadding = 4;
             this.groupBoxModsBehavior.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // panel3
-            // 
+            //
             this.panel3.Controls.Add(this.labelResourceListUsed);
             this.panel3.Controls.Add(this.radioButtonUseIndexFileList1);
             this.panel3.Controls.Add(this.radioButtonUseArchive2List1);
@@ -815,18 +803,18 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(717, 65);
             this.panel3.TabIndex = 15;
-            // 
+            //
             // labelResourceListUsed
-            // 
+            //
             this.labelResourceListUsed.AutoSize = true;
             this.labelResourceListUsed.Location = new System.Drawing.Point(0, 1);
             this.labelResourceListUsed.Name = "labelResourceListUsed";
             this.labelResourceListUsed.Size = new System.Drawing.Size(178, 13);
             this.labelResourceListUsed.TabIndex = 7;
             this.labelResourceListUsed.Text = "Which resource list should be used?";
-            // 
+            //
             // radioButtonUseIndexFileList1
-            // 
+            //
             this.radioButtonUseIndexFileList1.AutoSize = true;
             this.radioButtonUseIndexFileList1.Location = new System.Drawing.Point(3, 40);
             this.radioButtonUseIndexFileList1.Name = "radioButtonUseIndexFileList1";
@@ -836,9 +824,9 @@
             this.radioButtonUseIndexFileList1.Text = "[Archive] sResourceIndexFileList";
             this.radioButtonUseIndexFileList1.UseVisualStyleBackColor = true;
             this.radioButtonUseIndexFileList1.CheckedChanged += new System.EventHandler(this.radioButtonUseIndexFileList_CheckedChanged);
-            // 
+            //
             // radioButtonUseArchive2List1
-            // 
+            //
             this.radioButtonUseArchive2List1.AutoSize = true;
             this.radioButtonUseArchive2List1.Location = new System.Drawing.Point(3, 17);
             this.radioButtonUseArchive2List1.Name = "radioButtonUseArchive2List1";
@@ -848,9 +836,9 @@
             this.radioButtonUseArchive2List1.Text = "[Archive] sResourceArchive2List (default)";
             this.radioButtonUseArchive2List1.UseVisualStyleBackColor = true;
             this.radioButtonUseArchive2List1.CheckedChanged += new System.EventHandler(this.radioButtonUseArchive2List_CheckedChanged);
-            // 
+            //
             // labelBehaviorNote
-            // 
+            //
             this.labelBehaviorNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBehaviorNote.ForeColor = System.Drawing.Color.SteelBlue;
             this.labelBehaviorNote.Location = new System.Drawing.Point(6, 14);
@@ -859,9 +847,9 @@
             this.labelBehaviorNote.TabIndex = 14;
             this.labelBehaviorNote.Text = "Note: These settings only take effect after deployment.";
             this.labelBehaviorNote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // panelBundledLoadOrder
-            // 
+            //
             this.panelBundledLoadOrder.Controls.Add(this.labelBundledLoadOrder);
             this.panelBundledLoadOrder.Controls.Add(this.radioButtonBundledFirstinLO);
             this.panelBundledLoadOrder.Controls.Add(this.radioButtonBundledLastinLO);
@@ -869,18 +857,18 @@
             this.panelBundledLoadOrder.Name = "panelBundledLoadOrder";
             this.panelBundledLoadOrder.Size = new System.Drawing.Size(717, 65);
             this.panelBundledLoadOrder.TabIndex = 11;
-            // 
+            //
             // labelBundledLoadOrder
-            // 
+            //
             this.labelBundledLoadOrder.AutoSize = true;
             this.labelBundledLoadOrder.Location = new System.Drawing.Point(0, 1);
             this.labelBundledLoadOrder.Name = "labelBundledLoadOrder";
             this.labelBundledLoadOrder.Size = new System.Drawing.Size(238, 13);
             this.labelBundledLoadOrder.TabIndex = 7;
             this.labelBundledLoadOrder.Text = "Where to put bundled archives in the load order?";
-            // 
+            //
             // panelDeployMethod
-            // 
+            //
             this.panelDeployMethod.Controls.Add(this.labelDeployMethod);
             this.panelDeployMethod.Controls.Add(this.radioButtonModsUseHardlinks);
             this.panelDeployMethod.Controls.Add(this.radioButtonModsUseSymlinks);
@@ -889,18 +877,18 @@
             this.panelDeployMethod.Name = "panelDeployMethod";
             this.panelDeployMethod.Size = new System.Drawing.Size(717, 100);
             this.panelDeployMethod.TabIndex = 10;
-            // 
+            //
             // labelDeployMethod
-            // 
+            //
             this.labelDeployMethod.AutoSize = true;
             this.labelDeployMethod.Location = new System.Drawing.Point(0, 2);
             this.labelDeployMethod.Name = "labelDeployMethod";
             this.labelDeployMethod.Size = new System.Drawing.Size(94, 13);
             this.labelDeployMethod.TabIndex = 6;
             this.labelDeployMethod.Text = "How to copy files?";
-            // 
+            //
             // checkBoxAddArchivesAsBundled
-            // 
+            //
             this.checkBoxAddArchivesAsBundled.AutoSize = true;
             this.checkBoxAddArchivesAsBundled.Location = new System.Drawing.Point(9, 309);
             this.checkBoxAddArchivesAsBundled.Name = "checkBoxAddArchivesAsBundled";
@@ -909,9 +897,9 @@
             this.checkBoxAddArchivesAsBundled.Text = "Unfreeze *.ba2 files by default";
             this.checkBoxAddArchivesAsBundled.UseVisualStyleBackColor = true;
             this.checkBoxAddArchivesAsBundled.CheckedChanged += new System.EventHandler(this.checkBoxAddArchivesAsBundled_CheckedChanged);
-            // 
+            //
             // groupBoxModsInterface
-            // 
+            //
             this.groupBoxModsInterface.BackColor = System.Drawing.Color.White;
             this.groupBoxModsInterface.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxModsInterface.BorderWidth = 1;
@@ -929,18 +917,18 @@
             this.groupBoxModsInterface.TitleBorderMargin = 6;
             this.groupBoxModsInterface.TitleBorderPadding = 4;
             this.groupBoxModsInterface.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // labelModListStyle
-            // 
+            //
             this.labelModListStyle.AutoSize = true;
             this.labelModListStyle.Location = new System.Drawing.Point(6, 50);
             this.labelModListStyle.Name = "labelModListStyle";
             this.labelModListStyle.Size = new System.Drawing.Size(77, 13);
             this.labelModListStyle.TabIndex = 6;
             this.labelModListStyle.Text = "Mod list layout:";
-            // 
+            //
             // radioButtonModsUseAlternativeList
-            // 
+            //
             this.radioButtonModsUseAlternativeList.AutoSize = true;
             this.radioButtonModsUseAlternativeList.Location = new System.Drawing.Point(9, 89);
             this.radioButtonModsUseAlternativeList.Name = "radioButtonModsUseAlternativeList";
@@ -948,10 +936,9 @@
             this.radioButtonModsUseAlternativeList.TabIndex = 5;
             this.radioButtonModsUseAlternativeList.Text = "Compact, but more columns (old list)";
             this.radioButtonModsUseAlternativeList.UseVisualStyleBackColor = true;
-            this.radioButtonModsUseAlternativeList.CheckedChanged += new System.EventHandler(this.radioButtonModsUseOldList_CheckedChanged);
-            // 
+            //
             // radioButtonModsUseStandardList
-            // 
+            //
             this.radioButtonModsUseStandardList.AutoSize = true;
             this.radioButtonModsUseStandardList.Checked = true;
             this.radioButtonModsUseStandardList.Location = new System.Drawing.Point(9, 66);
@@ -961,14 +948,13 @@
             this.radioButtonModsUseStandardList.TabStop = true;
             this.radioButtonModsUseStandardList.Text = "Standard, combined columns (new list, default)";
             this.radioButtonModsUseStandardList.UseVisualStyleBackColor = true;
-            this.radioButtonModsUseStandardList.CheckedChanged += new System.EventHandler(this.radioButtonModsUseNewList_CheckedChanged);
-            // 
+            //
             // tabPageModOrder
-            // 
+            //
             this.tabPageModOrder.Controls.Add(this.pictureBoxCollapseDetails);
             this.tabPageModOrder.Controls.Add(this.panelModDetails);
             this.tabPageModOrder.Controls.Add(this.toolStrip1);
-            this.tabPageModOrder.Controls.Add(this.objectListViewMods);
+            this.tabPageModOrder.Controls.Add(this.dataGridViewMods);
             this.tabPageModOrder.Location = new System.Drawing.Point(4, 25);
             this.tabPageModOrder.Name = "tabPageModOrder";
             this.tabPageModOrder.Padding = new System.Windows.Forms.Padding(3);
@@ -976,10 +962,10 @@
             this.tabPageModOrder.TabIndex = 0;
             this.tabPageModOrder.Text = "Mod order";
             this.tabPageModOrder.UseVisualStyleBackColor = true;
-            // 
+            //
             // pictureBoxCollapseDetails
-            // 
-            this.pictureBoxCollapseDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            //
+            this.pictureBoxCollapseDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxCollapseDetails.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.pictureBoxCollapseDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -991,10 +977,10 @@
             this.pictureBoxCollapseDetails.TabIndex = 59;
             this.pictureBoxCollapseDetails.TabStop = false;
             this.pictureBoxCollapseDetails.Click += new System.EventHandler(this.pictureBoxCollapseDetails_Click);
-            // 
+            //
             // panelModDetails
-            // 
-            this.panelModDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            //
+            this.panelModDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelModDetails.AutoScrollMargin = new System.Drawing.Size(0, 20);
             this.panelModDetails.BackColor = System.Drawing.SystemColors.Window;
@@ -1006,9 +992,9 @@
             this.panelModDetails.Name = "panelModDetails";
             this.panelModDetails.Size = new System.Drawing.Size(396, 433);
             this.panelModDetails.TabIndex = 58;
-            // 
+            //
             // panelModDetailsHeader
-            // 
+            //
             this.panelModDetailsHeader.Controls.Add(this.buttonModAbstain);
             this.panelModDetailsHeader.Controls.Add(this.buttonModEndorse);
             this.panelModDetailsHeader.Controls.Add(this.labelModEndorseStatus);
@@ -1018,18 +1004,18 @@
             this.panelModDetailsHeader.Name = "panelModDetailsHeader";
             this.panelModDetailsHeader.Size = new System.Drawing.Size(395, 62);
             this.panelModDetailsHeader.TabIndex = 77;
-            // 
+            //
             // labelModEndorseStatus
-            // 
+            //
             this.labelModEndorseStatus.Location = new System.Drawing.Point(145, 41);
             this.labelModEndorseStatus.Name = "labelModEndorseStatus";
             this.labelModEndorseStatus.Size = new System.Drawing.Size(246, 13);
             this.labelModEndorseStatus.TabIndex = 71;
             this.labelModEndorseStatus.Text = "< Whether or not the user has endorsed this mod >";
             this.labelModEndorseStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
+            //
             // labelModTitle
-            // 
+            //
             this.labelModTitle.AutoEllipsis = true;
             this.labelModTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelModTitle.Location = new System.Drawing.Point(-12, 2);
@@ -1038,9 +1024,9 @@
             this.labelModTitle.Size = new System.Drawing.Size(322, 25);
             this.labelModTitle.TabIndex = 75;
             this.labelModTitle.Text = "< Mod name goes here >";
-            // 
+            //
             // checkBoxModDetailsEnabled
-            // 
+            //
             this.checkBoxModDetailsEnabled.AutoSize = true;
             this.checkBoxModDetailsEnabled.Location = new System.Drawing.Point(8, 30);
             this.checkBoxModDetailsEnabled.Name = "checkBoxModDetailsEnabled";
@@ -1049,10 +1035,10 @@
             this.checkBoxModDetailsEnabled.Text = "Enable this mod";
             this.checkBoxModDetailsEnabled.UseVisualStyleBackColor = true;
             this.checkBoxModDetailsEnabled.CheckedChanged += new System.EventHandler(this.checkBoxModDetailsEnabled_CheckedChanged);
-            // 
+            //
             // panelModDetailsInner
-            // 
-            this.panelModDetailsInner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            //
+            this.panelModDetailsInner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panelModDetailsInner.AutoScroll = true;
             this.panelModDetailsInner.AutoScrollMargin = new System.Drawing.Size(0, 8);
@@ -1066,9 +1052,9 @@
             this.panelModDetailsInner.Name = "panelModDetailsInner";
             this.panelModDetailsInner.Size = new System.Drawing.Size(394, 246);
             this.panelModDetailsInner.TabIndex = 76;
-            // 
+            //
             // groupBoxNotes
-            // 
+            //
             this.groupBoxNotes.BackColor = System.Drawing.Color.White;
             this.groupBoxNotes.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxNotes.BorderWidth = 1;
@@ -1083,11 +1069,11 @@
             this.groupBoxNotes.TitleBorderMargin = 6;
             this.groupBoxNotes.TitleBorderPadding = 4;
             this.groupBoxNotes.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // textBoxNotes
-            // 
-            this.textBoxNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxNotes.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxNotes.Location = new System.Drawing.Point(6, 19);
@@ -1097,9 +1083,9 @@
             this.textBoxNotes.Size = new System.Drawing.Size(351, 120);
             this.textBoxNotes.TabIndex = 0;
             this.textBoxNotes.TextChanged += new System.EventHandler(this.textBoxNotes_TextChanged);
-            // 
+            //
             // groupBoxModReplace
-            // 
+            //
             this.groupBoxModReplace.BackColor = System.Drawing.Color.White;
             this.groupBoxModReplace.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxModReplace.BorderWidth = 1;
@@ -1118,10 +1104,10 @@
             this.groupBoxModReplace.TitleBorderMargin = 6;
             this.groupBoxModReplace.TitleBorderPadding = 4;
             this.groupBoxModReplace.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // labelModDetailsReplace
-            // 
-            this.labelModDetailsReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.labelModDetailsReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelModDetailsReplace.ForeColor = System.Drawing.Color.Gray;
             this.labelModDetailsReplace.Location = new System.Drawing.Point(175, 76);
@@ -1130,9 +1116,9 @@
             this.labelModDetailsReplace.TabIndex = 0;
             this.labelModDetailsReplace.Text = "Drag-and-drop files/folders into the left box to add/replace files.";
             this.labelModDetailsReplace.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // linkLabelModDeleteFolderContents
-            // 
+            //
             this.linkLabelModDeleteFolderContents.AutoSize = true;
             this.linkLabelModDeleteFolderContents.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelModDeleteFolderContents.Location = new System.Drawing.Point(173, 60);
@@ -1142,9 +1128,9 @@
             this.linkLabelModDeleteFolderContents.TabStop = true;
             this.linkLabelModDeleteFolderContents.Text = "Delete folder contents";
             this.linkLabelModDeleteFolderContents.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModDeleteFolderContents_LinkClicked);
-            // 
+            //
             // panelModDetailsReplaceDragAndDrop
-            // 
+            //
             this.panelModDetailsReplaceDragAndDrop.AllowDrop = true;
             this.panelModDetailsReplaceDragAndDrop.BackgroundImage = global::Fo76ini.Properties.Resources.download_2_48;
             this.panelModDetailsReplaceDragAndDrop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -1153,9 +1139,9 @@
             this.panelModDetailsReplaceDragAndDrop.Name = "panelModDetailsReplaceDragAndDrop";
             this.panelModDetailsReplaceDragAndDrop.Size = new System.Drawing.Size(159, 108);
             this.panelModDetailsReplaceDragAndDrop.TabIndex = 4;
-            // 
+            //
             // linkLabelModReplaceFilesWithFolder
-            // 
+            //
             this.linkLabelModReplaceFilesWithFolder.AutoSize = true;
             this.linkLabelModReplaceFilesWithFolder.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelModReplaceFilesWithFolder.Location = new System.Drawing.Point(173, 39);
@@ -1165,9 +1151,9 @@
             this.linkLabelModReplaceFilesWithFolder.TabStop = true;
             this.linkLabelModReplaceFilesWithFolder.Text = "Import folder";
             this.linkLabelModReplaceFilesWithFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModReplaceFilesWithFolder_LinkClicked);
-            // 
+            //
             // linkLabelModReplaceFilesWithArchive
-            // 
+            //
             this.linkLabelModReplaceFilesWithArchive.AutoSize = true;
             this.linkLabelModReplaceFilesWithArchive.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelModReplaceFilesWithArchive.Location = new System.Drawing.Point(173, 19);
@@ -1177,9 +1163,9 @@
             this.linkLabelModReplaceFilesWithArchive.TabStop = true;
             this.linkLabelModReplaceFilesWithArchive.Text = "Import archive";
             this.linkLabelModReplaceFilesWithArchive.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModReplaceFilesWithArchive_LinkClicked);
-            // 
+            //
             // groupBoxModDetailsInstallationOptions
-            // 
+            //
             this.groupBoxModDetailsInstallationOptions.BackColor = System.Drawing.Color.White;
             this.groupBoxModDetailsInstallationOptions.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxModDetailsInstallationOptions.BorderWidth = 1;
@@ -1207,9 +1193,9 @@
             this.groupBoxModDetailsInstallationOptions.TitleBorderMargin = 6;
             this.groupBoxModDetailsInstallationOptions.TitleBorderPadding = 4;
             this.groupBoxModDetailsInstallationOptions.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // linkLabelModInvalidateFrozenArchive
-            // 
+            //
             this.linkLabelModInvalidateFrozenArchive.AutoSize = true;
             this.linkLabelModInvalidateFrozenArchive.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelModInvalidateFrozenArchive.Location = new System.Drawing.Point(110, 131);
@@ -1219,9 +1205,9 @@
             this.linkLabelModInvalidateFrozenArchive.TabStop = true;
             this.linkLabelModInvalidateFrozenArchive.Text = "Invalidate frozen archive";
             this.linkLabelModInvalidateFrozenArchive.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModInvalidateFrozenArchive_LinkClicked);
-            // 
+            //
             // linkLabelModAutoDetectInstallOptions
-            // 
+            //
             this.linkLabelModAutoDetectInstallOptions.AutoSize = true;
             this.linkLabelModAutoDetectInstallOptions.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelModAutoDetectInstallOptions.Location = new System.Drawing.Point(7, 220);
@@ -1231,10 +1217,10 @@
             this.linkLabelModAutoDetectInstallOptions.TabStop = true;
             this.linkLabelModAutoDetectInstallOptions.Text = "Attempt auto-detect installation options";
             this.linkLabelModAutoDetectInstallOptions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModAutoDetectInstallOptions_LinkClicked);
-            // 
+            //
             // labelModInstallWarning
-            // 
-            this.labelModInstallWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.labelModInstallWarning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelModInstallWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(107)))), ((int)(((byte)(8)))));
             this.labelModInstallWarning.Location = new System.Drawing.Point(7, 154);
@@ -1242,9 +1228,9 @@
             this.labelModInstallWarning.Size = new System.Drawing.Size(351, 66);
             this.labelModInstallWarning.TabIndex = 49;
             this.labelModInstallWarning.Text = "< Warning here >";
-            // 
+            //
             // buttonModPickRootDir
-            // 
+            //
             this.buttonModPickRootDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonModPickRootDir.Location = new System.Drawing.Point(332, 44);
             this.buttonModPickRootDir.Name = "buttonModPickRootDir";
@@ -1253,37 +1239,37 @@
             this.buttonModPickRootDir.Text = "...";
             this.buttonModPickRootDir.UseVisualStyleBackColor = true;
             this.buttonModPickRootDir.Click += new System.EventHandler(this.buttonModPickRootDir_Click);
-            // 
+            //
             // labelModInstallAs
-            // 
+            //
             this.labelModInstallAs.AutoSize = true;
             this.labelModInstallAs.Location = new System.Drawing.Point(6, 24);
             this.labelModInstallAs.Name = "labelModInstallAs";
             this.labelModInstallAs.Size = new System.Drawing.Size(51, 13);
             this.labelModInstallAs.TabIndex = 41;
             this.labelModInstallAs.Text = "Install as:";
-            // 
+            //
             // labelModArchivePreset
-            // 
+            //
             this.labelModArchivePreset.AutoSize = true;
             this.labelModArchivePreset.Location = new System.Drawing.Point(6, 75);
             this.labelModArchivePreset.Name = "labelModArchivePreset";
             this.labelModArchivePreset.Size = new System.Drawing.Size(40, 13);
             this.labelModArchivePreset.TabIndex = 43;
             this.labelModArchivePreset.Text = "Preset:";
-            // 
+            //
             // labelModInstallInto
-            // 
+            //
             this.labelModInstallInto.AutoSize = true;
             this.labelModInstallInto.Location = new System.Drawing.Point(6, 51);
             this.labelModInstallInto.Name = "labelModInstallInto";
             this.labelModInstallInto.Size = new System.Drawing.Size(57, 13);
             this.labelModInstallInto.TabIndex = 38;
             this.labelModInstallInto.Text = "Install into:";
-            // 
+            //
             // comboBoxModInstallAs
-            // 
-            this.comboBoxModInstallAs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.comboBoxModInstallAs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxModInstallAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxModInstallAs.FormattingEnabled = true;
@@ -1292,9 +1278,9 @@
             this.comboBoxModInstallAs.Size = new System.Drawing.Size(245, 21);
             this.comboBoxModInstallAs.TabIndex = 3;
             this.comboBoxModInstallAs.SelectedIndexChanged += new System.EventHandler(this.comboBoxModInstallAs_SelectedIndexChanged);
-            // 
+            //
             // buttonModDetailsSuggestArchiveName
-            // 
+            //
             this.buttonModDetailsSuggestArchiveName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonModDetailsSuggestArchiveName.Location = new System.Drawing.Point(289, 99);
             this.buttonModDetailsSuggestArchiveName.Name = "buttonModDetailsSuggestArchiveName";
@@ -1303,20 +1289,20 @@
             this.buttonModDetailsSuggestArchiveName.Text = "Suggest";
             this.buttonModDetailsSuggestArchiveName.UseVisualStyleBackColor = true;
             this.buttonModDetailsSuggestArchiveName.Click += new System.EventHandler(this.buttonModDetailsSuggestArchiveName_Click);
-            // 
+            //
             // textBoxModRootDir
-            // 
-            this.textBoxModRootDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxModRootDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModRootDir.Location = new System.Drawing.Point(113, 48);
             this.textBoxModRootDir.Name = "textBoxModRootDir";
             this.textBoxModRootDir.Size = new System.Drawing.Size(213, 20);
             this.textBoxModRootDir.TabIndex = 4;
             this.textBoxModRootDir.TextChanged += new System.EventHandler(this.textBoxModRootDir_TextChanged);
-            // 
+            //
             // comboBoxModArchivePreset
-            // 
-            this.comboBoxModArchivePreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.comboBoxModArchivePreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxModArchivePreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxModArchivePreset.FormattingEnabled = true;
@@ -1325,28 +1311,28 @@
             this.comboBoxModArchivePreset.Size = new System.Drawing.Size(245, 21);
             this.comboBoxModArchivePreset.TabIndex = 6;
             this.comboBoxModArchivePreset.SelectedIndexChanged += new System.EventHandler(this.comboBoxModArchivePreset_SelectedIndexChanged);
-            // 
+            //
             // textBoxModArchiveName
-            // 
-            this.textBoxModArchiveName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxModArchiveName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModArchiveName.Location = new System.Drawing.Point(113, 101);
             this.textBoxModArchiveName.Name = "textBoxModArchiveName";
             this.textBoxModArchiveName.Size = new System.Drawing.Size(170, 20);
             this.textBoxModArchiveName.TabIndex = 7;
             this.textBoxModArchiveName.TextChanged += new System.EventHandler(this.textBoxModArchiveName_TextChanged);
-            // 
+            //
             // labelModArchiveName
-            // 
+            //
             this.labelModArchiveName.AutoSize = true;
             this.labelModArchiveName.Location = new System.Drawing.Point(7, 104);
             this.labelModArchiveName.Name = "labelModArchiveName";
             this.labelModArchiveName.Size = new System.Drawing.Size(75, 13);
             this.labelModArchiveName.TabIndex = 41;
             this.labelModArchiveName.Text = "Archive name:";
-            // 
+            //
             // groupBoxModDetailsDetails
-            // 
+            //
             this.groupBoxModDetailsDetails.BackColor = System.Drawing.Color.White;
             this.groupBoxModDetailsDetails.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxModDetailsDetails.BorderWidth = 1;
@@ -1371,29 +1357,29 @@
             this.groupBoxModDetailsDetails.TitleBorderMargin = 6;
             this.groupBoxModDetailsDetails.TitleBorderPadding = 4;
             this.groupBoxModDetailsDetails.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // textBoxModFolderName
-            // 
-            this.textBoxModFolderName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxModFolderName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModFolderName.Location = new System.Drawing.Point(142, 72);
             this.textBoxModFolderName.Name = "textBoxModFolderName";
             this.textBoxModFolderName.Size = new System.Drawing.Size(185, 20);
             this.textBoxModFolderName.TabIndex = 56;
             this.textBoxModFolderName.TextChanged += new System.EventHandler(this.textBoxModFolderName_TextChanged);
-            // 
+            //
             // labelModFolderName
-            // 
+            //
             this.labelModFolderName.AutoSize = true;
             this.labelModFolderName.Location = new System.Drawing.Point(6, 74);
             this.labelModFolderName.Name = "labelModFolderName";
             this.labelModFolderName.Size = new System.Drawing.Size(68, 13);
             this.labelModFolderName.TabIndex = 55;
             this.labelModFolderName.Text = "Folder name:";
-            // 
+            //
             // panelModDetailsNexusMods
-            // 
-            this.panelModDetailsNexusMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.panelModDetailsNexusMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelModDetailsNexusMods.Controls.Add(this.linkLabelModSetLatestVersion);
             this.panelModDetailsNexusMods.Controls.Add(this.labelModAuthor);
@@ -1405,9 +1391,9 @@
             this.panelModDetailsNexusMods.Name = "panelModDetailsNexusMods";
             this.panelModDetailsNexusMods.Size = new System.Drawing.Size(362, 53);
             this.panelModDetailsNexusMods.TabIndex = 53;
-            // 
+            //
             // linkLabelModSetLatestVersion
-            // 
+            //
             this.linkLabelModSetLatestVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelModSetLatestVersion.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabelModSetLatestVersion.Location = new System.Drawing.Point(219, 6);
@@ -1418,112 +1404,112 @@
             this.linkLabelModSetLatestVersion.Text = "Set latest version";
             this.linkLabelModSetLatestVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.linkLabelModSetLatestVersion.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModSetLatestVersion_LinkClicked);
-            // 
+            //
             // labelModAuthor
-            // 
+            //
             this.labelModAuthor.AutoSize = true;
             this.labelModAuthor.Location = new System.Drawing.Point(138, 32);
             this.labelModAuthor.Name = "labelModAuthor";
             this.labelModAuthor.Size = new System.Drawing.Size(135, 13);
             this.labelModAuthor.TabIndex = 57;
             this.labelModAuthor.Text = "< Author name goes here >";
-            // 
+            //
             // labelModLatestVersion
-            // 
+            //
             this.labelModLatestVersion.AutoSize = true;
             this.labelModLatestVersion.Location = new System.Drawing.Point(138, 6);
             this.labelModLatestVersion.Name = "labelModLatestVersion";
             this.labelModLatestVersion.Size = new System.Drawing.Size(22, 13);
             this.labelModLatestVersion.TabIndex = 56;
             this.labelModLatestVersion.Text = "1.0";
-            // 
+            //
             // labelModLatestVersionDesc
-            // 
+            //
             this.labelModLatestVersionDesc.AutoSize = true;
             this.labelModLatestVersionDesc.Location = new System.Drawing.Point(5, 6);
             this.labelModLatestVersionDesc.Name = "labelModLatestVersionDesc";
             this.labelModLatestVersionDesc.Size = new System.Drawing.Size(76, 13);
             this.labelModLatestVersionDesc.TabIndex = 54;
             this.labelModLatestVersionDesc.Text = "Latest version:";
-            // 
+            //
             // labelModAuthorDesc
-            // 
+            //
             this.labelModAuthorDesc.AutoSize = true;
             this.labelModAuthorDesc.Location = new System.Drawing.Point(5, 32);
             this.labelModAuthorDesc.Name = "labelModAuthorDesc";
             this.labelModAuthorDesc.Size = new System.Drawing.Size(41, 13);
             this.labelModAuthorDesc.TabIndex = 53;
             this.labelModAuthorDesc.Text = "Author:";
-            // 
+            //
             // textBoxModVersion
-            // 
-            this.textBoxModVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxModVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModVersion.Location = new System.Drawing.Point(142, 97);
             this.textBoxModVersion.Name = "textBoxModVersion";
             this.textBoxModVersion.Size = new System.Drawing.Size(216, 20);
             this.textBoxModVersion.TabIndex = 52;
             this.textBoxModVersion.TextChanged += new System.EventHandler(this.textBoxModVersion_TextChanged);
-            // 
+            //
             // labelModVersion
-            // 
+            //
             this.labelModVersion.AutoSize = true;
             this.labelModVersion.Location = new System.Drawing.Point(6, 100);
             this.labelModVersion.Name = "labelModVersion";
             this.labelModVersion.Size = new System.Drawing.Size(86, 13);
             this.labelModVersion.TabIndex = 51;
             this.labelModVersion.Text = "Installed version:";
-            // 
+            //
             // textBoxModURL
-            // 
-            this.textBoxModURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxModURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModURL.Location = new System.Drawing.Point(142, 45);
             this.textBoxModURL.Name = "textBoxModURL";
             this.textBoxModURL.Size = new System.Drawing.Size(185, 20);
             this.textBoxModURL.TabIndex = 50;
             this.textBoxModURL.TextChanged += new System.EventHandler(this.textBoxModURL_TextChanged);
-            // 
+            //
             // labelModName
-            // 
+            //
             this.labelModName.AutoSize = true;
             this.labelModName.Location = new System.Drawing.Point(6, 22);
             this.labelModName.Name = "labelModName";
             this.labelModName.Size = new System.Drawing.Size(60, 13);
             this.labelModName.TabIndex = 25;
             this.labelModName.Text = "Mod name:";
-            // 
+            //
             // labelModURL
-            // 
+            //
             this.labelModURL.AutoSize = true;
             this.labelModURL.Location = new System.Drawing.Point(6, 48);
             this.labelModURL.Name = "labelModURL";
             this.labelModURL.Size = new System.Drawing.Size(88, 13);
             this.labelModURL.TabIndex = 49;
             this.labelModURL.Text = "Webpage (URL):";
-            // 
+            //
             // textBoxModName
-            // 
-            this.textBoxModName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxModName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModName.Location = new System.Drawing.Point(142, 19);
             this.textBoxModName.Name = "textBoxModName";
             this.textBoxModName.Size = new System.Drawing.Size(216, 20);
             this.textBoxModName.TabIndex = 1;
             this.textBoxModName.TextChanged += new System.EventHandler(this.textBoxModName_TextChanged);
-            // 
+            //
             // labelModSummary
-            // 
+            //
             this.labelModSummary.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelModSummary.Location = new System.Drawing.Point(6, 5);
             this.labelModSummary.Name = "labelModSummary";
             this.labelModSummary.Size = new System.Drawing.Size(365, 55);
             this.labelModSummary.TabIndex = 55;
             this.labelModSummary.Text = "< Summary goes here >";
-            // 
+            //
             // pictureBoxModThumbnail
-            // 
-            this.pictureBoxModThumbnail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.pictureBoxModThumbnail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxModThumbnail.BackColor = System.Drawing.Color.Black;
             this.pictureBoxModThumbnail.Image = global::Fo76ini.Properties.Resources.bg;
@@ -1533,17 +1519,17 @@
             this.pictureBoxModThumbnail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxModThumbnail.TabIndex = 71;
             this.pictureBoxModThumbnail.TabStop = false;
-            // 
+            //
             // toolStrip1
-            // 
+            //
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonCheckAll,
+            this.toolStripSeparator4,
+            this.toolStripSeparator2,
             this.toolStripButtonAddMod,
             this.toolStripButtonAddModFolder,
-            this.toolStripSeparator4,
-            this.toolStripButtonCheckAll,
-            this.toolStripSeparator2,
             this.toolStripButtonMoveUp,
             this.toolStripButtonMoveDown,
             this.toolStripSeparator3,
@@ -1559,9 +1545,9 @@
             this.toolStrip1.Size = new System.Drawing.Size(746, 25);
             this.toolStrip1.TabIndex = 44;
             this.toolStrip1.Text = "toolStrip1";
-            // 
+            //
             // toolStripButtonAddMod
-            // 
+            //
             this.toolStripButtonAddMod.AutoSize = false;
             this.toolStripButtonAddMod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonAddMod.Image = global::Fo76ini.Properties.Resources.add_archive_3_24;
@@ -1571,9 +1557,9 @@
             this.toolStripButtonAddMod.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonAddMod.Text = "Add mod (from archive)";
             this.toolStripButtonAddMod.Click += new System.EventHandler(this.toolStripButtonAddMod_Click);
-            // 
+            //
             // toolStripButtonAddModFolder
-            // 
+            //
             this.toolStripButtonAddModFolder.AutoSize = false;
             this.toolStripButtonAddModFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonAddModFolder.Image = global::Fo76ini.Properties.Resources.add_folder_24;
@@ -1583,15 +1569,15 @@
             this.toolStripButtonAddModFolder.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonAddModFolder.Text = "Add mod (from folder)";
             this.toolStripButtonAddModFolder.Click += new System.EventHandler(this.toolStripButtonAddModFolder_Click);
-            // 
+            //
             // toolStripSeparator4
-            // 
+            //
             this.toolStripSeparator4.Margin = new System.Windows.Forms.Padding(0, 8, 0, 8);
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(28, 6);
-            // 
+            //
             // toolStripButtonCheckAll
-            // 
+            //
             this.toolStripButtonCheckAll.AutoSize = false;
             this.toolStripButtonCheckAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonCheckAll.Image = global::Fo76ini.Properties.Resources.checkbox_24;
@@ -1601,15 +1587,15 @@
             this.toolStripButtonCheckAll.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonCheckAll.Text = "Check/uncheck all";
             this.toolStripButtonCheckAll.Click += new System.EventHandler(this.toolStripButtonCheckAll_Click);
-            // 
+            //
             // toolStripSeparator2
-            // 
+            //
             this.toolStripSeparator2.Margin = new System.Windows.Forms.Padding(0, 8, 0, 8);
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(28, 6);
-            // 
+            //
             // toolStripButtonMoveUp
-            // 
+            //
             this.toolStripButtonMoveUp.AutoSize = false;
             this.toolStripButtonMoveUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonMoveUp.Image = global::Fo76ini.Properties.Resources.arrow_up;
@@ -1619,9 +1605,9 @@
             this.toolStripButtonMoveUp.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonMoveUp.Text = "Move up";
             this.toolStripButtonMoveUp.Click += new System.EventHandler(this.toolStripButtonMoveUp_Click);
-            // 
+            //
             // toolStripButtonMoveDown
-            // 
+            //
             this.toolStripButtonMoveDown.AutoSize = false;
             this.toolStripButtonMoveDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonMoveDown.Image = global::Fo76ini.Properties.Resources.arrow_down;
@@ -1631,15 +1617,15 @@
             this.toolStripButtonMoveDown.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonMoveDown.Text = "Move down";
             this.toolStripButtonMoveDown.Click += new System.EventHandler(this.toolStripButtonMoveDown_Click);
-            // 
+            //
             // toolStripSeparator3
-            // 
+            //
             this.toolStripSeparator3.Margin = new System.Windows.Forms.Padding(0, 8, 0, 8);
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(28, 6);
-            // 
+            //
             // toolStripButtonModOpenFolder
-            // 
+            //
             this.toolStripButtonModOpenFolder.AutoSize = false;
             this.toolStripButtonModOpenFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonModOpenFolder.Image = global::Fo76ini.Properties.Resources.folder_24;
@@ -1649,15 +1635,15 @@
             this.toolStripButtonModOpenFolder.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonModOpenFolder.Text = "Open mod folder";
             this.toolStripButtonModOpenFolder.Click += new System.EventHandler(this.toolStripButtonModOpenFolder_Click);
-            // 
+            //
             // toolStripSeparator5
-            // 
+            //
             this.toolStripSeparator5.Margin = new System.Windows.Forms.Padding(0, 8, 0, 8);
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(28, 6);
-            // 
+            //
             // toolStripButtonFreeze
-            // 
+            //
             this.toolStripButtonFreeze.AutoSize = false;
             this.toolStripButtonFreeze.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonFreeze.Image = global::Fo76ini.Properties.Resources.snowflake_24;
@@ -1668,9 +1654,9 @@
             this.toolStripButtonFreeze.Text = "Unfreeze mod";
             this.toolStripButtonFreeze.ToolTipText = "Freeze mod";
             this.toolStripButtonFreeze.Click += new System.EventHandler(this.toolStripButtonFreeze_Click);
-            // 
+            //
             // toolStripButtonModUnfreeze
-            // 
+            //
             this.toolStripButtonModUnfreeze.AutoSize = false;
             this.toolStripButtonModUnfreeze.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonModUnfreeze.Image = global::Fo76ini.Properties.Resources.thaw_24;
@@ -1680,15 +1666,15 @@
             this.toolStripButtonModUnfreeze.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonModUnfreeze.Text = "Unfreeze mod";
             this.toolStripButtonModUnfreeze.Click += new System.EventHandler(this.toolStripButtonModUnfreeze_Click);
-            // 
+            //
             // toolStripSeparator6
-            // 
+            //
             this.toolStripSeparator6.Margin = new System.Windows.Forms.Padding(0, 8, 0, 8);
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(28, 6);
-            // 
+            //
             // toolStripButtonDeleteMod
-            // 
+            //
             this.toolStripButtonDeleteMod.AutoSize = false;
             this.toolStripButtonDeleteMod.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButtonDeleteMod.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonDeleteMod.Image")));
@@ -1698,159 +1684,28 @@
             this.toolStripButtonDeleteMod.Size = new System.Drawing.Size(30, 30);
             this.toolStripButtonDeleteMod.Text = "Delete mod";
             this.toolStripButtonDeleteMod.Click += new System.EventHandler(this.toolStripButtonDeleteMod_Click);
-            // 
-            // objectListViewMods
-            // 
-            this.objectListViewMods.AllColumns.Add(this.olvColumnCheckbox);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnLoadOrder);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnModInfo);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnInstallStatus);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnInstallInfo);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnAltModVersion);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnAltInstallMethod);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnAltInstallInto);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnAltArchiveName);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnAltArchivePreset);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnAltIsFrozen);
-            this.objectListViewMods.AllColumns.Add(this.olvColumnLastDummy);
-            this.objectListViewMods.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            // dataGridViewMods
+            //
+            this.dataGridViewMods.AllowUserToAddRows = false;
+            this.dataGridViewMods.AllowUserToDeleteRows = false;
+            this.dataGridViewMods.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.objectListViewMods.CheckBoxes = true;
-            this.objectListViewMods.CheckedAspectName = "Enabled";
-            this.objectListViewMods.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumnCheckbox,
-            this.olvColumnLoadOrder,
-            this.olvColumnModInfo,
-            this.olvColumnInstallStatus,
-            this.olvColumnInstallInfo,
-            this.olvColumnAltModVersion,
-            this.olvColumnAltInstallMethod,
-            this.olvColumnAltInstallInto,
-            this.olvColumnAltArchiveName,
-            this.olvColumnAltArchivePreset,
-            this.olvColumnAltIsFrozen,
-            this.olvColumnLastDummy});
-            this.objectListViewMods.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.objectListViewMods.FullRowSelect = true;
-            this.objectListViewMods.GridLines = true;
-            this.objectListViewMods.HasCollapsibleGroups = false;
-            this.objectListViewMods.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.objectListViewMods.HideSelection = false;
-            this.objectListViewMods.Location = new System.Drawing.Point(3, 0);
-            this.objectListViewMods.Margin = new System.Windows.Forms.Padding(0);
-            this.objectListViewMods.Name = "objectListViewMods";
-            this.objectListViewMods.OwnerDraw = true;
-            this.objectListViewMods.ShowGroups = false;
-            this.objectListViewMods.Size = new System.Drawing.Size(291, 433);
-            this.objectListViewMods.TabIndex = 60;
-            this.objectListViewMods.UseCellFormatEvents = true;
-            this.objectListViewMods.UseCompatibleStateImageBehavior = false;
-            this.objectListViewMods.View = System.Windows.Forms.View.Details;
-            this.objectListViewMods.SelectionChanged += new System.EventHandler(this.objectListViewMods_SelectionChanged);
-            this.objectListViewMods.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.objectListViewMods_ItemChecked);
-            // 
-            // olvColumnCheckbox
-            // 
-            this.olvColumnCheckbox.Groupable = false;
-            this.olvColumnCheckbox.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnCheckbox.MaximumWidth = 32;
-            this.olvColumnCheckbox.MinimumWidth = 32;
-            this.olvColumnCheckbox.Sortable = false;
-            this.olvColumnCheckbox.Text = "";
-            this.olvColumnCheckbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnCheckbox.Width = 32;
-            // 
-            // olvColumnLoadOrder
-            // 
-            this.olvColumnLoadOrder.AspectName = "LoadOrder";
-            this.olvColumnLoadOrder.Groupable = false;
-            this.olvColumnLoadOrder.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnLoadOrder.Text = "Order";
-            this.olvColumnLoadOrder.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnLoadOrder.Width = 45;
-            // 
-            // olvColumnModInfo
-            // 
-            this.olvColumnModInfo.AspectName = "ModTitle";
-            this.olvColumnModInfo.Groupable = false;
-            this.olvColumnModInfo.MinimumWidth = 50;
-            this.olvColumnModInfo.Text = "Mod Name";
-            this.olvColumnModInfo.Width = 300;
-            // 
-            // olvColumnInstallStatus
-            // 
-            this.olvColumnInstallStatus.AspectName = "InstallStatus";
-            this.olvColumnInstallStatus.Groupable = false;
-            this.olvColumnInstallStatus.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnInstallStatus.MinimumWidth = 50;
-            this.olvColumnInstallStatus.Text = "Status";
-            this.olvColumnInstallStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnInstallStatus.Width = 110;
-            this.olvColumnInstallStatus.WordWrap = true;
-            // 
-            // olvColumnInstallInfo
-            // 
-            this.olvColumnInstallInfo.AspectName = "InstallInfo";
-            this.olvColumnInstallInfo.Groupable = false;
-            this.olvColumnInstallInfo.MinimumWidth = 50;
-            this.olvColumnInstallInfo.Text = "Installation";
-            this.olvColumnInstallInfo.Width = 220;
-            this.olvColumnInstallInfo.WordWrap = true;
-            // 
-            // olvColumnAltModVersion
-            // 
-            this.olvColumnAltModVersion.AspectName = "ModVersion";
-            this.olvColumnAltModVersion.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnAltModVersion.Text = "Version";
-            this.olvColumnAltModVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // olvColumnAltInstallMethod
-            // 
-            this.olvColumnAltInstallMethod.AspectName = "InstallMethod";
-            this.olvColumnAltInstallMethod.Text = "Install as";
-            this.olvColumnAltInstallMethod.Width = 120;
-            // 
-            // olvColumnAltInstallInto
-            // 
-            this.olvColumnAltInstallInto.AspectName = "InstallInto";
-            this.olvColumnAltInstallInto.Text = "Install into";
-            this.olvColumnAltInstallInto.Width = 80;
-            // 
-            // olvColumnAltArchiveName
-            // 
-            this.olvColumnAltArchiveName.AspectName = "ArchiveName";
-            this.olvColumnAltArchiveName.Text = "Archive name";
-            this.olvColumnAltArchiveName.Width = 150;
-            // 
-            // olvColumnAltArchivePreset
-            // 
-            this.olvColumnAltArchivePreset.AspectName = "ArchivePreset";
-            this.olvColumnAltArchivePreset.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnAltArchivePreset.Text = "Archive preset";
-            this.olvColumnAltArchivePreset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnAltArchivePreset.Width = 80;
-            // 
-            // olvColumnAltIsFrozen
-            // 
-            this.olvColumnAltIsFrozen.AspectName = "IsFrozen";
-            this.olvColumnAltIsFrozen.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnAltIsFrozen.Text = "Frozen?";
-            this.olvColumnAltIsFrozen.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.olvColumnAltIsFrozen.Width = 50;
-            // 
-            // olvColumnLastDummy
-            // 
-            this.olvColumnLastDummy.FillsFreeSpace = true;
-            this.olvColumnLastDummy.Hideable = false;
-            this.olvColumnLastDummy.IsEditable = false;
-            this.olvColumnLastDummy.Text = "";
-            this.olvColumnLastDummy.Width = 1;
-            // 
+            this.dataGridViewMods.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMods.Location = new System.Drawing.Point(3, 0);
+            this.dataGridViewMods.Name = "dataGridViewMods";
+            this.dataGridViewMods.ReadOnly = true;
+            this.dataGridViewMods.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewMods.Size = new System.Drawing.Size(291, 433);
+            this.dataGridViewMods.TabIndex = 60;
+            this.dataGridViewMods.SelectionChanged += new System.EventHandler(this.dataGridViewMods_SelectionChanged);
+            this.dataGridViewMods.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.objectListViewMods_KeyPress);
+            //
             // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.BorderColor = System.Drawing.Color.Gray;
             this.tabControl1.BorderWidth = 1;
@@ -1867,9 +1722,9 @@
             this.tabControl1.TabButtonBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.tabControl1.TabButtonForeColor = System.Drawing.Color.Black;
             this.tabControl1.TabIndex = 54;
-            // 
+            //
             // tabPageResourceList
-            // 
+            //
             this.tabPageResourceList.Controls.Add(this.groupBoxLists);
             this.tabPageResourceList.Location = new System.Drawing.Point(4, 25);
             this.tabPageResourceList.Name = "tabPageResourceList";
@@ -1878,11 +1733,11 @@
             this.tabPageResourceList.TabIndex = 2;
             this.tabPageResourceList.Text = "Resource list";
             this.tabPageResourceList.UseVisualStyleBackColor = true;
-            // 
+            //
             // groupBoxLists
-            // 
-            this.groupBoxLists.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.groupBoxLists.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxLists.BackColor = System.Drawing.Color.White;
             this.groupBoxLists.BorderColor = System.Drawing.Color.Silver;
@@ -1901,9 +1756,9 @@
             this.groupBoxLists.TitleBorderMargin = 6;
             this.groupBoxLists.TitleBorderPadding = 4;
             this.groupBoxLists.TitleForeColor = System.Drawing.Color.Black;
-            // 
+            //
             // buttonModsResetTextbox
-            // 
+            //
             this.buttonModsResetTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonModsResetTextbox.Location = new System.Drawing.Point(110, 421);
             this.buttonModsResetTextbox.Name = "buttonModsResetTextbox";
@@ -1912,9 +1767,9 @@
             this.buttonModsResetTextbox.Text = "Reset";
             this.buttonModsResetTextbox.UseVisualStyleBackColor = true;
             this.buttonModsResetTextbox.Click += new System.EventHandler(this.buttonModsResetTextbox_Click);
-            // 
+            //
             // buttonModsApplyTextBox
-            // 
+            //
             this.buttonModsApplyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonModsApplyTextBox.Location = new System.Drawing.Point(201, 421);
             this.buttonModsApplyTextBox.Name = "buttonModsApplyTextBox";
@@ -1923,11 +1778,11 @@
             this.buttonModsApplyTextBox.Text = "Apply changes";
             this.buttonModsApplyTextBox.UseVisualStyleBackColor = true;
             this.buttonModsApplyTextBox.Click += new System.EventHandler(this.buttonModsApplyTextBox_Click);
-            // 
+            //
             // textBoxResourceList
-            // 
-            this.textBoxResourceList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.textBoxResourceList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxResourceList.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxResourceList.Location = new System.Drawing.Point(6, 19);
@@ -1937,9 +1792,9 @@
             this.textBoxResourceList.Size = new System.Drawing.Size(731, 396);
             this.textBoxResourceList.TabIndex = 54;
             this.textBoxResourceList.WordWrap = false;
-            // 
+            //
             // buttonModsCleanList
-            // 
+            //
             this.buttonModsCleanList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonModsCleanList.Location = new System.Drawing.Point(6, 421);
             this.buttonModsCleanList.Name = "buttonModsCleanList";
@@ -1948,10 +1803,10 @@
             this.buttonModsCleanList.Text = "Clean list";
             this.buttonModsCleanList.UseVisualStyleBackColor = true;
             this.buttonModsCleanList.Click += new System.EventHandler(this.buttonModsCleanList_Click);
-            // 
+            //
             // pictureBoxModsLoadingGIF
-            // 
-            this.pictureBoxModsLoadingGIF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            //
+            this.pictureBoxModsLoadingGIF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBoxModsLoadingGIF.BackColor = System.Drawing.Color.White;
             this.pictureBoxModsLoadingGIF.Image = global::Fo76ini.Properties.Resources.Rolling_1s_200px_light;
@@ -1962,9 +1817,9 @@
             this.pictureBoxModsLoadingGIF.TabIndex = 57;
             this.pictureBoxModsLoadingGIF.TabStop = false;
             this.pictureBoxModsLoadingGIF.Visible = false;
-            // 
+            //
             // toolTip
-            // 
+            //
             this.toolTip.AutoPopDelay = 20000;
             this.toolTip.BackColor = System.Drawing.Color.White;
             this.toolTip.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -1974,9 +1829,9 @@
             this.toolTip.Padding = new System.Drawing.Size(6, 6);
             this.toolTip.ReshowDelay = 100;
             this.toolTip.ShowAlways = true;
-            // 
+            //
             // FormMods
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
@@ -2033,7 +1888,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxModThumbnail)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.objectListViewMods)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMods)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPageResourceList.ResumeLayout(false);
             this.groupBoxLists.ResumeLayout(false);
@@ -2161,23 +2016,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton toolStripButtonDeleteMod;
         private Fo76ini.Controls.StyledTabControl tabControl1;
-        private BrightIdeasSoftware.ObjectListView objectListViewMods;
-        private BrightIdeasSoftware.OLVColumn olvColumnCheckbox;
-        private BrightIdeasSoftware.OLVColumn olvColumnLoadOrder;
-        private BrightIdeasSoftware.OLVColumn olvColumnModInfo;
-        private BrightIdeasSoftware.OLVColumn olvColumnInstallStatus;
-        private BrightIdeasSoftware.OLVColumn olvColumnInstallInfo;
+        private System.Windows.Forms.DataGridView dataGridViewMods;
         private System.Windows.Forms.CheckBox checkBoxModsUseRemoteModNames;
         private Fo76ini.Controls.StyledGroupBox groupBoxModsInterface;
         private System.Windows.Forms.Label labelModListStyle;
         private System.Windows.Forms.RadioButton radioButtonModsUseAlternativeList;
         private System.Windows.Forms.RadioButton radioButtonModsUseStandardList;
-        private BrightIdeasSoftware.OLVColumn olvColumnAltModVersion;
-        private BrightIdeasSoftware.OLVColumn olvColumnAltInstallMethod;
-        private BrightIdeasSoftware.OLVColumn olvColumnAltInstallInto;
-        private BrightIdeasSoftware.OLVColumn olvColumnAltArchiveName;
-        private BrightIdeasSoftware.OLVColumn olvColumnAltArchivePreset;
-        private BrightIdeasSoftware.OLVColumn olvColumnAltIsFrozen;
         private System.Windows.Forms.Button buttonModOpenFolder;
         private System.Windows.Forms.Label labelDeployMethod;
         private System.Windows.Forms.RadioButton radioButtonModsCopyFiles;
@@ -2190,7 +2034,6 @@
         private System.Windows.Forms.Panel panelDeployMethod;
         private System.Windows.Forms.Label labelBehaviorNote;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private BrightIdeasSoftware.OLVColumn olvColumnLastDummy;
         private System.Windows.Forms.ToolStripMenuItem detectFormatAndCompressionToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPageResourceList;
         private Controls.StyledGroupBox groupBoxLists;

@@ -182,7 +182,7 @@ namespace Fo76ini
             this.panelModDetails.Visible = false;
 
             int tabWidth = this.tabPageModOrder.Width;
-            this.objectListViewMods.Width = tabWidth - this.objectListViewMods.Location.X;
+            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X;
 
             // Reset image, so the thumbnail gets unloaded:
             this.pictureBoxModThumbnail.Image = Resources.bg;
@@ -202,7 +202,7 @@ namespace Fo76ini
             int tabWidth = this.tabPageModOrder.Width;
             int buttonWidth = this.pictureBoxCollapseDetails.Width;
             this.pictureBoxCollapseDetails.Location = new Point(tabWidth - buttonWidth, this.pictureBoxCollapseDetails.Location.Y);
-            this.objectListViewMods.Width = tabWidth - this.objectListViewMods.Location.X - buttonWidth + 1;
+            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - buttonWidth + 1;
 
             sidePanelState = SidePanelState.Collapsed;
         }
@@ -220,7 +220,7 @@ namespace Fo76ini
             int buttonWidth = this.pictureBoxCollapseDetails.Width;
             int panelWidth = this.panelModDetails.Width;
             this.pictureBoxCollapseDetails.Location = new Point(tabWidth - panelWidth - buttonWidth + 1, this.pictureBoxCollapseDetails.Location.Y);
-            this.objectListViewMods.Width = tabWidth - this.objectListViewMods.Location.X - panelWidth - buttonWidth + 2;
+            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - panelWidth - buttonWidth + 2;
 
             sidePanelState = SidePanelState.Expanded;
 
@@ -336,7 +336,7 @@ namespace Fo76ini
 
             // Frozen visible?
             this.checkBoxFreezeArchive.Visible = this.editedMod.Method == ManagedMod.DeploymentMethod.SeparateBA2;
-            this.linkLabelModInvalidateFrozenArchive.Visible = this.editedMod.Method == ManagedMod.DeploymentMethod.SeparateBA2 && 
+            this.linkLabelModInvalidateFrozenArchive.Visible = this.editedMod.Method == ManagedMod.DeploymentMethod.SeparateBA2 &&
                                                                 this.editedMod.Frozen;
 
             // Preset
@@ -629,7 +629,7 @@ namespace Fo76ini
             // Mixed archives might cause issues:
             if (editedMod.Method == ManagedMod.DeploymentMethod.SeparateBA2 &&
                 (generalFoldersFound && texturesFolderFound ||
-                 generalFoldersFound && soundFoldersFound   ||
+                 generalFoldersFound && soundFoldersFound ||
                  texturesFolderFound && soundFoldersFound))
             {
                 this.labelModInstallWarning.Text = Localization.GetString("modSidePanel_HintMixedResourcesFound");
@@ -1056,9 +1056,11 @@ namespace Fo76ini
 
         private void AddFolderToModThreaded(string folderPath)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 DisableUI();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     ModInstallations.AddFolder(editedMod, folderPath, false, UpdateProgress);
@@ -1069,7 +1071,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 UpdateSidePanel();
             });
@@ -1077,9 +1080,11 @@ namespace Fo76ini
 
         private void AddArchiveToModThreaded(string filePath)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 DisableUI();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     ModInstallations.AddArchive(editedMod, filePath, UpdateProgress);
@@ -1100,7 +1105,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 UpdateSidePanel();
             });
@@ -1108,9 +1114,11 @@ namespace Fo76ini
 
         private void AddToModBulkThreaded(string[] files)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 DisableUI();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     AddToModBulk(files, UpdateProgress);
@@ -1131,7 +1139,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 UpdateSidePanel();
             });

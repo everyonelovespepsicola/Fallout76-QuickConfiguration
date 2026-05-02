@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -19,6 +19,36 @@ namespace Fo76ini.Utilities
 {
     public static class Utils
     {
+        private static string _appVersion = null;
+
+        /// <summary>
+        /// Returns the application version from the 'version' file.
+        /// </summary>
+        public static string AppVersion
+        {
+            get
+            {
+                if (_appVersion == null)
+                {
+                    try
+                    {
+                        // For release builds, 'version' should be an embedded resource.
+                        _appVersion = ReadTextResourceFromAssembly("version").Trim();
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback for dev environment where 'version' is in the project root.
+                        string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "version");
+                        if (File.Exists(path))
+                            _appVersion = File.ReadAllText(path).Trim();
+                        else
+                            _appVersion = "UNKNOWN"; // Should not happen in a proper build
+                    }
+                }
+                return _appVersion;
+            }
+        }
+
         /// <summary>
         /// Returns a path relative to "workingDirectory".
         /// 

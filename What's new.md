@@ -1,3 +1,15 @@
+### What's new in v1.12.9.02?
+
+This is a small maintenance update that fixes a few bugs in the mod manager.
+
+- Fixed an issue where quickly checking a mod in a sorted list could accidentally check a second mod.
+- You can now use the keyboard to jump to a mod in the list by typing the first few letters of its name.
+- The "Check/uncheck all" button in the mod manager has been moved to the far left for better accessibility.
+
+*Released: March 31, 2026*
+
+---
+
 ### What's new in v1.12.9?
 
 Added/fixed a few tweaks and fixed the NexusMods profile picture not loading in.

@@ -1,5 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using Fo76ini.Controls;
-using BrightIdeasSoftware;
+﻿﻿using Fo76ini.Controls;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -43,7 +42,7 @@ namespace Fo76ini
         {
             InitializeComponent();
             InitializeSidePanelControls();
-            InitializeObjectListView();
+            InitializeDataGridView();
             InitializeSearchAndSort();
 
             // Handle changes:
@@ -98,27 +97,22 @@ namespace Fo76ini
         private void FormMods_Load(object sender, EventArgs e)
         {
             Configuration.LoadWindowState("FormMods", this);
-            Configuration.LoadListViewState("FormMods.OLV", this.objectListViewMods);
+            // Configuration.LoadListViewState("FormMods.OLV", this.objectListViewMods);
 
             this.menuStrip1.RenderMode = ToolStripRenderMode.Professional;
             this.menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomToolStripColorTable());
-            
-            // Ensure renderer and alignment are set after state is loaded
-            this.olvColumnModInfo.Renderer = null;
-            this.objectListViewMods.RowHeight = -1;
-            this.olvColumnModInfo.TextAlign = HorizontalAlignment.Center;
-            this.olvColumnDateCreated.TextAlign = HorizontalAlignment.Center;
+
 
             this.toolStrip1.RenderMode = ToolStripRenderMode.Professional;
             this.toolStrip1.Renderer = new CustomToolStripProfessionalRenderer(new CustomToolStripColorTable());
-            
+
             this.toolStrip1.GripStyle = ToolStripGripStyle.Hidden;
             this.toolStrip1.Dock = DockStyle.None;
             if (this.toolStrip1.Parent != null)
             {
                 // We want to place the toolstrip directly above the list view
-                this.toolStrip1.Location = new Point(this.objectListViewMods.Left, this.objectListViewMods.Top);
-                this.toolStrip1.Width = this.objectListViewMods.Width;
+                this.toolStrip1.Location = new Point(this.dataGridViewMods.Left, this.dataGridViewMods.Top);
+                this.toolStrip1.Width = this.dataGridViewMods.Width;
                 this.toolStrip1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
                 // Bring to front just in case
@@ -126,8 +120,8 @@ namespace Fo76ini
 
                 // Push the list view down so it doesn't overlap
                 int overlap = this.toolStrip1.Height;
-                this.objectListViewMods.Top += overlap;
-                this.objectListViewMods.Height -= overlap;
+                this.dataGridViewMods.Top += overlap;
+                this.dataGridViewMods.Height -= overlap;
             }
 
             this.statusStrip1.RenderMode = ToolStripRenderMode.Professional;
@@ -140,7 +134,7 @@ namespace Fo76ini
             {
                 CloseSidePanel();
                 Configuration.SaveWindowState("FormMods", this);
-                Configuration.SaveListViewState("FormMods.OLV", this.objectListViewMods);
+                // Configuration.SaveListViewState("FormMods.OLV", this.objectListViewMods);
                 this.Mods.Save();
                 e.Cancel = true;
                 if (!preventClosing)
@@ -262,14 +256,16 @@ namespace Fo76ini
             this.toolStripTextBoxSearch.Alignment = ToolStripItemAlignment.Right;
             this.toolStripTextBoxSearch.ForeColor = Color.Gray;
             this.toolStripTextBoxSearch.Text = "Search...";
-            this.toolStripTextBoxSearch.GotFocus += (s, e) => {
+            this.toolStripTextBoxSearch.GotFocus += (s, e) =>
+            {
                 if (this.toolStripTextBoxSearch.Text == "Search...")
                 {
                     this.toolStripTextBoxSearch.Text = "";
                     this.toolStripTextBoxSearch.ForeColor = SystemColors.WindowText;
                 }
             };
-            this.toolStripTextBoxSearch.LostFocus += (s, e) => {
+            this.toolStripTextBoxSearch.LostFocus += (s, e) =>
+            {
                 if (string.IsNullOrWhiteSpace(this.toolStripTextBoxSearch.Text))
                 {
                     this.toolStripTextBoxSearch.Text = "Search...";
@@ -287,15 +283,15 @@ namespace Fo76ini
             string text = this.toolStripTextBoxSearch.Text;
             if (text == "Search...") text = "";
 
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                this.objectListViewMods.ModelFilter = null;
-            }
-            else
-            {
-                this.objectListViewMods.UseFiltering = true;
-                this.objectListViewMods.ModelFilter = TextMatchFilter.Contains(this.objectListViewMods, text);
-            }
+            // if (string.IsNullOrWhiteSpace(text))
+            // {
+            //     this.objectListViewMods.ModelFilter = null;
+            // }
+            // else
+            // {
+            //     this.objectListViewMods.UseFiltering = true;
+            //     this.objectListViewMods.ModelFilter = TextMatchFilter.Contains(this.objectListViewMods, text);
+            // }
         }
 
         /// <summary>
@@ -304,9 +300,7 @@ namespace Fo76ini
         private void UpdateModList()
         {
             isUpdating = true;
-            UpdateObjectListView();
-            this.olvColumnModInfo.Renderer = null;
-            this.objectListViewMods.RowHeight = -1;
+            UpdateDataGridView();
             isUpdating = false;
         }
 
@@ -356,9 +350,9 @@ namespace Fo76ini
             this.pictureBoxModsLoadingGIF.Width = this.Width;
             this.pictureBoxModsLoadingGIF.Height = this.tabControl1.Height;
             this.pictureBoxModsLoadingGIF.Anchor =
-                AnchorStyles.Top    |
+                AnchorStyles.Top |
                 AnchorStyles.Bottom |
-                AnchorStyles.Left   |
+                AnchorStyles.Left |
                 AnchorStyles.Right;
         }
 
@@ -462,13 +456,16 @@ namespace Fo76ini
         {
             Show();
             Focus();
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 ShowLoadingUI();
-            }, () => {
+            }, () =>
+            {
                 EnableNuclearWinterMode();
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 if (success)
                     MsgBox.Get("modsDisabled").Popup(MessageBoxIcon.Information);
                 UpdateUI();
@@ -481,13 +478,16 @@ namespace Fo76ini
         {
             Show();
             Focus();
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 ShowLoadingUI();
-            }, () => {
+            }, () =>
+            {
                 DisableNuclearWinterMode();
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 if (success)
                     MsgBox.Get("modsEnabled").Popup(MessageBoxIcon.Information);
                 UpdateUI();
@@ -563,7 +563,7 @@ namespace Fo76ini
             }
 
             // These shortcuts only apply to the mod list:
-            if (this.objectListViewMods.Focused)
+            if (this.dataGridViewMods.Focused)
             {
                 if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
                 {
@@ -589,6 +589,57 @@ namespace Fo76ini
                     DeselectAll();
                 }
             }
+        }
+
+        private string lastSearchString = "";
+        private int timeLastCharEvent = 0;
+
+        private void objectListViewMods_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar)) return;
+
+            // Handle typing to search for a mod by title
+            int MILLISECONDS_BETWEEN_KEYPRESSES = 1000;
+            if (Environment.TickCount < (this.timeLastCharEvent + MILLISECONDS_BETWEEN_KEYPRESSES))
+                this.lastSearchString += e.KeyChar;
+            else
+                this.lastSearchString = e.KeyChar.ToString();
+
+            this.timeLastCharEvent = Environment.TickCount;
+
+            // If it's just a space, it might be checking/unchecking
+            if (this.lastSearchString == " ")
+                return;
+
+            /*
+            if (this.objectListViewMods.Items.Count == 0)
+                return;
+
+            int start = 0;
+            if (this.objectListViewMods.FocusedItem != null)
+                start = this.objectListViewMods.FocusedItem.Index;
+
+            int startIndex = start;
+            if (this.lastSearchString.Length == 1)
+                startIndex = (start + 1) % this.objectListViewMods.Items.Count;
+
+            for (int i = 0; i < this.objectListViewMods.Items.Count; i++)
+            {
+                int index = (startIndex + i) % this.objectListViewMods.Items.Count;
+                object rowObject = ((OLVListItem)this.objectListViewMods.Items[index]).RowObject;
+                ModListRow row = rowObject as ModListRow;
+                if (row != null && row.ModTitle != null && row.ModTitle.StartsWith(this.lastSearchString, StringComparison.OrdinalIgnoreCase))
+                {
+                    this.objectListViewMods.EnsureVisible(index);
+                    this.objectListViewMods.SelectedIndices.Clear();
+                    this.objectListViewMods.SelectedIndices.Add(index);
+                    this.objectListViewMods.Items[index].Focused = true;
+                    break;
+                }
+            }
+            */
+
+            e.Handled = true;
         }
 
         #endregion
@@ -872,10 +923,12 @@ namespace Fo76ini
 
         private void InstallModArchiveThreaded(string path, bool freeze)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 DisableUI();
                 CloseSidePanel();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     ModInstallations.InstallArchive(Mods, path, freeze, -1, UpdateProgress);
@@ -905,7 +958,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 if (success)
                     SetSelectedIndex(Mods.Count - 1);
@@ -916,10 +970,12 @@ namespace Fo76ini
 
         private void InstallModFolderThreaded(string path)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 DisableUI();
                 CloseSidePanel();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     ModInstallations.InstallFolder(Mods, path, -1, UpdateProgress);
@@ -943,7 +999,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 if (success)
                     SetSelectedIndex(Mods.Count - 1);
@@ -954,10 +1011,12 @@ namespace Fo76ini
 
         private void InstallBulkThreaded(string[] files, int dropIndex = -1)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 DisableUI();
                 CloseSidePanel();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     InstallBulk(files, dropIndex);
@@ -987,7 +1046,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 if (success)
                 {
@@ -1015,10 +1075,12 @@ namespace Fo76ini
 
         private void DeleteModThreaded(int index)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 DisableUI();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     ModActions.DeleteMod(Mods, index, UpdateProgress);
@@ -1029,7 +1091,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 if (success)
                     DeselectAll();
@@ -1039,10 +1102,12 @@ namespace Fo76ini
 
         private void DeleteModsBulkThreaded(List<int> indices)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 DisableUI();
-            }, () => {
+            }, () =>
+            {
                 try
                 {
                     ModActions.DeleteMods(Mods, indices, UpdateProgress);
@@ -1053,7 +1118,8 @@ namespace Fo76ini
                     return false;
                 }
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 if (success)
                     DeselectAll();
@@ -1093,12 +1159,15 @@ namespace Fo76ini
 
         private void DeployModsThreaded()
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 ShowLoadingUI();
-            }, () => {
+            }, () =>
+            {
                 return DeployMods();
-            }, (success) => {
+            }, (success) =>
+            {
                 UpdateUI();
                 EnableUI();
                 if (success)
@@ -1123,13 +1192,16 @@ namespace Fo76ini
                 MsgBox.ShowID("nexusModsNotLoggedIn", MessageBoxIcon.Information);
                 return;
             }
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 ShowLoadingUI();
-            }, () => {
+            }, () =>
+            {
                 UpdateRemoteModInfo(UpdateProgress);
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 UpdateUI();
             });
@@ -1142,13 +1214,16 @@ namespace Fo76ini
                 MsgBox.ShowID("nexusModsNotLoggedIn", MessageBoxIcon.Information);
                 return;
             }
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 ShowLoadingUI();
-            }, () => {
+            }, () =>
+            {
                 UpdateRemoteModInfo(UpdateProgress);
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 UpdateModList();
                 UpdateStatusStrip();
@@ -1177,13 +1252,16 @@ namespace Fo76ini
                 MsgBox.ShowID("nexusModsNotLoggedIn", MessageBoxIcon.Information);
                 return;
             }
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 CloseSidePanel();
                 DisableUI();
-            }, () => {
+            }, () =>
+            {
                 EndorseMods(UpdateProgress);
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
             });
         }
@@ -1236,13 +1314,16 @@ namespace Fo76ini
 
         private void ImportInstalledModsThreaded(Action<Progress> ProgressChanged = null)
         {
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 ShowLoadingUI();
                 CloseSidePanel();
-            }, () => {
+            }, () =>
+            {
                 ModInstallations.ImportInstalledMods(Mods, ProgressChanged);
                 return true;
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
             });
         }
@@ -1255,12 +1336,15 @@ namespace Fo76ini
                 return;
             }
             bool unpackBA2ByDefault = Configuration.Mods.UnpackBA2ByDefault;
-            RunThreaded(() => {
+            RunThreaded(() =>
+            {
                 ShowLoadingUI();
                 CloseSidePanel();
-            }, () => {
+            }, () =>
+            {
                 return ModInstallations.InstallRemote(Mods, nxmLink, !unpackBA2ByDefault, ProgressChanged);
-            }, (success) => {
+            }, (success) =>
+            {
                 EnableUI();
                 if (success)
                     MsgBox.Popup("Success", "Mod downloaded and installed!", MessageBoxIcon.Information);
@@ -1294,7 +1378,8 @@ namespace Fo76ini
 
         private void UpdateProgress(Progress progress)
         {
-            this.progressBarMods.Invoke(new Action(() => {
+            this.progressBarMods.Invoke(new Action(() =>
+            {
                 this.labelModsDeploy.Visible = true;
                 progress.Update(labelModsDeploy, progressBarMods);
             }));
@@ -1448,7 +1533,7 @@ namespace Fo76ini
                 Archive2.Compression compression = (Archive2.Compression)Enum.Parse(typeof(Archive2.Compression), comboBoxCompression.SelectedItem.ToString());
 
                 Log($"Packing '{folderName}' to '{archiveName}'...");
-                
+
                 Archive2.Create(archivePath, folderPath, compression, format);
 
                 Log("Done.");
@@ -1493,7 +1578,7 @@ namespace Fo76ini
                 startInfo.Arguments = $"\"{archivePath}\" -extract=\"{destinationPath}\"";
                 startInfo.UseShellExecute = false;
                 startInfo.CreateNoWindow = true;
-                
+
                 using (System.Diagnostics.Process process = System.Diagnostics.Process.Start(startInfo))
                 {
                     process.WaitForExit();
@@ -1528,7 +1613,7 @@ namespace Fo76ini
                 startInfo.Arguments = $"x \"{archivePath}\" -o\"{destinationPath}\" -y";
                 startInfo.UseShellExecute = false;
                 startInfo.CreateNoWindow = true;
-                
+
                 using (Process process = Process.Start(startInfo))
                 {
                     process.WaitForExit();

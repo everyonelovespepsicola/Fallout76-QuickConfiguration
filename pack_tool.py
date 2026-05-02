@@ -106,6 +106,10 @@ def update_nuget_packages():
     print("NuGet package update process finished.")
 
 def install_dependencies():
+    """
+    Installs dependencies using Scoop.
+    This is a convenience function for setting up a new build environment.
+    """
     print("Installing dependencies using Scoop...")
     scoop_path = which("scoop")
     if scoop_path is None:
@@ -118,6 +122,12 @@ def install_dependencies():
     subprocess.run([scoop_path, "install", "7zip", "git", "rcedit", "inno-setup", "pandoc", "nuget"])
 
 def build_updater(debug = False):
+    """
+    Builds the updater project.
+    
+    Args:
+        debug (bool): If True, builds in Debug mode. Otherwise, builds in Release mode.
+    """
     print("Building updater...")
     configuration = "Debug" if debug else "Release"
     msbuild_path = get_msbuild_path()
@@ -131,6 +141,12 @@ def build_updater(debug = False):
         copytree(str(UPDATER_BIN_DIR / configuration), str(get_binaries_path()))
 
 def build_app(debug = False):
+    """
+    Builds the main application project.
+    
+    Args:
+        debug (bool): If True, builds in Debug mode. Otherwise, builds in Release mode.
+    """
     print("Building app...")
     configuration = "Debug" if debug else "Release"
     msbuild_path = get_msbuild_path()
@@ -142,6 +158,9 @@ def build_app(debug = False):
         copytree(str(PROGRAM_BIN_DIR / "Release"), str(get_binaries_path()))
 
 def copy_additions(debug = False):
+    """
+    Copies additional files (like 7z) to the build output directory.
+    """
     print("Copying additional files...")
     if debug:
         copytree(str(DEPENDENCIES_DIR), str(PROGRAM_BIN_DIR / "Debug"))
@@ -149,6 +168,9 @@ def copy_additions(debug = False):
         copytree(str(DEPENDENCIES_DIR), str(get_binaries_path()))
 
 def pack_release():
+    """
+    Packs the release build into a ZIP archive.
+    """
     print("Packing to v{0}.zip...".format(VERSION))
     sevenzip_path = get_7zip_path()
     if sevenzip_path is None:
@@ -160,6 +182,9 @@ def pack_release():
     print("Done.")
 
 def use_rcedit():
+    """
+    Uses rcedit to set the file and product version on the executable.
+    """
     print("Setting executable version to '{0}'...".format(VERSION))
     rcedit_path = which("rcedit")
     if rcedit_path is None:
@@ -168,6 +193,9 @@ def use_rcedit():
     subprocess.run([rcedit_path, str(get_binaries_path() / EXECUTABLE_NAME), "--set-file-version", VERSION, "--set-product-version", VERSION])
 
 def update_inno():
+    """
+    Updates the version number in the Inno Setup script (setup.iss).
+    """
     print("Changing version number in setup.iss ...")
     content = ""
     with open(SETUP_ISS_PATH, "r") as f:
@@ -189,6 +217,9 @@ def update_inno():
         f.write(content)
 
 def build_inno():
+    """
+    Builds the installer using the Inno Setup Compiler (iscc).
+    """
     print("Building setup using ISCC...")
     iscc_path = which("iscc")
     if iscc_path is None:
@@ -197,6 +228,9 @@ def build_inno():
     subprocess.run([iscc_path, str(SETUP_ISS_PATH)])
 
 def convert_md():
+    """
+    Converts 'What's new.md' to HTML and RTF using Pandoc.
+    """
     print("Converting Markdown to HTML and RTF")
     pandoc_path = which("pandoc")
     if pandoc_path is None:
@@ -207,10 +241,21 @@ def convert_md():
     subprocess.run([pandoc_path, "--standalone", "What's new.md", "-o", "What's new.rtf"])
 
 def open_dir():
+    """
+    Opens the target build directory in File Explorer.
+    """
     if os.path.exists(TARGET_BASE_DIR):
         os.startfile(str(TARGET_BASE_DIR))
     else:
         print("ERROR: Path does not exist.")
+
+def update_version_cpp():
+    """
+    Updates the VERSION.cpp file with the current version.
+    """
+    print(f"Updating VERSION.cpp with version {VERSION}...")
+    with open(PROJECT_GIT_DIR / "VERSION.cpp", "w") as f:
+        f.write(VERSION)
 
 # https://stackoverflow.com/a/7550424
 def mkdir(newdir):
@@ -348,6 +393,7 @@ def run_args(args):
         build_app(debug=True)
         copy_additions(debug=True)
     if args.build:
+        update_version_cpp()
         build_updater()
         build_app()
         copy_additions()

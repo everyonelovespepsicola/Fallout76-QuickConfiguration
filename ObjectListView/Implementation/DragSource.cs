@@ -2,7 +2,7 @@
  * DragSource.cs - Add drag source functionality to an ObjectListView
  *
  * UNFINISHED
- * 
+ *
  * Author: Phillip Piper
  * Date: 2009-03-17 5:15 PM
  *
@@ -13,7 +13,7 @@
  * v2.2
  * 2009-04-15   JPP  - Separated DragSource.cs into DropSink.cs
  * 2009-03-17   JPP  - Initial version
- * 
+ *
  * Copyright (C) 2009 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ namespace BrightIdeasSoftware
     public interface IDragSource
     {
         /// <summary>
-        /// A drag operation is beginning. Return the data object that will be used 
+        /// A drag operation is beginning. Return the data object that will be used
         /// for data transfer. Return null to prevent the drag from starting.
         /// </summary>
         /// <remarks>
@@ -57,7 +57,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         /// <param name="olv">What ObjectListView is being dragged from.</param>
         /// <param name="button">Which mouse button is down?</param>
-        /// <param name="item">What item was directly dragged by the user? There may be more than just this 
+        /// <param name="item">What item was directly dragged by the user? There may be more than just this
         /// item selected.</param>
         /// <returns>The data object that will be used for data transfer. This will often be a subclass
         /// of DataObject, but does not need to be.</returns>
@@ -92,7 +92,8 @@ namespace BrightIdeasSoftware
         /// <param name="button"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item) {
+        public virtual Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item)
+        {
             return null;
         }
 
@@ -101,7 +102,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual DragDropEffects GetAllowedEffects(Object data) {
+        public virtual DragDropEffects GetAllowedEffects(Object data)
+        {
             return DragDropEffects.None;
         }
 
@@ -110,7 +112,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="dragObject"></param>
         /// <param name="effect"></param>
-        public virtual void EndDrag(Object dragObject, DragDropEffects effect) {
+        public virtual void EndDrag(Object dragObject, DragDropEffects effect)
+        {
         }
 
         #endregion
@@ -119,7 +122,7 @@ namespace BrightIdeasSoftware
     /// <summary>
     /// A reasonable implementation of IDragSource that provides normal
     /// drag source functionality. It creates a data object that supports
-    /// inter-application dragging of text and HTML representation of 
+    /// inter-application dragging of text and HTML representation of
     /// the dragged rows. It can optionally force a refresh of all dragged
     /// rows when the drag is complete.
     /// </summary>
@@ -132,7 +135,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Construct a SimpleDragSource
         /// </summary>
-        public SimpleDragSource() {
+        public SimpleDragSource()
+        {
         }
 
         /// <summary>
@@ -140,7 +144,8 @@ namespace BrightIdeasSoftware
         /// the drag is complete
         /// </summary>
         /// <param name="refreshAfterDrop"></param>
-        public SimpleDragSource(bool refreshAfterDrop) {
+        public SimpleDragSource(bool refreshAfterDrop)
+        {
             this.RefreshAfterDrop = refreshAfterDrop;
         }
 
@@ -149,12 +154,13 @@ namespace BrightIdeasSoftware
         #region Public properties
 
         /// <summary>
-        /// Gets or sets whether the dragged rows should be refreshed when the 
+        /// Gets or sets whether the dragged rows should be refreshed when the
         /// drag operation is complete.
         /// </summary>
-        public bool RefreshAfterDrop {
+        public bool RefreshAfterDrop
+        {
             get { return refreshAfterDrop; }
-            set { refreshAfterDrop = value;  }
+            set { refreshAfterDrop = value; }
         }
         private bool refreshAfterDrop;
 
@@ -170,7 +176,8 @@ namespace BrightIdeasSoftware
         /// <param name="button"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item) {
+        public virtual Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item)
+        {
             // We only drag on left mouse
             if (button != MouseButtons.Left)
                 return null;
@@ -183,7 +190,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="data"></param>
         /// <returns>All opertions are supported</returns>
-        public virtual DragDropEffects GetAllowedEffects(Object data) {
+        public virtual DragDropEffects GetAllowedEffects(Object data)
+        {
             return DragDropEffects.All | DragDropEffects.Link; // why didn't MS include 'Link' in 'All'??
         }
 
@@ -192,7 +200,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="dragObject"></param>
         /// <param name="effect"></param>
-        public virtual void EndDrag(Object dragObject, DragDropEffects effect) {
+        public virtual void EndDrag(Object dragObject, DragDropEffects effect)
+        {
             OLVDataObject data = dragObject as OLVDataObject;
             if (data == null)
                 return;
@@ -210,7 +219,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         /// <param name="olv">The ObjectListView that is the source of the drag</param>
         /// <returns>A data object for the drag</returns>
-        protected virtual object CreateDataObject(ObjectListView olv) {
+        protected virtual object CreateDataObject(ObjectListView olv)
+        {
             OLVDataObject data = new OLVDataObject(olv);
             data.CreateTextFormats();
             return data;
@@ -231,20 +241,23 @@ namespace BrightIdeasSoftware
         /// Create a data object from the selected objects in the given ObjectListView
         /// </summary>
         /// <param name="olv">The source of the data object</param>
-        public OLVDataObject(ObjectListView olv) : this(olv, olv.SelectedObjects) {
+        public OLVDataObject(ObjectListView olv) : this(olv, olv.SelectedObjects)
+        {
         }
 
         /// <summary>
-        /// Create a data object which operates on the given model objects 
+        /// Create a data object which operates on the given model objects
         /// in the given ObjectListView
         /// </summary>
         /// <param name="olv">The source of the data object</param>
         /// <param name="modelObjects">The model objects to be put into the data object</param>
-        public OLVDataObject(ObjectListView olv, IList modelObjects) {
+        public OLVDataObject(ObjectListView olv, IList modelObjects)
+        {
             this.objectListView = olv;
             this.modelObjects = modelObjects;
             this.includeHiddenColumns = olv.IncludeHiddenColumnsInDataTransfer;
             this.includeColumnHeaders = olv.IncludeColumnHeadersInCopy;
+            this.SetData("ObjectListView-OLVDataObject", false, this);
         }
 
         #endregion
@@ -256,7 +269,8 @@ namespace BrightIdeasSoftware
         /// and HTML representation. If this is false, only visible columns will
         /// be included.
         /// </summary>
-        public bool IncludeHiddenColumns {
+        public bool IncludeHiddenColumns
+        {
             get { return includeHiddenColumns; }
         }
         private bool includeHiddenColumns;
@@ -274,7 +288,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the ObjectListView that is being used as the source of the data
         /// </summary>
-        public ObjectListView ListView {
+        public ObjectListView ListView
+        {
             get { return objectListView; }
         }
         private ObjectListView objectListView;
@@ -282,7 +297,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the model objects that are to be placed in the data object
         /// </summary>
-        public IList ModelObjects {
+        public IList ModelObjects
+        {
             get { return modelObjects; }
         }
         private IList modelObjects = new ArrayList();
@@ -293,7 +309,8 @@ namespace BrightIdeasSoftware
         /// Put a text and HTML representation of our model objects
         /// into the data object.
         /// </summary>
-        public void CreateTextFormats() {
+        public void CreateTextFormats()
+        {
             IList<OLVColumn> columns = this.IncludeHiddenColumns ? this.ListView.AllColumns : this.ListView.ColumnsInDisplayOrder;
 
             // Build text and html versions of the selection
@@ -322,8 +339,10 @@ namespace BrightIdeasSoftware
             foreach (object modelObject in this.ModelObjects)
             {
                 sbHtml.Append("<tr><td>");
-                foreach (OLVColumn col in columns) {
-                    if (col != columns[0]) {
+                foreach (OLVColumn col in columns)
+                {
+                    if (col != columns[0])
+                    {
                         sbText.Append("\t");
                         sbHtml.Append("</td><td>");
                     }
@@ -347,16 +366,20 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Make a HTML representation of our model objects
         /// </summary>
-        public string CreateHtml() {
+        public string CreateHtml()
+        {
             IList<OLVColumn> columns = this.ListView.ColumnsInDisplayOrder;
 
             // Build html version of the selection
             StringBuilder sbHtml = new StringBuilder("<table>");
 
-            foreach (object modelObject in this.ModelObjects) {
+            foreach (object modelObject in this.ModelObjects)
+            {
                 sbHtml.Append("<tr><td>");
-                foreach (OLVColumn col in columns) {
-                    if (col != columns[0]) {
+                foreach (OLVColumn col in columns)
+                {
+                    if (col != columns[0])
+                    {
                         sbHtml.Append("</td><td>");
                     }
                     string strValue = col.GetStringValue(modelObject);
@@ -376,7 +399,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         /// <param name="fragment">The HTML to put onto the clipboard. It must be valid HTML!</param>
         /// <returns>A string that can be put onto the clipboard and will be recognized as HTML</returns>
-        private string ConvertToHtmlFragment(string fragment) {
+        private string ConvertToHtmlFragment(string fragment)
+        {
             // Minimal implementation of HTML clipboard format
             string source = "http://www.codeproject.com/KB/list/ObjectListView.aspx";
 

@@ -124,7 +124,7 @@ def build_updater(debug = False):
     if msbuild_path is None:
         print(Fore.RED + "ERROR: MSBuild not found!" + Fore.RESET)
         return
-    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/t:Fo76ini_Updater"])
+    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/p:PlatformTarget=x64", "/t:Fo76ini_Updater"])
     if debug:
         copytree(str(UPDATER_BIN_DIR / configuration), str(PROGRAM_BIN_DIR / configuration))
     else:
@@ -137,7 +137,7 @@ def build_app(debug = False):
     if msbuild_path is None:
         print(Fore.RED + "ERROR: MSBuild not found!" + Fore.RESET)
         return
-    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/t:Fo76ini"])
+    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/p:PlatformTarget=x64", "/t:Fo76ini"])
     if not debug:
         copytree(str(PROGRAM_BIN_DIR / "Release"), str(get_binaries_path()))
 

@@ -1,47 +1,49 @@
 ﻿/*
- * OLVDataObject.cs - An OLE DataObject that knows how to convert rows of an OLV to text and HTML
- *
- * Author: Phillip Piper
- * Date: 2011-03-29 3:34PM
- *
- * Change log:
- * v2.8
- * 2014-05-02   JPP  - When the listview is completely empty, don't try to set CSV text in the clipboard.
- * v2.6
- * 2012-08-08   JPP  - Changed to use OLVExporter.
- *                   - Added CSV to formats exported to Clipboard
- * v2.4
- * 2011-03-29   JPP  - Initial version
- * 
- * Copyright (C) 2011-2014 Phillip Piper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * If you wish to use this code in a closed source application, please contact phillip_piper@bigfoot.com.
- */
+* OLVDataObject.cs - An OLE DataObject that knows how to convert rows of an OLV to text and HTML
+*
+* Author: Phillip Piper
+* Date: 2011-03-29 3:34PM
+*
+* Change log:
+* v2.8
+* 2014-05-02   JPP  - When the listview is completely empty, don't try to set CSV text in the clipboard.
+* v2.6
+* 2012-08-08   JPP  - Changed to use OLVExporter.
+*                   - Added CSV to formats exported to Clipboard
+* v2.4
+* 2011-03-29   JPP  - Initial version
+*
+* Copyright (C) 2011-2014 Phillip Piper
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* If you wish to use this code in a closed source application, please contact phillip_piper@bigfoot.com.
+*/
 
 using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware {
-    
+namespace BrightIdeasSoftware
+{
+
     /// <summary>
     /// A data transfer object that knows how to transform a list of model
     /// objects into a text and HTML representation.
     /// </summary>
-    public class OLVDataObject : DataObject {
+    public class OLVDataObject : DataObject
+    {
         #region Life and death
 
         /// <summary>
@@ -49,20 +51,23 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="olv">The source of the data object</param>
         public OLVDataObject(ObjectListView olv)
-            : this(olv, olv.SelectedObjects) {
+            : this(olv, olv.SelectedObjects)
+        {
         }
 
         /// <summary>
-        /// Create a data object which operates on the given model objects 
+        /// Create a data object which operates on the given model objects
         /// in the given ObjectListView
         /// </summary>
         /// <param name="olv">The source of the data object</param>
         /// <param name="modelObjects">The model objects to be put into the data object</param>
-        public OLVDataObject(ObjectListView olv, IList modelObjects) {
+        public OLVDataObject(ObjectListView olv, IList modelObjects)
+        {
             this.objectListView = olv;
             this.modelObjects = modelObjects;
             this.includeHiddenColumns = olv.IncludeHiddenColumnsInDataTransfer;
             this.includeColumnHeaders = olv.IncludeColumnHeadersInCopy;
+            this.SetData("ObjectListView-OLVDataObject", false, this);
             this.CreateTextFormats();
         }
 
@@ -75,7 +80,8 @@ namespace BrightIdeasSoftware {
         /// and HTML representation. If this is false, only visible columns will
         /// be included.
         /// </summary>
-        public bool IncludeHiddenColumns {
+        public bool IncludeHiddenColumns
+        {
             get { return includeHiddenColumns; }
         }
         private readonly bool includeHiddenColumns;
@@ -84,7 +90,8 @@ namespace BrightIdeasSoftware {
         /// Gets or sets whether column headers will also be included in the text
         /// and HTML representation.
         /// </summary>
-        public bool IncludeColumnHeaders {
+        public bool IncludeColumnHeaders
+        {
             get { return includeColumnHeaders; }
         }
         private readonly bool includeColumnHeaders;
@@ -92,7 +99,8 @@ namespace BrightIdeasSoftware {
         /// <summary>
         /// Gets the ObjectListView that is being used as the source of the data
         /// </summary>
-        public ObjectListView ListView {
+        public ObjectListView ListView
+        {
             get { return objectListView; }
         }
         private readonly ObjectListView objectListView;
@@ -100,7 +108,8 @@ namespace BrightIdeasSoftware {
         /// <summary>
         /// Gets the model objects that are to be placed in the data object
         /// </summary>
-        public IList ModelObjects {
+        public IList ModelObjects
+        {
             get { return modelObjects; }
         }
         private readonly IList modelObjects;
@@ -111,7 +120,8 @@ namespace BrightIdeasSoftware {
         /// Put a text and HTML representation of our model objects
         /// into the data object.
         /// </summary>
-        public void CreateTextFormats() {
+        public void CreateTextFormats()
+        {
 
             OLVExporter exporter = this.CreateExporter();
 
@@ -130,7 +140,8 @@ namespace BrightIdeasSoftware {
         /// Create an exporter for the data contained in this object
         /// </summary>
         /// <returns></returns>
-        protected OLVExporter CreateExporter() {
+        protected OLVExporter CreateExporter()
+        {
             OLVExporter exporter = new OLVExporter(this.ListView);
             exporter.IncludeColumnHeaders = this.IncludeColumnHeaders;
             exporter.IncludeHiddenColumns = this.IncludeHiddenColumns;
@@ -142,7 +153,8 @@ namespace BrightIdeasSoftware {
         /// Make a HTML representation of our model objects
         /// </summary>
         [Obsolete("Use OLVExporter directly instead", false)]
-        public string CreateHtml() {
+        public string CreateHtml()
+        {
             OLVExporter exporter = this.CreateExporter();
             return exporter.ExportTo(OLVExporter.ExportFormat.HTML);
         }
@@ -154,7 +166,8 @@ namespace BrightIdeasSoftware {
         /// </remarks>
         /// <param name="fragment">The HTML to put onto the clipboard. It must be valid HTML!</param>
         /// <returns>A string that can be put onto the clipboard and will be recognized as HTML</returns>
-        private string ConvertToHtmlFragment(string fragment) {
+        private string ConvertToHtmlFragment(string fragment)
+        {
             // Minimal implementation of HTML clipboard format
             const string SOURCE = "http://www.codeproject.com/Articles/16009/A-Much-Easier-to-Use-ListView";
 

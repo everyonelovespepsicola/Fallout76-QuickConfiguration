@@ -1,5 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿using BrightIdeasSoftware;
-using System.Collections;
+﻿﻿using System.Collections;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -19,35 +18,38 @@ namespace Fo76ini
          */
         #region Rendering
 
-        public DescribedTaskRenderer describedTaskRenderer;
-        public OLVColumn olvColumnDateCreated;
+        public enum ModListStyle
+        {
+            Standard = 0,
+            Alternative = 1
+        }
 
-        class ModListRow
+        public class ModListRow
         {
             public ManagedMod mod;
 
-            public bool Enabled = false;
-            public bool IsUpdateAvailable = false;
-            public int? LoadOrder = null;
-            public DateTime? DateCreated = null;
+            public bool Enabled { get; set; } = false;
+            public bool IsUpdateAvailable { get; set; } = false;
+            public int? LoadOrder { get; set; } = null;
+            public DateTime? DateCreated { get; set; } = null;
 
             /*
              * Standard style columns
              */
-            public string ModTitle = "";
-            public string ModDescription = "";
-            public string InstallStatus = "";
-            public string InstallInfo = "";
+            public string ModTitle { get; set; } = "";
+            public string ModDescription { get; set; } = "";
+            public string InstallStatus { get; set; } = "";
+            public string InstallInfo { get; set; } = "";
 
             /*
              * Alternative style columns
              */
-            public string ModVersion = "";
-            public string InstallMethod = "";
-            public string InstallInto = "";
-            public string ArchiveName = "";
-            public string ArchivePreset = "";
-            public string IsFrozen = "";
+            public string ModVersion { get; set; } = "";
+            public string InstallMethod { get; set; } = "";
+            public string InstallInto { get; set; } = "";
+            public string ArchiveName { get; set; } = "";
+            public string ArchivePreset { get; set; } = "";
+            public string IsFrozen { get; set; } = "";
 
             /*
              * Colors
@@ -230,246 +232,83 @@ namespace Fo76ini
             }
         }
 
-        /*
-         * Format rows/cells with colors:
-         */
-
-        private void objectListViewMods_FormatRow(object sender, FormatRowEventArgs e)
+        public void InitializeDataGridView()
         {
-            e.Item.Font = new Font(this.objectListViewMods.Font, FontStyle.Regular);
-        }
+            this.dataGridViewMods.AutoGenerateColumns = false;
+            this.dataGridViewMods.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewMods.AllowUserToAddRows = false;
+            this.dataGridViewMods.AllowUserToDeleteRows = false;
+            this.dataGridViewMods.ReadOnly = true;
+            this.dataGridViewMods.RowHeadersVisible = false;
+            this.dataGridViewMods.Font = new Font(this.Font.FontFamily, 9.5f, FontStyle.Regular);
+            this.dataGridViewMods.RowTemplate.Height = 26;
 
-        private void objectListViewMods_FormatCell(object sender, FormatCellEventArgs e)
-        {
-            ModListRow row = (ModListRow)e.Model;
+            this.dataGridViewMods.Columns.Clear();
 
-            e.SubItem.Font = new Font(this.objectListViewMods.Font, FontStyle.Regular);
-
-            // "Mod info & description":
-            if (e.ColumnIndex == this.olvColumnModInfo.Index)
+            this.dataGridViewMods.Columns.Add(new DataGridViewCheckBoxColumn
             {
-                if (row.IsUpdateAvailable && currentStyle == ModListStyle.Standard)
-                    e.SubItem.ForeColor = Theming.GetColor("Mod.ListUpdateAvailableColor", Color.Fuchsia);
-                else if (currentStyle == ModListStyle.Alternative)
-                    e.SubItem.ForeColor = row.InstallStatusColor;
-            }
+                DataPropertyName = "Enabled",
+                HeaderText = "✔",
+                Width = 30,
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            });
 
-            // "Status" (e.g. Enabled/Disabled/Pending):
-            else if (e.ColumnIndex == this.olvColumnInstallStatus.Index)
+            this.dataGridViewMods.Columns.Add(new DataGridViewTextBoxColumn
             {
-                e.SubItem.ForeColor = row.InstallStatusColor;
-            }
+                DataPropertyName = "LoadOrder",
+                HeaderText = "Order",
+                Width = 45,
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            });
 
-            // "Installation" (e.g. Pack into ...):
-            else if (e.ColumnIndex == this.olvColumnInstallInfo.Index)
+            this.dataGridViewMods.Columns.Add(new DataGridViewTextBoxColumn
             {
-                e.SubItem.ForeColor = row.InstallMethodColor;
-            }
+                DataPropertyName = "ModTitle",
+                HeaderText = "Mod Name",
+                Width = 300,
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            });
 
-            // "Version" (alternate style):
-            else if (e.ColumnIndex == this.olvColumnAltModVersion.Index)
+            this.dataGridViewMods.Columns.Add(new DataGridViewTextBoxColumn
             {
-                if (row.IsUpdateAvailable)
-                {
-                    e.SubItem.ForeColor = Theming.GetColor("Mod.ListUpdateAvailableColor", Color.Fuchsia);
-                    e.SubItem.Font = new Font(this.objectListViewMods.Font, FontStyle.Bold);
-                }
-                else if (row.mod.RemoteInfo != null)
-                {
-                    e.SubItem.ForeColor = Theming.GetColor("Mod.ListLatestVersionColor", Color.Green);
-                }
-            }
+                DataPropertyName = "InstallStatus",
+                HeaderText = "Status",
+                Width = 110,
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            });
 
-            // "Method" (alternate style):
-            else if (e.ColumnIndex == this.olvColumnAltInstallMethod.Index)
+            this.dataGridViewMods.Columns.Add(new DataGridViewTextBoxColumn
             {
-                e.SubItem.ForeColor = row.InstallMethodColor;
-            }
+                DataPropertyName = "InstallInfo",
+                HeaderText = "Installation",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                SortMode = DataGridViewColumnSortMode.Programmatic
+            });
 
-            // "Archive preset" (alternate style):
-            else if (e.ColumnIndex == this.olvColumnAltArchivePreset.Index)
-            {
-                e.SubItem.ForeColor = row.ArchivePresetColor;
-            }
-
-            // "Install into" (alternate style):
-            else if (e.ColumnIndex == this.olvColumnAltInstallInto.Index)
-            {
-                if (row.mod.Method != ManagedMod.DeploymentMethod.LooseFiles)
-                {
-                    e.SubItem.ForeColor = Theming.GetColor("Mod.ListItemDisabledColor", Color.Silver);
-                    e.SubItem.Font = new Font(this.objectListViewMods.Font, FontStyle.Italic);
-                }
-            }
-
-            // "Archive name" (alternate style):
-            else if (e.ColumnIndex == this.olvColumnAltArchiveName.Index)
-            {
-                if (row.mod.Method != ManagedMod.DeploymentMethod.SeparateBA2)
-                {
-                    e.SubItem.ForeColor = Theming.GetColor("Mod.ListItemDisabledColor", Color.Silver);
-                    e.SubItem.Font = new Font(this.objectListViewMods.Font, FontStyle.Italic);
-                }
-            }
-
-            // "Frozen?" (alternate style):
-            else if (e.ColumnIndex == this.olvColumnAltIsFrozen.Index)
-            {
-                e.SubItem.ForeColor = row.AltFrozenColor;
-            }
-        }
-
-        public List<ColumnHeader> CommonHeaders = new List<ColumnHeader>();
-        public List<ColumnHeader> StandardStyleHeaders = new List<ColumnHeader>();
-        public List<ColumnHeader> AlternativeStyleHeaders = new List<ColumnHeader>();
-
-        public enum ModListStyle
-        {
-            Standard = 0,
-            Alternative = 1
-        }
-
-        public ModListStyle currentStyle = ModListStyle.Standard;
-
-        public void SetOLVStyle(ModListStyle style)
-        {
-            this.objectListViewMods.Columns.Clear();
-            this.objectListViewMods.Columns.AddRange(CommonHeaders.ToArray());
-
-            switch (style)
-            {
-                case ModListStyle.Standard:
-                    this.objectListViewMods.Columns.AddRange(StandardStyleHeaders.ToArray());
-                    this.olvColumnModInfo.Renderer = this.describedTaskRenderer;
-                    this.objectListViewMods.RowHeight = 52;
-                    break;
-                case ModListStyle.Alternative:
-                    this.objectListViewMods.Columns.AddRange(AlternativeStyleHeaders.ToArray());
-                    this.olvColumnModInfo.Renderer = this.olvColumnAltModVersion.Renderer;
-                    this.objectListViewMods.RowHeight = 18;
-                    break;
-            }
-
-            // https://stackoverflow.com/questions/65580743/adjusting-header-row-color
-            // We need the dummy column to fill the remaining space:
-            this.objectListViewMods.Columns.Add(this.olvColumnLastDummy);
-
-            this.currentStyle = style;
-        }
-
-        private void radioButtonModsUseNewList_CheckedChanged(object sender, EventArgs e)
-        {
-            this.SetOLVStyle(ModListStyle.Standard);
-            Configuration.Mods.ModListStyle = ModListStyle.Standard;
-            this.UpdateModList();
-        }
-
-        private void radioButtonModsUseOldList_CheckedChanged(object sender, EventArgs e)
-        {
-            this.SetOLVStyle(ModListStyle.Alternative);
-            Configuration.Mods.ModListStyle = ModListStyle.Alternative;
-            this.UpdateModList();
-        }
-
-        public void InitializeObjectListView()
-        {
-            // Format cells, so we can use colors:
-            this.objectListViewMods.FormatCell += objectListViewMods_FormatCell;
-            this.objectListViewMods.FormatRow += objectListViewMods_FormatRow;
-            this.objectListViewMods.UseCellFormatEvents = true;
-
-            // Add a custom renderer, so we can have a mod title and description:
-            describedTaskRenderer = new DescribedTaskRenderer();
-            describedTaskRenderer.TitleFont = new Font("Tahoma", 10, FontStyle.Bold); // , FontStyle.Bold
-            describedTaskRenderer.DescriptionFont = new Font("Tahoma", 9);
-            describedTaskRenderer.UseGdiTextRendering = true;
-            describedTaskRenderer.DescriptionAspectName = "ModDescription";
-            describedTaskRenderer.ImageTextSpace = 50;
-
-            // Date Created column
-            this.olvColumnDateCreated = new OLVColumn();
-            this.olvColumnDateCreated.AspectName = "DateCreated";
-            this.olvColumnDateCreated.Text = "Date Created";
-            this.olvColumnDateCreated.Width = 120;
-            this.olvColumnDateCreated.TextAlign = HorizontalAlignment.Center;
-            this.olvColumnDateCreated.AspectToStringConverter = delegate (object value) {
-                return value == null ? "" : ((DateTime)value).ToString("g");
-            };
-
-            // Custom sorter for Load Order column
-            this.objectListViewMods.BeforeSorting += (sender, e) => {
-                if (e.ColumnToSort == this.olvColumnLoadOrder) {
-                    this.objectListViewMods.ListViewItemSorter = new LoadOrderComparer(e.SortOrder);
-                    e.Handled = true;
-                }
-            };
-
-            // Mod list style
-            CommonHeaders.Add(this.olvColumnCheckbox);
-            CommonHeaders.Add(this.olvColumnLoadOrder);
-            CommonHeaders.Add(this.olvColumnModInfo);
-            CommonHeaders.Add(this.olvColumnDateCreated);
-
-            StandardStyleHeaders.Add(this.olvColumnInstallStatus);
-            StandardStyleHeaders.Add(this.olvColumnInstallInfo);
-
-            AlternativeStyleHeaders.Add(this.olvColumnAltModVersion);
-            AlternativeStyleHeaders.Add(this.olvColumnAltInstallMethod);
-            AlternativeStyleHeaders.Add(this.olvColumnAltInstallInto);
-            AlternativeStyleHeaders.Add(this.olvColumnAltArchiveName);
-            AlternativeStyleHeaders.Add(this.olvColumnAltArchivePreset);
-            AlternativeStyleHeaders.Add(this.olvColumnAltIsFrozen);
-            SetOLVStyle(ModListStyle.Standard);
-            // SetOLVStyle(Configuration.Mods.ModListStyle);
-
-
-            /*
-             * Drag & drop:
-             */
-
-            // Enable drag and drop for rearrangment and for dropping files:
-            //RearrangingDropSink dropSink = new RearrangingDropSink(false); // The false parameter says that this sink will not accept drags from other ObjectListViews.
-            SimpleDropSink dropSink = new SimpleDropSink();
-            dropSink.CanDropBetween = true;
-            dropSink.CanDropOnBackground = true; // true?
-            dropSink.CanDropOnItem = false;
-            dropSink.CanDropOnSubItem = false;
-            this.objectListViewMods.DragSource = new SimpleDragSource();
-            this.objectListViewMods.DropSink = dropSink;
-
-            // Listen to drag and drop events for rearrangment:
-            this.objectListViewMods.MouseUp += FormMods_MouseUp;
-            this.objectListViewMods.ItemDrag += objectListViewMods_ItemDrag;
-            dropSink.ModelCanDrop += this.objectListViewMods_ModelCanDrop;
-            dropSink.ModelDropped += this.objectListViewMods_ModelDropped;
-
-            // Listen to drag and drop events for files:
-            dropSink.CanDrop += this.objectListViewMods_CanDrop;
-            dropSink.Dropped += this.objectListViewMods_Dropped;
-
-
-            /*
-             * Theme:
-             */
+            this.dataGridViewMods.CellFormatting += dataGridViewMods_CellFormatting;
+            this.dataGridViewMods.ColumnHeaderMouseClick += dataGridViewMods_ColumnHeaderMouseClick;
 
             if (Theming.CurrentTheme == ThemeType.Dark)
             {
-                var headerstyle = new HeaderFormatStyle();
-                headerstyle.SetBackColor(Color.FromArgb(40, 40, 40));
-                headerstyle.SetForeColor(Color.White);
-                this.objectListViewMods.HeaderFormatStyle = headerstyle;
+                this.dataGridViewMods.BackgroundColor = Color.FromArgb(34, 34, 34);
+                this.dataGridViewMods.GridColor = Color.FromArgb(50, 50, 50);
+
+                this.dataGridViewMods.DefaultCellStyle.BackColor = Color.FromArgb(34, 34, 34);
+                this.dataGridViewMods.DefaultCellStyle.ForeColor = Color.White;
+                this.dataGridViewMods.DefaultCellStyle.SelectionBackColor = Color.FromArgb(65, 65, 65);
+                this.dataGridViewMods.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                this.dataGridViewMods.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+                this.dataGridViewMods.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                this.dataGridViewMods.EnableHeadersVisualStyles = false;
             }
         }
 
-        public void UpdateObjectListView()
+        public void UpdateDataGridView()
         {
-            // Remember scroll position:
-            Point point = this.objectListViewMods.LowLevelScrollPosition;
-
             // Remember selected rows:
             List<int> selectedIndices = GetSelectedIndices();
 
-            // Generate a list of rows:
             List<ModListRow> list = new List<ModListRow>();
             int loadOrder = 1;
             foreach (ManagedMod mod in this.Mods)
@@ -480,20 +319,94 @@ namespace Fo76ini
                 list.Add(row);
             }
 
-            // Populate list view:
-            this.objectListViewMods.SetObjects(list);
-            this.objectListViewMods.UpdateObjects(list);
+            // Apply sorting
+            if (!string.IsNullOrEmpty(currentSortColumn) && currentSortOrder != SortOrder.None)
+            {
+                list.Sort((x, y) =>
+                {
+                    int result = 0;
+                    switch (currentSortColumn)
+                    {
+                        case "Enabled":
+                            result = x.Enabled.CompareTo(y.Enabled);
+                            break;
+                        case "LoadOrder":
+                            if (x.LoadOrder == null && y.LoadOrder == null) result = 0;
+                            else if (x.LoadOrder == null) result = 1;
+                            else if (y.LoadOrder == null) result = -1;
+                            else result = x.LoadOrder.Value.CompareTo(y.LoadOrder.Value);
+                            break;
+                        case "ModTitle":
+                            result = string.Compare(x.ModTitle, y.ModTitle, StringComparison.OrdinalIgnoreCase);
+                            break;
+                        case "InstallStatus":
+                            result = string.Compare(x.InstallStatus, y.InstallStatus, StringComparison.OrdinalIgnoreCase);
+                            break;
+                        case "InstallInfo":
+                            result = string.Compare(x.InstallInfo, y.InstallInfo, StringComparison.OrdinalIgnoreCase);
+                            break;
+                    }
 
-            // Restore selected rows:
-            if (selectedIndices.Count > 0)
-                suppressSelectionChangedEventOnce = true;
+                    // Fallback to ModTitle if same
+                    if (result == 0 && currentSortColumn != "ModTitle")
+                    {
+                        result = string.Compare(x.ModTitle, y.ModTitle, StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    return currentSortOrder == SortOrder.Ascending ? result : -result;
+                });
+            }
+
+            this.dataGridViewMods.DataSource = list;
+
+            // Set the sort glyph
+            foreach (DataGridViewColumn col in this.dataGridViewMods.Columns)
+            {
+                if (col.DataPropertyName == currentSortColumn)
+                    col.HeaderCell.SortGlyphDirection = currentSortOrder;
+                else
+                    col.HeaderCell.SortGlyphDirection = SortOrder.None;
+            }
+
             SetSelectedIndices(selectedIndices);
+        }
 
-            // Restore scroll position:
-            this.objectListViewMods.LowLevelScroll(
-                point.X,
-                point.Y * this.objectListViewMods.RowHeight // For some reason, it uses rows in LowLevelScrollPosition, but pixels in LowLevelScroll...
-            );
+        private void dataGridViewMods_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= this.dataGridViewMods.Rows.Count || e.ColumnIndex < 0)
+                return;
+
+            ModListRow row = this.dataGridViewMods.Rows[e.RowIndex].DataBoundItem as ModListRow;
+            if (row == null) return;
+
+            string colName = this.dataGridViewMods.Columns[e.ColumnIndex].DataPropertyName;
+
+            if (colName == "InstallStatus")
+                e.CellStyle.ForeColor = row.InstallStatusColor;
+            else if (colName == "InstallInfo")
+                e.CellStyle.ForeColor = row.InstallMethodColor;
+            else if (colName == "ModTitle" && row.IsUpdateAvailable)
+                e.CellStyle.ForeColor = Theming.GetColor("Mod.ListUpdateAvailableColor", Color.Fuchsia);
+        }
+
+        private string currentSortColumn = "LoadOrder";
+        private SortOrder currentSortOrder = SortOrder.Ascending;
+
+        private void dataGridViewMods_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            string columnName = this.dataGridViewMods.Columns[e.ColumnIndex].DataPropertyName;
+
+            if (currentSortColumn == columnName)
+            {
+                currentSortOrder = currentSortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+            }
+            else
+            {
+                currentSortColumn = columnName;
+                currentSortOrder = SortOrder.Ascending;
+            }
+
+            UpdateDataGridView();
         }
         #endregion
 
@@ -503,49 +416,49 @@ namespace Fo76ini
          * e.g. Getter/Setter
          */
         #region Managing
-
         private List<int> GetSelectedIndices()
         {
             List<int> selectedIndices = new List<int>();
-            foreach (ListViewItem item in this.objectListViewMods.SelectedItems)
-                selectedIndices.Add(item.Index);
+            if (this.dataGridViewMods.SelectedRows != null)
+            {
+                foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                    selectedIndices.Add(row.Index);
+            }
             return selectedIndices;
         }
 
         private void SetSelectedIndices(List<int> selectedIndices)
         {
-            foreach (ListViewItem item in this.objectListViewMods.Items)
-                item.Selected = selectedIndices.Contains(item.Index);
+            foreach (DataGridViewRow row in this.dataGridViewMods.Rows)
+                row.Selected = selectedIndices.Contains(row.Index);
         }
 
         private void SetSelectedIndex(int selectedIndex)
         {
-            foreach (ListViewItem item in this.objectListViewMods.Items)
-                item.Selected = item.Index == selectedIndex;
+            foreach (DataGridViewRow row in this.dataGridViewMods.Rows)
+                row.Selected = row.Index == selectedIndex;
         }
 
         private void SelectAll()
         {
-            foreach (ListViewItem item in this.objectListViewMods.Items)
-                item.Selected = true;
+            this.dataGridViewMods.SelectAll();
         }
 
         private void DeselectAll()
         {
-            foreach (ListViewItem item in this.objectListViewMods.Items)
-                item.Selected = false;
+            this.dataGridViewMods.ClearSelection();
         }
 
         private ModListRow GetSelectedRow()
         {
-            if (this.objectListViewMods.SelectedObjects.Count == 1)
-                return (ModListRow)this.objectListViewMods.SelectedObjects[0];
+            if (this.dataGridViewMods.SelectedRows.Count == 1)
+                return (ModListRow)this.dataGridViewMods.SelectedRows[0].DataBoundItem;
             return null;
         }
 
         private int GetSelectedRowsCount()
         {
-            return this.objectListViewMods.SelectedObjects.Count;
+            return this.dataGridViewMods.SelectedRows.Count;
         }
 
         private bool AreMultipleRowsSelected()
@@ -560,142 +473,13 @@ namespace Fo76ini
 
         #endregion
 
-        /*
-         * Drag and drop event handler
-         */
-        #region Drag & drop
-
-        /// <summary>
-        /// Determine drop index from mouse location.
-        /// </summary>
-        private int DetermineDropIndex(Point mouseLocation)
-        {
-            // Determine drop index from mouse location:
-            // (there literally isn't a predefined property, so we have to calculate it)
-            int mouseY = mouseLocation.Y; // Origin (0 | 0) is the top left corner of the ListView
-            int headerHeight = this.objectListViewMods.TopItem.Bounds.Top; // usually 22px
-            int rowHeight = this.objectListViewMods.RowHeight + 1; // + 1px because of the grid border
-            int scrollYOffset = this.objectListViewMods.LowLevelScrollPosition.Y * rowHeight; // For some reason, it uses rows instead of pixels in LowLevelScrollPosition.Y...
-            int arbitraryOffset = 3; // I don't know where these arbitrary few pixels come from but I have to add them for accuracy.
-
-            int dropIndex = (
-                mouseY - headerHeight // Gets the y position relative to the end of the sticky header
-                + scrollYOffset       // Add the out of view rows that we need to count in
-                + arbitraryOffset     // Add some necessary but arbitrary offset
-                ) / rowHeight;        // Divide it by the row height to get from pixels to an index (or row count)
-
-            return dropIndex;
-        }
-
-        private List<ModListRow> _nonDraggedRows = new List<ModListRow>();
-        private List<ModListRow> _draggedRows = new List<ModListRow>();
-        private bool _rowsBeingDragged = false;
-
-        // On drag start: determine mods which are dragged...
-        private void objectListViewMods_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            _rowsBeingDragged = true;
-
-            // Clear lists:
-            _nonDraggedRows.Clear();
-            _draggedRows.Clear();
-
-            // Copy list:
-            foreach (object row in this.objectListViewMods.Objects)
-                _nonDraggedRows.Add((ModListRow)row);
-
-            // Get all dragged rows and remove them from the list:
-            foreach (object draggedRow in this.objectListViewMods.SelectedObjects)
-            {
-                _draggedRows.Add((ModListRow)draggedRow);
-                _nonDraggedRows.Remove((ModListRow)draggedRow);
-            }
-
-            // Remove from list:
-            this.objectListViewMods.RemoveObjects(_draggedRows);
-        }
-
-        // On drag over: Can a ListViewItem be dropped in between?
-        private void objectListViewMods_ModelCanDrop(object sender, ModelDropEventArgs e)
-        {
-            if (e.DropTargetIndex != -1)
-                e.Effect = DragDropEffects.Move;
-            else
-                e.Effect = DragDropEffects.None;
-        }
-
-        // On drop: Handle rearrangment of mod entries / rows:
-        private void objectListViewMods_ModelDropped(object sender, ModelDropEventArgs e)
-        {
-            int dropIndex = DetermineDropIndex(e.MouseLocation);
-
-            // Reverse list:
-            _draggedRows.Reverse();
-
-            // Rebuild mod list:
-            List<ManagedMod> rebuiltList = new List<ManagedMod>();
-            foreach (ModListRow row in _nonDraggedRows)
-                rebuiltList.Add(row.mod);
-            foreach (ModListRow row in _draggedRows)
-                rebuiltList.Insert(dropIndex, row.mod);
-
-            // Replace ManagedMods list:
-            if (rebuiltList.Count == this.Mods.Mods.Count)
-            {
-                this.Mods.Clear();
-                this.Mods.Mods.AddRange(rebuiltList);
-            }
-
-            // Refresh list:
-            UpdateObjectListView();
-
-            // Clear lists:
-            _nonDraggedRows.Clear();
-            _draggedRows.Clear();
-
-            _rowsBeingDragged = false;
-        }
-
-        private void FormMods_MouseUp(object sender, MouseEventArgs e)
-        {
-            // Refresh list:
-            if (_rowsBeingDragged)
-                UpdateObjectListView();
-            _rowsBeingDragged = false;
-        }
-
-        /*
-         *********************************************************************************
-         */
-
-        // On drag over: Can the file(s) be dropped?
-        private void objectListViewMods_CanDrop(object sender, OlvDropEventArgs e)
-        {
-            if (e.DragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-        }
-
-        // On drop: Handle dropped file(s)...
-        private void objectListViewMods_Dropped(object sender, OlvDropEventArgs e)
-        {
-            string[] files = (string[])e.DragEventArgs.Data.GetData(DataFormats.FileDrop);
-            if (files != null && files.Length > 0)
-            {
-                int dropIndex = -1;
-                if (Mods.Count > 0)
-                    dropIndex = DetermineDropIndex(e.MouseLocation);
-                InstallBulkThreaded(files, dropIndex);
-            }
-        }
-
-        #endregion
-
 
         /*
          * When the list changes...
          */
         #region Event handler
 
+        /*
         // Enable/Disable mod on checked changed:
         private void objectListViewMods_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
@@ -716,10 +500,11 @@ namespace Fo76ini
 
             UpdateUI();
         }
+        */
 
         // Mod(s) selected
         bool suppressSelectionChangedEventOnce = false;
-        private void objectListViewMods_SelectionChanged(object sender, EventArgs e)
+        private void dataGridViewMods_SelectionChanged(object sender, EventArgs e)
         {
             if (isUpdating)
                 return;
@@ -737,10 +522,14 @@ namespace Fo76ini
             }
 
             List<ManagedMod> mods = new List<ManagedMod>();
-            foreach (object obj in this.objectListViewMods.SelectedObjects)
+            if (this.dataGridViewMods.SelectedRows != null)
             {
-                ModListRow row = obj as ModListRow;
-                mods.Add(row.mod);
+                foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                {
+                    ModListRow modRow = row.DataBoundItem as ModListRow;
+                    if (modRow != null)
+                        mods.Add(modRow.mod);
+                }
             }
             this.EditMods(mods);
         }
@@ -774,17 +563,35 @@ namespace Fo76ini
 
         private void MoveSelectedModsUp()
         {
+            /*
             List<int> selectedIndices = new List<int>();
             foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
                 selectedIndices.Add(Mods.MoveModUp(Mods.IndexOf(row.mod)));
+            SetSelectedIndices(selectedIndices);
+            */
+
+            List<int> selectedIndices = new List<int>();
+            foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+            {
+                selectedIndices.Add(Mods.MoveModUp(Mods.IndexOf(((ModListRow)row.DataBoundItem).mod)));
+            }
             SetSelectedIndices(selectedIndices);
         }
 
         private void MoveSelectedModsDown()
         {
+            /*
             List<int> selectedIndices = new List<int>();
             foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
                 selectedIndices.Add(Mods.MoveModDown(Mods.IndexOf(row.mod)));
+            SetSelectedIndices(selectedIndices);
+            */
+
+            List<int> selectedIndices = new List<int>();
+            foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+            {
+                selectedIndices.Add(Mods.MoveModDown(Mods.IndexOf(((ModListRow)row.DataBoundItem).mod)));
+            }
             SetSelectedIndices(selectedIndices);
         }
 
@@ -798,7 +605,7 @@ namespace Fo76ini
             foreach (ManagedMod mod in Mods)
                 if (!mod.Enabled)
                     state = false;
-            
+
             foreach (ManagedMod mod in Mods)
                 mod.Enabled = !state;
         }
@@ -823,68 +630,31 @@ namespace Fo76ini
 
         private void FreezeSelectedMods()
         {
-            foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
-                row.mod.Freeze = true;
+            // foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
+            //     row.mod.Freeze = true;
+
+            foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+            {
+                ((ModListRow)row.DataBoundItem).mod.Freeze = true;
+            }
         }
 
         private void UnfreezeSelectedMods()
         {
-            foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
+            // foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
+            // {
+            //     ModActions.Unfreeze(row.mod);
+            //     row.mod.Freeze = false;
+            // }
+
+            foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
             {
-                ModActions.Unfreeze(row.mod);
-                row.mod.Freeze = false;
+                ModListRow modRow = (ModListRow)row.DataBoundItem;
+                ModActions.Unfreeze(modRow.mod);
+                modRow.mod.Freeze = false;
             }
         }
 
         #endregion
-
-        private class LoadOrderComparer : IComparer
-        {
-            private SortOrder order;
-
-            public LoadOrderComparer(SortOrder order)
-            {
-                this.order = order;
-            }
-
-            public int Compare(object x, object y)
-            {
-                OLVListItem item1 = x as OLVListItem;
-                OLVListItem item2 = y as OLVListItem;
-                ModListRow row1 = item1?.RowObject as ModListRow;
-                ModListRow row2 = item2?.RowObject as ModListRow;
-
-                if (row1 == null || row2 == null) return 0;
-
-                // Always put nulls at the bottom
-                if (row1.LoadOrder == null && row2.LoadOrder == null)
-                {
-                    int res = String.Compare(row1.ModTitle, row2.ModTitle, StringComparison.OrdinalIgnoreCase);
-                    if (res == 0)
-                        res = String.Compare(row1.ArchiveName, row2.ArchiveName, StringComparison.OrdinalIgnoreCase);
-                    if (res == 0)
-                        res = String.Compare(row1.mod.ManagedFolderName, row2.mod.ManagedFolderName, StringComparison.OrdinalIgnoreCase);
-                    return res; // Always sort unchecked mods A to Z
-                }
-                if (row1.LoadOrder == null) return 1;
-                if (row2.LoadOrder == null) return -1;
-
-                // Compare values
-                int result = row1.LoadOrder.Value.CompareTo(row2.LoadOrder.Value);
-                if (result == 0)
-                {
-                    result = String.Compare(row1.ModTitle, row2.ModTitle, StringComparison.OrdinalIgnoreCase);
-                    if (result == 0)
-                        result = String.Compare(row1.ArchiveName, row2.ArchiveName, StringComparison.OrdinalIgnoreCase);
-                    if (result == 0)
-                        result = String.Compare(row1.mod.ManagedFolderName, row2.mod.ManagedFolderName, StringComparison.OrdinalIgnoreCase);
-                }
-
-                if (this.order == SortOrder.Descending)
-                    result = -result;
-
-                return result;
-            }
-        }
     }
 }
