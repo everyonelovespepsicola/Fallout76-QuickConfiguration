@@ -6,7 +6,7 @@
 #define MyAppURL "https://www.nexusmods.com/fallout76/mods/546"
 #define MyAppExeName "Fo76ini.exe"
 
-#define ProjectVersion "1.12.9.05"
+#define ProjectVersion "1.12.9.04"
 #define ProjectGitDir "C:\Users\Administrator\Desktop\projects\Fallout76-QuickConfiguration"
 
 #define AppConfigDir "{localappdata}\Fallout 76 Quick Configuration"
@@ -82,7 +82,7 @@ begin
     UninstallNextButton.Caption := 'Uninstall';
     { Make the "Uninstall" button break the ShowModal loop }
     UninstallNextButton.ModalResult := mrOK;
-end;  
+end;
 
 procedure UninstallNextButtonClick(Sender: TObject);
 begin
@@ -166,7 +166,7 @@ begin
         Checked := False
     end;
 
-    { Run our wizard pages } 
+    { Run our wizard pages }
     UpdateUninstallWizard;
     CancelButtonEnabled := UninstallProgressForm.CancelButton.Enabled
     UninstallProgressForm.CancelButton.Enabled := True;
