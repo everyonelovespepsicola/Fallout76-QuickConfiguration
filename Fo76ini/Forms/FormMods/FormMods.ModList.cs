@@ -287,6 +287,16 @@ namespace Fo76ini
 
             this.dataGridViewMods.CellFormatting += dataGridViewMods_CellFormatting;
             this.dataGridViewMods.ColumnHeaderMouseClick += dataGridViewMods_ColumnHeaderMouseClick;
+            this.dataGridViewMods.CellClick += dataGridViewMods_CellClick;
+            this.dataGridViewMods.CellDoubleClick += dataGridViewMods_CellClick;
+
+            this.dataGridViewMods.AllowDrop = true;
+            this.dataGridViewMods.MouseMove += dataGridViewMods_MouseMove;
+            this.dataGridViewMods.MouseDown += dataGridViewMods_MouseDown;
+            this.dataGridViewMods.DragOver += dataGridViewMods_DragOver;
+            this.dataGridViewMods.DragDrop += dataGridViewMods_DragDrop;
+
+            this.dataGridViewMods.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
 
             if (Theming.CurrentTheme == ThemeType.Dark)
             {
@@ -298,6 +308,8 @@ namespace Fo76ini
                 this.dataGridViewMods.DefaultCellStyle.SelectionBackColor = Color.FromArgb(65, 65, 65);
                 this.dataGridViewMods.DefaultCellStyle.SelectionForeColor = Color.White;
 
+                this.dataGridViewMods.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
+
                 this.dataGridViewMods.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
                 this.dataGridViewMods.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                 this.dataGridViewMods.EnableHeadersVisualStyles = false;
@@ -307,7 +319,7 @@ namespace Fo76ini
         public void UpdateDataGridView()
         {
             // Remember selected rows:
-            List<int> selectedIndices = GetSelectedIndices();
+            List<ManagedMod> selectedMods = GetSelectedMods();
 
             List<ModListRow> list = new List<ModListRow>();
             int loadOrder = 1;
@@ -368,7 +380,7 @@ namespace Fo76ini
                     col.HeaderCell.SortGlyphDirection = SortOrder.None;
             }
 
-            SetSelectedIndices(selectedIndices);
+            SetSelectedMods(selectedMods);
         }
 
         private void dataGridViewMods_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -416,21 +428,46 @@ namespace Fo76ini
          * e.g. Getter/Setter
          */
         #region Managing
+        private List<ManagedMod> GetSelectedMods()
+        {
+            List<ManagedMod> selectedMods = new List<ManagedMod>();
+            if (this.dataGridViewMods.SelectedRows != null)
+            {
+                foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                {
+                    ModListRow modRow = row.DataBoundItem as ModListRow;
+                    if (modRow != null)
+                        selectedMods.Add(modRow.mod);
+                }
+            }
+            return selectedMods;
+        }
+
+        private void SetSelectedMods(List<ManagedMod> selectedMods)
+        {
+            if (selectedMods == null || selectedMods.Count == 0)
+                return;
+
+            foreach (DataGridViewRow row in this.dataGridViewMods.Rows)
+            {
+                ModListRow modRow = row.DataBoundItem as ModListRow;
+                row.Selected = modRow != null && selectedMods.Contains(modRow.mod);
+            }
+        }
+
         private List<int> GetSelectedIndices()
         {
             List<int> selectedIndices = new List<int>();
             if (this.dataGridViewMods.SelectedRows != null)
             {
                 foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
-                    selectedIndices.Add(row.Index);
+                {
+                    ModListRow modRow = row.DataBoundItem as ModListRow;
+                    if (modRow != null)
+                        selectedIndices.Add(this.Mods.IndexOf(modRow.mod));
+                }
             }
             return selectedIndices;
-        }
-
-        private void SetSelectedIndices(List<int> selectedIndices)
-        {
-            foreach (DataGridViewRow row in this.dataGridViewMods.Rows)
-                row.Selected = selectedIndices.Contains(row.Index);
         }
 
         private void SetSelectedIndex(int selectedIndex)
@@ -479,28 +516,24 @@ namespace Fo76ini
          */
         #region Event handler
 
-        /*
         // Enable/Disable mod on checked changed:
-        private void objectListViewMods_ItemChecked(object sender, ItemCheckedEventArgs e)
+        private void dataGridViewMods_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (isUpdating)
                 return;
 
-            // The e.Item.Index is the index of the item in the sorted list.
-            // This is not the index of the mod in the 'Mods' list.
-            // We have to get the model object and find its index.
-            OLVListItem item = (OLVListItem)e.Item;
-            ModListRow row = (ModListRow)item.RowObject;
-            int modIndex = this.Mods.IndexOf(row.mod);
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
 
-            if (e.Item.Checked)
-                Mods.EnableMod(modIndex);
-            else
-                Mods.DisableMod(modIndex);
+            if (this.dataGridViewMods.Columns[e.ColumnIndex].DataPropertyName == "Enabled")
+            {
+                ModListRow row = (ModListRow)this.dataGridViewMods.Rows[e.RowIndex].DataBoundItem;
+                row.mod.Enabled = !row.mod.Enabled;
 
-            UpdateUI();
+                UpdateUI();
+                Mods.Save();
+            }
         }
-        */
 
         // Mod(s) selected
         bool suppressSelectionChangedEventOnce = false;
@@ -537,6 +570,104 @@ namespace Fo76ini
         #endregion
 
         /*
+         * Drag & drop to reorder rows and install files
+         */
+        #region Drag & drop
+
+        private Rectangle dragBoxFromMouseDown;
+        private int rowIndexFromMouseDown = -1;
+        private int rowIndexOfItemUnderMouseToDrop = -1;
+
+        private void dataGridViewMods_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+            {
+                if (dragBoxFromMouseDown != Rectangle.Empty && !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                {
+                    DragDropEffects dropEffect = this.dataGridViewMods.DoDragDrop(this.dataGridViewMods.Rows[rowIndexFromMouseDown], DragDropEffects.Move);
+                }
+            }
+        }
+
+        private void dataGridViewMods_MouseDown(object sender, MouseEventArgs e)
+        {
+            rowIndexFromMouseDown = this.dataGridViewMods.HitTest(e.X, e.Y).RowIndex;
+            if (rowIndexFromMouseDown != -1)
+            {
+                Size dragSize = SystemInformation.DragSize;
+                dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)), dragSize);
+            }
+            else
+                dragBoxFromMouseDown = Rectangle.Empty;
+        }
+
+        private void dataGridViewMods_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(DataGridViewRow)))
+                e.Effect = DragDropEffects.Move;
+            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void dataGridViewMods_DragDrop(object sender, DragEventArgs e)
+        {
+            Point clientPoint = this.dataGridViewMods.PointToClient(new Point(e.X, e.Y));
+            rowIndexOfItemUnderMouseToDrop = this.dataGridViewMods.HitTest(clientPoint.X, clientPoint.Y).RowIndex;
+
+            // 1. Reordering rows within the grid
+            if (e.Data.GetDataPresent(typeof(DataGridViewRow)))
+            {
+                if (rowIndexOfItemUnderMouseToDrop == -1)
+                    rowIndexOfItemUnderMouseToDrop = this.dataGridViewMods.Rows.Count - 1;
+
+                if (e.Effect == DragDropEffects.Move && rowIndexFromMouseDown != -1 && rowIndexOfItemUnderMouseToDrop != -1 && rowIndexFromMouseDown != rowIndexOfItemUnderMouseToDrop)
+                {
+                    // Force the list to be sorted by LoadOrder so the visual order matches the underlying intent
+                    if (currentSortColumn != "LoadOrder" || currentSortOrder != SortOrder.Ascending)
+                    {
+                        currentSortColumn = "LoadOrder";
+                        currentSortOrder = SortOrder.Ascending;
+                    }
+
+                    DataGridViewRow rowToMove = e.Data.GetData(typeof(DataGridViewRow)) as DataGridViewRow;
+                    ModListRow draggedModRow = rowToMove.DataBoundItem as ModListRow;
+
+                    if (draggedModRow != null)
+                    {
+                        List<ManagedMod> rebuiltList = new List<ManagedMod>();
+                        foreach (DataGridViewRow row in this.dataGridViewMods.Rows)
+                            if (row.Index != rowIndexFromMouseDown) // Add everything except the dragged row
+                                rebuiltList.Add(((ModListRow)row.DataBoundItem).mod);
+
+                        if (rowIndexOfItemUnderMouseToDrop >= rebuiltList.Count)
+                            rebuiltList.Add(draggedModRow.mod); // Drop at the bottom
+                        else
+                            rebuiltList.Insert(rowIndexOfItemUnderMouseToDrop, draggedModRow.mod); // Insert at cursor
+
+                        if (rebuiltList.Count == this.Mods.Mods.Count)
+                        {
+                            this.Mods.Clear();
+                            this.Mods.Mods.AddRange(rebuiltList);
+                            UpdateModList();
+                            Mods.Save();
+                            SetSelectedMods(new List<ManagedMod> { draggedModRow.mod });
+                        }
+                    }
+                }
+            }
+            // 2. Dropping mod files from your PC into the grid
+            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files != null && files.Length > 0)
+                    InstallBulkThreaded(files, rowIndexOfItemUnderMouseToDrop == -1 ? this.Mods.Count : rowIndexOfItemUnderMouseToDrop);
+            }
+        }
+        #endregion
+
+        /*
          * Some actions
          */
         #region Actions
@@ -563,36 +694,28 @@ namespace Fo76ini
 
         private void MoveSelectedModsUp()
         {
-            /*
-            List<int> selectedIndices = new List<int>();
-            foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
-                selectedIndices.Add(Mods.MoveModUp(Mods.IndexOf(row.mod)));
-            SetSelectedIndices(selectedIndices);
-            */
-
-            List<int> selectedIndices = new List<int>();
+            var selectedRows = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                selectedRows.Add(row);
+            selectedRows.Sort((r1, r2) => r1.Index.CompareTo(r2.Index));
+
+            foreach (DataGridViewRow row in selectedRows)
             {
-                selectedIndices.Add(Mods.MoveModUp(Mods.IndexOf(((ModListRow)row.DataBoundItem).mod)));
+                Mods.MoveModUp(Mods.IndexOf(((ModListRow)row.DataBoundItem).mod));
             }
-            SetSelectedIndices(selectedIndices);
         }
 
         private void MoveSelectedModsDown()
         {
-            /*
-            List<int> selectedIndices = new List<int>();
-            foreach (ModListRow row in this.objectListViewMods.SelectedObjects)
-                selectedIndices.Add(Mods.MoveModDown(Mods.IndexOf(row.mod)));
-            SetSelectedIndices(selectedIndices);
-            */
-
-            List<int> selectedIndices = new List<int>();
+            var selectedRows = new List<DataGridViewRow>();
             foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                selectedRows.Add(row);
+            selectedRows.Sort((r1, r2) => r2.Index.CompareTo(r1.Index)); // Reverse order for moving down
+
+            foreach (DataGridViewRow row in selectedRows)
             {
-                selectedIndices.Add(Mods.MoveModDown(Mods.IndexOf(((ModListRow)row.DataBoundItem).mod)));
+                Mods.MoveModDown(Mods.IndexOf(((ModListRow)row.DataBoundItem).mod));
             }
-            SetSelectedIndices(selectedIndices);
         }
 
         private void ToggleCheckboxes()

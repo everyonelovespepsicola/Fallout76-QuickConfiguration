@@ -588,6 +588,28 @@ namespace Fo76ini
                 {
                     DeselectAll();
                 }
+                else if (e.KeyCode == Keys.Space)
+                {
+                    if (this.dataGridViewMods.SelectedRows.Count > 0)
+                    {
+                        bool targetState = true;
+                        bool allEnabled = true;
+                        foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                        {
+                            if (!((ModListRow)row.DataBoundItem).mod.Enabled)
+                                allEnabled = false;
+                        }
+                        targetState = !allEnabled;
+
+                        foreach (DataGridViewRow row in this.dataGridViewMods.SelectedRows)
+                        {
+                            ((ModListRow)row.DataBoundItem).mod.Enabled = targetState;
+                        }
+                        UpdateUI();
+                        Mods.Save();
+                    }
+                    e.Handled = true;
+                }
             }
         }
 
