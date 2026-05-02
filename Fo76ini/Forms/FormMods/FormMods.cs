@@ -37,6 +37,19 @@ namespace Fo76ini
         /// </summary>
         private bool isUpdating = false;
 
+        // Winforms Double Buffering
+        // https://stackoverflow.com/questions/3718380/winforms-double-buffering/3718648#3718648
+        // fixes the visual artifacts when scrolling and the white flash
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
         #region Related to opening, closing, or (re)loading the entire form
         public FormMods()
         {
@@ -283,15 +296,8 @@ namespace Fo76ini
             string text = this.toolStripTextBoxSearch.Text;
             if (text == "Search...") text = "";
 
-            // if (string.IsNullOrWhiteSpace(text))
-            // {
-            //     this.objectListViewMods.ModelFilter = null;
-            // }
-            // else
-            // {
-            //     this.objectListViewMods.UseFiltering = true;
-            //     this.objectListViewMods.ModelFilter = TextMatchFilter.Contains(this.objectListViewMods, text);
-            // }
+            if (this.Mods != null)
+                UpdateModList();
         }
 
         /// <summary>

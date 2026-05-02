@@ -265,7 +265,7 @@ namespace Fo76ini
             {
                 DataPropertyName = "ModTitle",
                 HeaderText = "Mod Name",
-                Width = 300,
+                Width = 400,
                 SortMode = DataGridViewColumnSortMode.Programmatic
             });
 
@@ -318,8 +318,18 @@ namespace Fo76ini
 
         public void UpdateDataGridView()
         {
+            if (this.Mods == null)
+                return;
+
             // Remember selected rows:
             List<ManagedMod> selectedMods = GetSelectedMods();
+
+            // Remember scroll position:
+            int scrollIndex = this.dataGridViewMods.FirstDisplayedScrollingRowIndex;
+
+            string searchText = this.toolStripTextBoxSearch.Text;
+            if (searchText == "Search...") searchText = "";
+            bool isSearching = !string.IsNullOrWhiteSpace(searchText);
 
             List<ModListRow> list = new List<ModListRow>();
             int loadOrder = 1;
@@ -328,7 +338,14 @@ namespace Fo76ini
                 ModListRow row = new ModListRow(mod);
                 if (mod.Enabled)
                     row.LoadOrder = loadOrder++;
-                list.Add(row);
+
+                if (!isSearching ||
+                    row.ModTitle.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    row.ModDescription.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    row.InstallInfo.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    list.Add(row);
+                }
             }
 
             // Apply sorting
@@ -381,6 +398,12 @@ namespace Fo76ini
             }
 
             SetSelectedMods(selectedMods);
+
+            // Restore scroll position:
+            if (scrollIndex >= 0 && scrollIndex < this.dataGridViewMods.Rows.Count)
+            {
+                this.dataGridViewMods.FirstDisplayedScrollingRowIndex = scrollIndex;
+            }
         }
 
         private void dataGridViewMods_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -445,13 +468,18 @@ namespace Fo76ini
 
         private void SetSelectedMods(List<ManagedMod> selectedMods)
         {
+            this.dataGridViewMods.ClearSelection();
+
             if (selectedMods == null || selectedMods.Count == 0)
                 return;
 
             foreach (DataGridViewRow row in this.dataGridViewMods.Rows)
             {
                 ModListRow modRow = row.DataBoundItem as ModListRow;
-                row.Selected = modRow != null && selectedMods.Contains(modRow.mod);
+                if (modRow != null && selectedMods.Contains(modRow.mod))
+                {
+                    row.Selected = true;
+                }
             }
         }
 
@@ -728,6 +756,17 @@ namespace Fo76ini
             foreach (ManagedMod mod in Mods)
                 if (!mod.Enabled)
                     state = false;
+
+            if (!state)
+            {
+                DialogResult res = MessageBox.Show(
+                    "Are you sure you want to enable all mods?",
+                    "Enable All Mods",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Question);
+                if (res != DialogResult.OK)
+                    return;
+            }
 
             foreach (ManagedMod mod in Mods)
                 mod.Enabled = !state;

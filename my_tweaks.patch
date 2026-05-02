@@ -9,7 +9,7 @@ index 59f51ce..b152721 100644
  using Newtonsoft.Json.Linq;
  using System;
 @@ -7,10 +7,6 @@ using Websocket.Client.Models;
- 
+
  namespace Fo76ini.API
  {
 -    // TODO: Possible bug in SingleSignOn
@@ -25,7 +25,7 @@ index 59f51ce..b152721 100644
              Console.WriteLine($"Reconnection happened, type: {info.Type}");
 +            client.Send(BuildLoginData());
          }
- 
+
          private static void OnDisconnect(DisconnectionInfo info)
 diff --git a/Fo76ini/Forms/FormIniError/FormIniError.cs b/Fo76ini/Forms/FormIniError/FormIniError.cs
 index 54fb5db..90f84c2 100644
@@ -44,7 +44,7 @@ index 54fb5db..90f84c2 100644
 -            Environment.Exit(Exception.HResult); // Does immediately terminate program.
 +            Environment.Exit(Exception?.HResult ?? -1); // Does immediately terminate program.
          }
- 
+
          private void buttonTryAgain_Click(object sender, EventArgs e)
 @@ -133,7 +133,7 @@ namespace Fo76ini.Forms.FormIniError
          {
@@ -54,7 +54,7 @@ index 54fb5db..90f84c2 100644
 +                Environment.Exit(Exception?.HResult ?? -1);
              }
          }
- 
+
 diff --git a/Fo76ini/Forms/FormMods/FormMods.Designer.cs b/Fo76ini/Forms/FormMods/FormMods.Designer.cs
 index 0baacc1..ed25898 100644
 --- a/Fo76ini/Forms/FormMods/FormMods.Designer.cs
@@ -89,12 +89,12 @@ index 0baacc1..ed25898 100644
 -            this.panelModDetails.Size = new System.Drawing.Size(396, 464);
 +            this.panelModDetails.Size = new System.Drawing.Size(396, 433);
              this.panelModDetails.TabIndex = 58;
-             // 
+             //
              // panelModDetailsHeader
 @@ -1526,7 +1527,7 @@
-             // 
+             //
              // toolStrip1
-             // 
+             //
 -            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Left;
 +            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
              this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -112,10 +112,10 @@ index 0baacc1..ed25898 100644
 +            this.toolStrip1.Size = new System.Drawing.Size(746, 25);
              this.toolStrip1.TabIndex = 44;
              this.toolStrip1.Text = "toolStrip1";
-             // 
+             //
 @@ -1692,6 +1693,7 @@
              // objectListViewMods
-             // 
+             //
              this.objectListViewMods.AllColumns.Add(this.olvColumnCheckbox);
 +            this.objectListViewMods.AllColumns.Add(this.olvColumnLoadOrder);
              this.objectListViewMods.AllColumns.Add(this.olvColumnModInfo);
@@ -150,18 +150,18 @@ index 0baacc1..ed25898 100644
 @@ -1748,6 +1752,15 @@
              this.olvColumnCheckbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
              this.olvColumnCheckbox.Width = 32;
-             // 
+             //
 +            // olvColumnLoadOrder
-+            // 
++            //
 +            this.olvColumnLoadOrder.AspectName = "LoadOrder";
 +            this.olvColumnLoadOrder.Groupable = false;
 +            this.olvColumnLoadOrder.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 +            this.olvColumnLoadOrder.Text = "Order";
 +            this.olvColumnLoadOrder.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 +            this.olvColumnLoadOrder.Width = 45;
-+            // 
++            //
              // olvColumnModInfo
-             // 
+             //
              this.olvColumnModInfo.AspectName = "ModTitle";
 @@ -2140,6 +2153,7 @@
          private Fo76ini.Controls.StyledTabControl tabControl1;
@@ -183,11 +183,11 @@ index 1177616..c9376df 100644
  using Fo76ini.Mods;
  using Fo76ini.API;
 @@ -26,6 +27,7 @@ namespace Fo76ini
- 
+
              public bool Enabled = false;
              public bool IsUpdateAvailable = false;
 +            public int? LoadOrder = null;
- 
+
              /*
               * Standard style columns
 @@ -334,7 +336,7 @@ namespace Fo76ini
@@ -212,15 +212,15 @@ index 1177616..c9376df 100644
 +                    e.Handled = true;
 +                }
 +            };
- 
+
              // Mod list style
              CommonHeaders.Add(this.olvColumnCheckbox);
 +            CommonHeaders.Add(this.olvColumnLoadOrder);
              CommonHeaders.Add(this.olvColumnModInfo);
- 
+
              StandardStyleHeaders.Add(this.olvColumnInstallStatus);
 @@ -443,9 +455,13 @@ namespace Fo76ini
- 
+
              // Generate a list of rows:
              List<ModListRow> list = new List<ModListRow>();
 +            int loadOrder = 1;
@@ -232,11 +232,11 @@ index 1177616..c9376df 100644
 +                    row.LoadOrder = loadOrder++;
 +                list.Add(row);
              }
- 
+
              // Populate list view:
 @@ -798,5 +814,36 @@ namespace Fo76ini
          }
- 
+
          #endregion
 +
 +        private class LoadOrderComparer : IComparer
@@ -287,12 +287,12 @@ index bfb3e93..f929b31 100644
              InitializeSidePanelControls();
              InitializeObjectListView();
 +            InitializeSearchAndSort();
- 
+
              // Handle changes:
              ProfileManager.ProfileChanged += OnProfileChanged;
 @@ -225,6 +227,53 @@ namespace Fo76ini
          #endregion
- 
+
          #region User interface
 +        private ToolStripTextBox toolStripTextBoxSearch;
 +
@@ -357,7 +357,7 @@ index 818983c..2c81c05 100644
 @@ -116,6 +116,42 @@ namespace Fo76ini.Mods
              return installedVersionStr == latestVersionStr ? 0 : -1;
          }
- 
+
 +        /// <summary>
 +        /// Compares two version strings for sorting purposes.
 +        /// Tries to extract version numbers and compares them. Falls back to string comparison.
@@ -431,10 +431,10 @@ index 5dca503..4ece640 100644
 -import itertools
  import argparse
  init()
- 
+
 -PROJECT_GIT_DIR       = str(Path(__file__).parent.resolve())
 +PROJECT_GIT_DIR       = Path(__file__).parent.resolve()
- 
+
 -TARGET_BASE_DIR       = os.path.join(PROJECT_GIT_DIR, "Publish")
 -SOLUTION_PATH         = os.path.join(PROJECT_GIT_DIR, "Fo76ini\\Fo76ini.sln")
 -PROGRAM_BIN_DIR       = os.path.join(PROJECT_GIT_DIR, "Fo76ini\\bin\\")
@@ -454,20 +454,20 @@ index 5dca503..4ece640 100644
 +DEPENDENCIES_DIR      = PROJECT_GIT_DIR / "Additional files"
 +VERSION_PATH          = PROJECT_GIT_DIR / "VERSION"
 +SETUP_ISS_PATH        = PROJECT_GIT_DIR / "setup.iss"
- 
+
  VERSION = "x.x.x"
- 
+
  def get_binaries_path():
 -    return os.path.join(TARGET_BASE_DIR, "v" + VERSION)
 +    return TARGET_BASE_DIR / f"v{VERSION}"
- 
+
  def get_msbuild_path():
      """Attempts to run 'which', then check common paths, and if all else fails, reads the registry and returns the path to MSBuild.exe as string or None."""
 -    path = None
 -
      if which("msbuild") is not None:
          return which("msbuild")
- 
+
 -    for drive in ["C:", "D:"]:
 -        if os.path.isfile(drive + "\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"):
 -            return drive + "\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe"
@@ -528,9 +528,9 @@ index 5dca503..4ece640 100644
 +                    return path
 +    except (FileNotFoundError, OSError):
 +        pass
- 
+
      return None
- 
+
  def get_7zip_path():
 -    sevenzip = which("7z")
 -    if sevenzip is not None:
@@ -542,7 +542,7 @@ index 5dca503..4ece640 100644
 -
 -    return None
 +    return which("7z") or which("7za")
- 
+
  def get_version():
      global VERSION
      try:
@@ -554,12 +554,12 @@ index 5dca503..4ece640 100644
 +        print(Fore.RED + f"ERROR: Version file not found at '{VERSION_PATH}'" + Fore.RESET)
 +    except IOError as e:
 +        print(Fore.RED + f"ERROR: Couldn't read VERSION file: {e}" + Fore.RESET)
- 
+
  def set_version():
      global VERSION
 @@ -102,41 +83,89 @@ def set_version():
          return
- 
+
  def restore_nuget():
 -    os.system("{0} restore \"{1}\"".format(which("nuget"), SOLUTION_PATH, VERSION))
 -    os.system("{0} restore \"{1}\"".format(which("nuget"), UPDATER_SOLUTION_PATH, VERSION))
@@ -596,7 +596,7 @@ index 5dca503..4ece640 100644
 +    subprocess.run([scoop_path, "bucket", "add", "extras"])
 +    print("Installing tools...")
 +    subprocess.run([scoop_path, "install", "7zip", "git", "rcedit", "inno-setup", "pandoc", "nuget"])
- 
+
  def build_updater(debug = False):
      print("Building updater...")
      configuration = "Debug" if debug else "Release"
@@ -612,7 +612,7 @@ index 5dca503..4ece640 100644
      else:
 -        copytree(UPDATER_BIN_DIR + configuration, get_binaries_path())
 +        copytree(str(UPDATER_BIN_DIR / configuration), str(get_binaries_path()))
- 
+
  def build_app(debug = False):
      print("Building app...")
      configuration = "Debug" if debug else "Release"
@@ -625,7 +625,7 @@ index 5dca503..4ece640 100644
      if not debug:
 -        copytree(PROGRAM_BIN_DIR + "Release", get_binaries_path())
 +        copytree(str(PROGRAM_BIN_DIR / "Release"), str(get_binaries_path()))
- 
+
  def copy_additions(debug = False):
      print("Copying additional files...")
      if debug:
@@ -634,7 +634,7 @@ index 5dca503..4ece640 100644
      else:
 -        copytree(DEPENDENCIES_DIR, get_binaries_path())
 +        copytree(str(DEPENDENCIES_DIR), str(get_binaries_path()))
- 
+
  def pack_release():
      print("Packing to v{0}.zip...".format(VERSION))
 -    os.system("{0} a \"{1}\" \"{2}\\*\"".format(get_7zip_path(), os.path.join(TARGET_BASE_DIR, "v" + VERSION + ".zip"), get_binaries_path()))
@@ -646,7 +646,7 @@ index 5dca503..4ece640 100644
 +    source_path = str(get_binaries_path() / "*")
 +    subprocess.run([sevenzip_path, "a", archive_path, source_path])
      print("Done.")
- 
+
  def use_rcedit():
      print("Setting executable version to '{0}'...".format(VERSION))
 -    os.system("{0} \"{1}\" --set-file-version {2} --set-product-version {2}".format(which("rcedit"), EXECUTABLE_PATH, VERSION))
@@ -656,7 +656,7 @@ index 5dca503..4ece640 100644
 +        print(Fore.RED + "ERROR: rcedit not found!" + Fore.RESET)
 +        return
 +    subprocess.run([rcedit_path, str(get_binaries_path() / EXECUTABLE_NAME), "--set-file-version", VERSION, "--set-product-version", VERSION])
- 
+
  def update_inno():
      print("Changing version number in setup.iss ...")
 @@ -150,7 +179,7 @@ def update_inno():
@@ -669,7 +669,7 @@ index 5dca503..4ece640 100644
              #if line.startswith("#define ProjectPackTargetDir"):
              #    line = "#define ProjectPackTargetDir \"" + TARGET_BASE_DIR.rstrip("\\") + "\"\n"
 @@ -161,38 +190,32 @@ def update_inno():
- 
+
  def build_inno():
      print("Building setup using ISCC...")
 -    subprocess.run(shlex.split("\"" + which("iscc") + "\" \"" + SETUP_ISS_PATH + "\""))
@@ -678,7 +678,7 @@ index 5dca503..4ece640 100644
 +        print(Fore.RED + "ERROR: ISCC (Inno Setup) not found!" + Fore.RESET)
 +        return
 +    subprocess.run([iscc_path, str(SETUP_ISS_PATH)])
- 
+
  def convert_md():
      print("Converting Markdown to HTML and RTF")
 -    subprocess.run(shlex.split("\"" + which("pandoc") + "\" --standalone -f gfm \"What's new.md\" -o \"whatsnew.html\" --css=Pandoc/pandoc-style.css -H Pandoc/pandoc-header.html"))
@@ -691,14 +691,14 @@ index 5dca503..4ece640 100644
 +    subprocess.run([pandoc_path, "--standalone", "-f", "gfm", "What's new.md", "-o", "whatsnew.html", "--css=Pandoc/pandoc-style.css", "-H", "Pandoc/pandoc-header.html"])
 +    subprocess.run([pandoc_path, "--standalone", "-f", "gfm", "What's new.md", "-o", "whatsnewdark.html", "--css=Pandoc/pandoc-style-dark.css", "-H", "Pandoc/pandoc-header.html"])
 +    subprocess.run([pandoc_path, "--standalone", "What's new.md", "-o", "What's new.rtf"])
- 
+
  def open_dir():
      if os.path.exists(TARGET_BASE_DIR):
 -        os.system("explorer.exe \"{0}\"".format(TARGET_BASE_DIR))
 +        os.startfile(str(TARGET_BASE_DIR))
      else:
          print("ERROR: Path does not exist.")
- 
+
  # https://stackoverflow.com/a/7550424
  def mkdir(newdir):
 -    """works the way a good mkdir should :)
@@ -719,7 +719,7 @@ index 5dca503..4ece640 100644
 -            os.mkdir(newdir)
 +    """Create a directory, including parent directories, if it doesn't exist."""
 +    os.makedirs(newdir, exist_ok=True)
- 
+
  # https://stackoverflow.com/a/7550424
  def copytree(src, dst, symlinks=False):
 @@ -232,8 +255,8 @@ def copytree(src, dst, symlinks=False):
@@ -731,10 +731,10 @@ index 5dca503..4ece640 100644
 +    except OSError:
 +        # can't copy file access times on Windows, or other errors
          pass
- 
+
  def run_interactive():
 @@ -255,16 +278,18 @@ def run_interactive():
- 
+
  {Fore.BLUE}Building
  {Fore.MAGENTA}(2){Fore.RESET} Restore NuGet packages
 -{Fore.MAGENTA}(3){Fore.RESET} Build app (Debug)
@@ -747,11 +747,11 @@ index 5dca503..4ece640 100644
 +{Fore.MAGENTA}(5){Fore.RESET} Build app (Release)
 +{Fore.MAGENTA}(6){Fore.RESET} Pack app to *.zip
 +{Fore.MAGENTA}(7){Fore.RESET} Build setup
- 
+
  {Fore.BLUE}What's new.md
 -{Fore.MAGENTA}(7){Fore.RESET} Convert Markdown to HTML and RTF using Pandoc
 +{Fore.MAGENTA}(8){Fore.RESET} Convert Markdown to HTML and RTF using Pandoc
- 
+
  {Fore.BLUE}Others
 -{Fore.MAGENTA}(8){Fore.RESET} Open target folder
 +{Fore.MAGENTA}(9){Fore.RESET} Open target folder
@@ -823,11 +823,11 @@ index 5dca503..4ece640 100644
 @@ -362,10 +397,10 @@ if __name__ == "__main__":
      parser.add_argument('-w', '--whatsnew', help='update the "What\'s new?" files', required=False, action='store_true')
      args = parser.parse_args()
- 
+
 -    mkdir(TARGET_BASE_DIR)
 +    mkdir(str(TARGET_BASE_DIR))
      get_version()
- 
+
 -    args_list = [args.restore, args.build_debug, args.build, args.build_setup, args.pack, args.set_version, args.whatsnew]
 +    args_list = [args.install_deps, args.update, args.restore, args.build_debug, args.build, args.build_setup, args.pack, args.set_version, args.whatsnew]
      #if args_list.count(True) > 1:
@@ -839,10 +839,10 @@ index f338765..a97d3c4 100644
 +++ b/setup.iss
 @@ -7,7 +7,7 @@
  #define MyAppExeName "Fo76ini.exe"
- 
- #define ProjectVersion "1.12.9.02"
+
+ #define ProjectVersion "1.12.9.05"
 -#define ProjectGitDir "E:\Workspace\Fallout76-QuickConfiguration"
 +#define ProjectGitDir "C:\Users\Administrator\Desktop\projects\Fallout76-QuickConfiguration"
- 
+
  #define AppConfigDir "{localappdata}\Fallout 76 Quick Configuration"
  #define INIBackupDir "{userdocs}\My Games\Fallout 76\Backups"

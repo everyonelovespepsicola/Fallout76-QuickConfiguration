@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows.Forms;
 using Syroot.Windows.IO;
@@ -10,7 +10,7 @@ namespace Fo76ini
     /// </summary>
     public class Shared
     {
-        public const string VERSION = "1.12.9.02";
+        public const string VERSION = "1.12.9.05";
         public static string LatestVersion = null;
 
         public static readonly string AppInstallationFolder = Directory.GetParent(Application.ExecutablePath).ToString();

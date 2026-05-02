@@ -78,6 +78,9 @@ def set_version():
         with open(VERSION_PATH, "w") as f:
             f.write(VERSION + "\n")
         print("Version set.")
+        update_version_cpp()
+        update_inno()
+        update_assembly_info()
     except KeyboardInterrupt:
         print("\nAbort.")
         return
@@ -121,10 +124,17 @@ def install_dependencies():
     print("Installing tools...")
     subprocess.run([scoop_path, "install", "7zip", "git", "rcedit", "inno-setup", "pandoc", "nuget"])
 
+def clean_publish_dir():
+    """Clears the Publish directory."""
+    print("Clearing Publish directory...")
+    if os.path.exists(TARGET_BASE_DIR):
+        shutil.rmtree(TARGET_BASE_DIR, ignore_errors=True)
+    mkdir(str(TARGET_BASE_DIR))
+
 def build_updater(debug = False):
     """
     Builds the updater project.
-    
+
     Args:
         debug (bool): If True, builds in Debug mode. Otherwise, builds in Release mode.
     """
@@ -143,7 +153,7 @@ def build_updater(debug = False):
 def build_app(debug = False):
     """
     Builds the main application project.
-    
+
     Args:
         debug (bool): If True, builds in Debug mode. Otherwise, builds in Release mode.
     """
@@ -257,6 +267,29 @@ def update_version_cpp():
     with open(PROJECT_GIT_DIR / "VERSION.cpp", "w") as f:
         f.write(VERSION)
 
+def update_assembly_info():
+    """
+    Updates the AssemblyInfo.cs files with the current version.
+    """
+    print(f"Updating AssemblyInfo.cs files with version {VERSION}...")
+    paths = [
+        PROJECT_GIT_DIR / "Fo76ini" / "Properties" / "AssemblyInfo.cs",
+        PROJECT_GIT_DIR / "Fo76ini_Updater" / "Properties" / "AssemblyInfo.cs"
+    ]
+    for path in paths:
+        if not path.exists():
+            continue
+        content = ""
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip().startswith("[assembly: AssemblyVersion"):
+                    line = f'[assembly: AssemblyVersion("{VERSION}")]\n'
+                elif line.strip().startswith("[assembly: AssemblyFileVersion"):
+                    line = f'[assembly: AssemblyFileVersion("{VERSION}")]\n'
+                content += line
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+
 # https://stackoverflow.com/a/7550424
 def mkdir(newdir):
     """Create a directory, including parent directories, if it doesn't exist."""
@@ -354,10 +387,14 @@ def run_interactive():
         elif i == "3":
             update_nuget_packages()
         elif i == "4":
+            clean_publish_dir()
             build_updater(debug=True)
             build_app(debug=True)
             copy_additions(debug=True)
         elif i == "5":
+            clean_publish_dir()
+            update_version_cpp()
+            update_assembly_info()
             build_updater()
             build_app()
             copy_additions()
@@ -389,11 +426,14 @@ def run_args(args):
     if args.restore:
         restore_nuget()
     if args.build_debug:
+        clean_publish_dir()
         build_updater(debug=True)
         build_app(debug=True)
         copy_additions(debug=True)
     if args.build:
         update_version_cpp()
+        update_assembly_info()
+        clean_publish_dir()
         build_updater()
         build_app()
         copy_additions()
