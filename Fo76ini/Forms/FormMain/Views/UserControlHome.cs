@@ -164,10 +164,20 @@ namespace Fo76ini.Forms.FormMain.Tabs
 
         private void LoadWhatsNew()
         {
-            if (Theming.CurrentTheme == ThemeType.Dark)
-                this.webBrowserWhatsNew.Url = new Uri(Shared.URLs.RemoteWhatsNewDarkURL);
+            string localFileName = Theming.CurrentTheme == ThemeType.Dark ? "whatsnewdark.html" : "whatsnew.html";
+            string localFilePath = Path.Combine(Shared.AppInstallationFolder, localFileName);
+
+            if (File.Exists(localFilePath))
+            {
+                this.webBrowserWhatsNew.Url = new Uri(localFilePath);
+            }
             else
-                this.webBrowserWhatsNew.Url = new Uri(Shared.URLs.RemoteWhatsNewURL);
+            {
+                if (Theming.CurrentTheme == ThemeType.Dark)
+                    this.webBrowserWhatsNew.Url = new Uri(Shared.URLs.RemoteWhatsNewDarkURL);
+                else
+                    this.webBrowserWhatsNew.Url = new Uri(Shared.URLs.RemoteWhatsNewURL);
+            }
         }
 
         private void styledButtonWhatsNew_Click(object sender, EventArgs e)
@@ -187,11 +197,20 @@ namespace Fo76ini.Forms.FormMain.Tabs
             }
             else
             {
-                // Open users web browser on Windows 7 instead:
-                if (Theming.CurrentTheme == ThemeType.Dark)
-                    Utils.OpenURL(Shared.URLs.RemoteWhatsNewDarkURL);
+                string localFileName = Theming.CurrentTheme == ThemeType.Dark ? "whatsnewdark.html" : "whatsnew.html";
+                string localFilePath = Path.Combine(Shared.AppInstallationFolder, localFileName);
+                if (File.Exists(localFilePath))
+                {
+                    Utils.OpenURL(localFilePath);
+                }
                 else
-                    Utils.OpenURL(Shared.URLs.RemoteWhatsNewURL);
+                {
+                    // Open users web browser on Windows 7 instead:
+                    if (Theming.CurrentTheme == ThemeType.Dark)
+                        Utils.OpenURL(Shared.URLs.RemoteWhatsNewDarkURL);
+                    else
+                        Utils.OpenURL(Shared.URLs.RemoteWhatsNewURL);
+                }
             }
         }
 

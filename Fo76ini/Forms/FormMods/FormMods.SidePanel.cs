@@ -109,6 +109,10 @@ namespace Fo76ini
         private void FormModsDetails_Resize(object sender, EventArgs e)
         {
             UpdateSidePanelGroupBoxesWidth();
+
+            int tabWidth = this.tabPageModOrder.Width;
+            int panelWidth = this.panelModDetails.Width;
+            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - panelWidth + 2;
         }
 
         /// <summary>
@@ -180,15 +184,16 @@ namespace Fo76ini
         private void CloseSidePanel()
         {
             this.pictureBoxCollapseDetails.Visible = false;
-            this.panelModDetails.Visible = false;
+            this.panelModDetails.Visible = true;
 
             int tabWidth = this.tabPageModOrder.Width;
-            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X;
+            int panelWidth = this.panelModDetails.Width;
+            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - panelWidth + 2;
 
             // Reset image, so the thumbnail gets unloaded:
             this.pictureBoxModThumbnail.Image = Resources.bg;
 
-            sidePanelState = SidePanelState.Closed;
+            sidePanelState = SidePanelState.Expanded;
         }
 
         /// <summary>
@@ -196,16 +201,7 @@ namespace Fo76ini
         /// </summary>
         private void CollapseSidePanel()
         {
-            this.pictureBoxCollapseDetails.Visible = true;
-            this.pictureBoxCollapseDetails.Image = Resources.arrow_left_black;
-            this.panelModDetails.Visible = false;
-
-            int tabWidth = this.tabPageModOrder.Width;
-            int buttonWidth = this.pictureBoxCollapseDetails.Width;
-            this.pictureBoxCollapseDetails.Location = new Point(tabWidth - buttonWidth, this.pictureBoxCollapseDetails.Location.Y);
-            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - buttonWidth + 1;
-
-            sidePanelState = SidePanelState.Collapsed;
+            ExpandSidePanel();
         }
 
         /// <summary>
@@ -213,15 +209,12 @@ namespace Fo76ini
         /// </summary>
         private void ExpandSidePanel()
         {
-            this.pictureBoxCollapseDetails.Visible = true;
-            this.pictureBoxCollapseDetails.Image = Resources.arrow_right_black;
+            this.pictureBoxCollapseDetails.Visible = false;
             this.panelModDetails.Visible = true;
 
             int tabWidth = this.tabPageModOrder.Width;
-            int buttonWidth = this.pictureBoxCollapseDetails.Width;
             int panelWidth = this.panelModDetails.Width;
-            this.pictureBoxCollapseDetails.Location = new Point(tabWidth - panelWidth - buttonWidth + 1, this.pictureBoxCollapseDetails.Location.Y);
-            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - panelWidth - buttonWidth + 2;
+            this.dataGridViewMods.Width = tabWidth - this.dataGridViewMods.Location.X - panelWidth + 2;
 
             sidePanelState = SidePanelState.Expanded;
 
@@ -233,10 +226,7 @@ namespace Fo76ini
         /// </summary>
         private void OpenSidePanel()
         {
-            if (sidePanelOpenCollapsed)
-                CollapseSidePanel();
-            else
-                ExpandSidePanel();
+            ExpandSidePanel();
         }
 
 
@@ -246,11 +236,16 @@ namespace Fo76ini
 
         public void UpdateSidePanel()
         {
-            if (!isEditingBulk && editedMod == null)
+            if ((!isEditingBulk && editedMod == null) || (isEditingBulk && editedModCount <= 0))
+            {
+                this.panelModDetails.Enabled = false;
+                this.labelModTitle.Text = "No mod selected";
+                this.pictureBoxModThumbnail.Image = Resources.bg;
+                this.pictureBoxModThumbnail.Visible = false;
                 return;
-            if (isEditingBulk && editedModCount <= 0)
-                return;
+            }
 
+            this.panelModDetails.Enabled = true;
             isUpdatingSidePanel = true;
 
             if (isEditingBulk)
@@ -343,27 +338,34 @@ namespace Fo76ini
             // Preset
             if (this.editedMod.Method == ManagedMod.DeploymentMethod.SeparateBA2)
             {
-                bool isCompressed = this.editedMod.Compression == Archive2.Compression.Default;
-                switch (this.editedMod.Format)
+                if (this.editedMod.SeparateGrouping)
                 {
-                    case Archive2.Format.General:
-                        if (isCompressed)
-                            this.comboBoxModArchivePreset.SelectedIndex = 2; // General
-                        else
-                            this.comboBoxModArchivePreset.SelectedIndex = 4; // Sound FX
-                        break;
-                    case Archive2.Format.DDS:
-                        this.comboBoxModArchivePreset.SelectedIndex = 3;     // Textures
-                        break;
-                    case null: // null means auto-detect
-                        this.comboBoxModArchivePreset.SelectedIndex = 1;     // Auto-detect
-                        break;
-                    default:
-                        this.comboBoxModArchivePreset.SelectedIndex = 0;     // Please select
-                        break;
+                    this.comboBoxModArchivePreset.SelectedIndex = 5; // Separate BA2s Grouping
                 }
-                if (this.editedMod.Compression == null) // null means auto-detect
-                    this.comboBoxModArchivePreset.SelectedIndex = 1;
+                else
+                {
+                    bool isCompressed = this.editedMod.Compression == Archive2.Compression.Default;
+                    switch (this.editedMod.Format)
+                    {
+                        case Archive2.Format.General:
+                            if (isCompressed)
+                                this.comboBoxModArchivePreset.SelectedIndex = 2; // General
+                            else
+                                this.comboBoxModArchivePreset.SelectedIndex = 4; // Sound FX
+                            break;
+                        case Archive2.Format.DDS:
+                            this.comboBoxModArchivePreset.SelectedIndex = 3;     // Textures
+                            break;
+                        case null: // null means auto-detect
+                            this.comboBoxModArchivePreset.SelectedIndex = 1;     // Auto-detect
+                            break;
+                        default:
+                            this.comboBoxModArchivePreset.SelectedIndex = 0;     // Please select
+                            break;
+                    }
+                    if (this.editedMod.Compression == null) // null means auto-detect
+                        this.comboBoxModArchivePreset.SelectedIndex = 1;
+                }
             }
 
             // NexusMods info:
@@ -739,26 +741,33 @@ namespace Fo76ini
                     case 1: // Auto-detect
                         mod.Format = null;
                         mod.Compression = null;
+                        mod.SeparateGrouping = false;
                         break;
                     case 2: // General
                         mod.Format = Archive2.Format.General;
                         mod.Compression = Archive2.Compression.None;
+                        mod.SeparateGrouping = false;
                         break;
                     case 3: // Textures
                         mod.Format = Archive2.Format.DDS;
                         mod.Compression = Archive2.Compression.Default;
+                        mod.SeparateGrouping = false;
                         break;
                     case 4: // Audio
                         mod.Format = Archive2.Format.General;
                         mod.Compression = Archive2.Compression.None;
+                        mod.SeparateGrouping = false;
                         break;
                     case 5: // Separate BA2s Grouping
-                        ModActions.SplitMod(mod, Mods);
+                        mod.Format = null;
+                        mod.Compression = null;
+                        mod.SeparateGrouping = true;
                         break;
                 }
                 if (mod.Frozen &&
                     (mod.Format != mod.CurrentFormat ||
-                     mod.Compression != mod.CurrentCompression))
+                     mod.Compression != mod.CurrentCompression ||
+                     mod.SeparateGrouping != mod.CurrentSeparateGrouping))
                     ModActions.Unfreeze(mod);
             }
             if (!isEditingBulk)

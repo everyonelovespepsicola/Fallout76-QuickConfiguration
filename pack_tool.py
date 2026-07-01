@@ -158,10 +158,11 @@ def copy_additions(debug = False):
     Copies additional files (like 7z) to the build output directory.
     """
     print("Copying additional files...")
-    if debug:
-        copytree(str(DEPENDENCIES_DIR), str(PROGRAM_BIN_DIR / "Debug"))
-    else:
-        copytree(str(DEPENDENCIES_DIR), str(get_binaries_path()))
+    dest_dir = str(PROGRAM_BIN_DIR / "Debug") if debug else str(get_binaries_path())
+    copytree(str(DEPENDENCIES_DIR), dest_dir)
+    for filename in ["whatsnew.html", "whatsnewdark.html"]:
+        if os.path.exists(filename):
+            shutil.copy(filename, dest_dir)
 
 def pack_release():
     """

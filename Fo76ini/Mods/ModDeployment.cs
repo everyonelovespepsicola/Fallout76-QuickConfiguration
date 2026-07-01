@@ -1,4 +1,4 @@
-﻿using Fo76ini.Utilities;
+using Fo76ini.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -195,29 +195,116 @@ namespace Fo76ini.Mods
                     ModActions.Unfreeze(mod);
                 }
 
-                // Getting preset:
-                Archive2.Preset preset = ModHelpers.GetArchive2Preset(mod);
+                if (mod.SeparateGrouping)
+                {
+                    LogFile.WriteLine($"      Creating separate grouped archives...");
+                    string tempPath = Path.Combine(mod.GamePath, "tmp", mod.guid.ToString());
+                    Directory.CreateDirectory(tempPath);
 
-                LogFile.WriteLine($"      Creating new archive...");
-                LogFile.WriteLine($"         Format:      {preset.format}");
-                LogFile.WriteLine($"         Compression: {preset.compression}");
+                    string tempGeneral = Path.Combine(tempPath, "General");
+                    string tempTextures = Path.Combine(tempPath, "Textures");
+                    string tempSounds = Path.Combine(tempPath, "Sounds");
+                    string tempInterface = Path.Combine(tempPath, "Interface");
 
-                // ... and create a new archive.
-                Archive2.Create(
-                    mod.ArchivePath,
-                    mod.ManagedFolderPath,
-                    preset);
+                    Directory.CreateDirectory(tempGeneral);
+                    Directory.CreateDirectory(tempTextures);
+                    Directory.CreateDirectory(tempSounds);
+                    Directory.CreateDirectory(tempInterface);
+
+                    int genCount = 0, texCount = 0, sndCount = 0, intCount = 0;
+
+                    foreach (string filePath in Directory.EnumerateFiles(mod.ManagedFolderPath, "*.*", SearchOption.AllDirectories))
+                    {
+                        FileInfo info = new FileInfo(filePath);
+                        string fileExtension = info.Extension.ToLower();
+                        string relativePath = Utils.MakeRelativePath(mod.ManagedFolderPath, filePath);
+
+                        string destPath;
+                        if (relativePath.Trim().ToLower().StartsWith("sound") || relativePath.Trim().ToLower().StartsWith("music") ||
+                            (new string[] { ".wav", ".xwm", ".fuz", ".lip" }).Contains(fileExtension))
+                        {
+                            sndCount++;
+                            destPath = Path.Combine(tempSounds, relativePath);
+                        }
+                        else if (relativePath.Trim().ToLower().StartsWith("interface") || relativePath.Trim().ToLower().StartsWith("programs") || fileExtension == ".swf")
+                        {
+                            intCount++;
+                            destPath = Path.Combine(tempInterface, relativePath);
+                        }
+                        else if (fileExtension == ".dds")
+                        {
+                            texCount++;
+                            destPath = Path.Combine(tempTextures, relativePath);
+                        }
+                        else
+                        {
+                            genCount++;
+                            destPath = Path.Combine(tempGeneral, relativePath);
+                        }
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(destPath));
+                        CopyFileOrMakeHardLink(filePath, destPath, true);
+                    }
+
+                    string baseName = Path.GetFileNameWithoutExtension(mod.ArchiveName);
+                    string dataPath = Path.GetDirectoryName(mod.ArchivePath);
+
+                    if (genCount > 0 && ModHelpers.AreFilesAvailableToPack(tempGeneral))
+                    {
+                        Archive2.Create(mod.ArchivePath, tempGeneral, Archive2.Compression.Default, Archive2.Format.General);
+                        resources.Add(mod.ArchiveName);
+                    }
+
+                    if (texCount > 0 && ModHelpers.AreFilesAvailableToPack(tempTextures))
+                    {
+                        string texArchiveName = baseName + "Textures.ba2";
+                        Archive2.Create(Path.Combine(dataPath, texArchiveName), tempTextures, Archive2.Compression.Default, Archive2.Format.DDS);
+                        resources.Add(texArchiveName);
+                    }
+
+                    if (sndCount > 0 && ModHelpers.AreFilesAvailableToPack(tempSounds))
+                    {
+                        string sndArchiveName = baseName + "Sounds.ba2";
+                        Archive2.Create(Path.Combine(dataPath, sndArchiveName), tempSounds, Archive2.Compression.None, Archive2.Format.General);
+                        resources.Add(sndArchiveName);
+                    }
+
+                    if (intCount > 0 && ModHelpers.AreFilesAvailableToPack(tempInterface))
+                    {
+                        string intArchiveName = baseName + "Interface.ba2";
+                        Archive2.Create(Path.Combine(dataPath, intArchiveName), tempInterface, Archive2.Compression.None, Archive2.Format.General);
+                        resources.Add(intArchiveName);
+                    }
+
+                    Utils.DeleteDirectory(tempPath);
+                }
+                else
+                {
+                    // Getting preset:
+                    Archive2.Preset preset = ModHelpers.GetArchive2Preset(mod);
+
+                    LogFile.WriteLine($"      Creating new archive...");
+                    LogFile.WriteLine($"         Format:      {preset.format}");
+                    LogFile.WriteLine($"         Compression: {preset.compression}");
+
+                    // ... and create a new archive.
+                    Archive2.Create(
+                        mod.ArchivePath,
+                        mod.ManagedFolderPath,
+                        preset);
+
+                    // ... and add the archive to the resource list.
+                    resources.Add(mod.ArchiveName);
+                }
             }
 
             // Finally, update the disk state ...
             mod.CurrentArchiveName = mod.ArchiveName;
             mod.CurrentCompression = mod.Frozen ? mod.FrozenCompression : mod.Compression;
             mod.CurrentFormat = mod.Frozen ? mod.FrozenFormat : mod.Format;
+            mod.CurrentSeparateGrouping = mod.SeparateGrouping;
             mod.Deployed = true;
             mod.PreviousMethod = ManagedMod.DeploymentMethod.SeparateBA2;
-
-            // ... and add the archive to the resource list.
-            resources.Add(mod.ArchiveName);
 
             LogFile.WriteLine($"      Installed.");
         }
@@ -433,9 +520,35 @@ namespace Fo76ini.Mods
                         break;
 
                     case ManagedMod.DeploymentMethod.SeparateBA2:
-                        LogFile.WriteLine($"      Deleting {mod.CurrentArchiveName}");
-                        File.Delete(mod.CurrentArchivePath);
-                        resources.Remove(mod.CurrentArchiveName);
+                        if (!string.IsNullOrEmpty(mod.CurrentArchiveName))
+                        {
+                            LogFile.WriteLine($"      Deleting {mod.CurrentArchiveName}");
+                            if (File.Exists(mod.CurrentArchivePath))
+                                File.Delete(mod.CurrentArchivePath);
+                            resources.Remove(mod.CurrentArchiveName);
+
+                            string currentBaseName = Path.GetFileNameWithoutExtension(mod.CurrentArchiveName);
+                            if (!string.IsNullOrEmpty(currentBaseName))
+                            {
+                                string dataDir = Path.Combine(GamePath, "Data");
+                                string texName = currentBaseName + "Textures.ba2";
+                                string sndName = currentBaseName + "Sounds.ba2";
+                                string intName = currentBaseName + "Interface.ba2";
+
+                                if (File.Exists(Path.Combine(dataDir, texName))) {
+                                    File.Delete(Path.Combine(dataDir, texName));
+                                    resources.Remove(texName);
+                                }
+                                if (File.Exists(Path.Combine(dataDir, sndName))) {
+                                    File.Delete(Path.Combine(dataDir, sndName));
+                                    resources.Remove(sndName);
+                                }
+                                if (File.Exists(Path.Combine(dataDir, intName))) {
+                                    File.Delete(Path.Combine(dataDir, intName));
+                                    resources.Remove(intName);
+                                }
+                            }
+                        }
                         break;
 
                     case ManagedMod.DeploymentMethod.LooseFiles:

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
@@ -178,6 +178,11 @@ namespace Fo76ini.Mods
         public Archive2.Format? Format = null;
 
         /// <summary>
+        /// Whether the mod should pack files into separate Main/Textures/etc. archives.
+        /// </summary>
+        public bool SeparateGrouping = false;
+
+        /// <summary>
         /// How the archive in Data is compressed.
         /// nullable: If null, auto-detect compression.
         /// </summary>
@@ -188,6 +193,11 @@ namespace Fo76ini.Mods
         /// nullable: If null, auto-detect format.
         /// </summary>
         public Archive2.Format? CurrentFormat = null;
+
+        /// <summary>
+        /// Whether the currently deployed archives use separate grouping.
+        /// </summary>
+        public bool CurrentSeparateGrouping = false;
 
         /// <summary>
         /// How the archive in FrozenData is compressed.
@@ -374,6 +384,8 @@ namespace Fo76ini.Mods
             this.CurrentCompression = mod.CurrentCompression;
             this.Format = mod.Format;
             this.CurrentFormat = mod.CurrentFormat;
+            this.SeparateGrouping = mod.SeparateGrouping;
+            this.CurrentSeparateGrouping = mod.CurrentSeparateGrouping;
 
 
             /*
@@ -461,6 +473,7 @@ namespace Fo76ini.Mods
                     new XElement("ArchiveFormat", GetFormatName(this.CurrentFormat)),
                     new XElement("ArchiveCompression", GetCompressionName(this.CurrentCompression)),
                     new XElement("RootFolder", this.CurrentRootFolder),
+                    new XElement("SeparateGrouping", this.CurrentSeparateGrouping),
                     xmlLooseFiles
                 ),
                 new XElement("Pending",
@@ -469,7 +482,8 @@ namespace Fo76ini.Mods
                     new XElement("ArchiveName", this.ArchiveName),
                     new XElement("ArchiveFormat", GetFormatName(this.Format)),
                     new XElement("ArchiveCompression", GetCompressionName(this.Compression)),
-                    new XElement("RootFolder", this.RootFolder)
+                    new XElement("RootFolder", this.RootFolder),
+                    new XElement("SeparateGrouping", this.SeparateGrouping)
                 ),
                 new XElement("FrozenData",
                     new XAttribute("isFrozen", this.Frozen),
@@ -532,6 +546,9 @@ namespace Fo76ini.Mods
                 mod.CurrentArchiveName = xmlCurrentDiskState.Element("ArchiveName").Value;
             if (xmlCurrentDiskState.Element("RootFolder") != null)
                 mod.CurrentRootFolder = xmlCurrentDiskState.Element("RootFolder").Value;
+            if (xmlCurrentDiskState.Element("SeparateGrouping") != null &&
+                xmlCurrentDiskState.Element("SeparateGrouping").TryParseBool(out bool currentSeparateGrouping))
+                mod.CurrentSeparateGrouping = currentSeparateGrouping;
 
             XElement xmlInstalledLooseFiles = xmlCurrentDiskState.Element("InstalledLooseFiles");
             if (xmlInstalledLooseFiles != null)
@@ -555,6 +572,9 @@ namespace Fo76ini.Mods
                 mod.Compression = GetCompression(xmlPendingDiskState.Element("ArchiveCompression").Value);
             if (xmlPendingDiskState.Element("RootFolder") != null)
                 mod.RootFolder = xmlPendingDiskState.Element("RootFolder").Value;
+            if (xmlPendingDiskState.Element("SeparateGrouping") != null &&
+                xmlPendingDiskState.Element("SeparateGrouping").TryParseBool(out bool separateGrouping))
+                mod.SeparateGrouping = separateGrouping;
 
             XElement xmlFrozenDiskState = xmlDiskState.Element("FrozenData");
             if (xmlFrozenDiskState == null)
@@ -604,6 +624,9 @@ namespace Fo76ini.Mods
                     return true;
 
                 if (Freeze && !Frozen)
+                    return true;
+
+                if (CurrentSeparateGrouping != SeparateGrouping)
                     return true;
             }
             else if (Method == DeploymentMethod.LooseFiles)

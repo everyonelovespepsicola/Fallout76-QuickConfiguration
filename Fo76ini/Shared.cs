@@ -48,8 +48,8 @@ namespace Fo76ini
 
             // Remote files:
             // (These files are downloaded by the tool)
-            public const string RemoteWhatsNewURL = "https://felisdiligens.github.io/Fo76ini/whatsnew";
-            public const string RemoteWhatsNewDarkURL = "https://felisdiligens.github.io/Fo76ini/whatsnewdark";
+            public const string RemoteWhatsNewURL = "https://everyonelovespepsicola.github.io/Fallout76-QuickConfiguration/whatsnew.html";
+            public const string RemoteWhatsNewDarkURL = "https://everyonelovespepsicola.github.io/Fallout76-QuickConfiguration/whatsnewdark.html";
             public const string RemoteLanguageFolderURL = "https://raw.githubusercontent.com/FelisDiligens/Fallout76-QuickConfiguration/master/Fo76ini/languages/";
         }
 

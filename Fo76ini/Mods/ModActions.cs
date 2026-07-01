@@ -399,6 +399,7 @@ namespace Fo76ini.Mods
                 newMod.Format = format;
                 newMod.Compression = compression;
                 newMod.RootFolder = mod.RootFolder;
+                newMod.Enabled = mod.Enabled;
 
                 bool movedAny = false;
                 foreach (string folderName in targetFolders)
@@ -437,6 +438,9 @@ namespace Fo76ini.Mods
                 ExtractToNewMod(" - Interface", Archive2.Format.General, Archive2.Compression.None, ModHelpers.InterfaceFolders);
 
             mod.Title = mod.Title + " - Main";
+            string origName = Path.GetFileNameWithoutExtension(mod.ArchiveName);
+            if (string.IsNullOrEmpty(origName)) origName = "archive";
+            mod.ArchiveName = origName + "Main.ba2";
             mod.Method = ManagedMod.DeploymentMethod.SeparateBA2;
             mod.Format = Archive2.Format.General;
             mod.Compression = Archive2.Compression.Default;

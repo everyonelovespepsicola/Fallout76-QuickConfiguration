@@ -1,15 +1,18 @@
 ### What's new in v1.12.9.07?
 
-This update introduces mod archive preset improvements, security updates, and repo custom branding adjustments.
+This update introduces mod archive preset improvements, side panel enhancements, stability fixes, security updates, and repo custom branding adjustments.
 
 - Added "Separate BA2s Grouping" archive preset to automatically split folder-based mods into separate General, Textures, Sound, and Interface BA2 archives.
+- Made the mod details side panel permanently visible (static) and disabled collapse/expand animations.
+- Updated the mod list grid to dynamically auto-resize and fit next to the side panel when the main window is resized.
+- Fixed a deployment uninstallation crash that occurred when removing newly added mods.
 - Updated `Magick.NET` and `Magick.NET.Core` dependencies to v14.14.0 across all projects to address security audit warnings.
 - Completely removed the built-in updater utility and references to prevent conflicts with the original repository.
 - Rebranded and updated GitHub project links on the Home view to point to the current repository fork.
 - Removed the "Buy Me A Coffee" donation button from the Web Links panel.
 - Modified the publish script to default to "No" on version update prompts.
 
-*Released: June 30, 2026*
+*Released: July 1, 2026*
 
 ---
 
