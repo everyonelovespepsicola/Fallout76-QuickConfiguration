@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
+  <meta name="generator" content="pandoc 3.10" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>What's new</title>
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     /* The extra [class] is a hack that increases specificity enough to
        override a similar rule in reveal.js */
@@ -30,6 +36,52 @@
   <script src="https://cdn.jsdelivr.net/npm/details-polyfill@1/index.min.js"></script>
 </head>
 <body>
+<h3 id="whats-new-in-v112907">What's new in v1.12.9.07?</h3>
+<p>This update introduces mod archive preset improvements, security
+updates, and repo custom branding adjustments.</p>
+<ul>
+<li>Added "Separate BA2s Grouping" archive preset to automatically split
+folder-based mods into separate General, Textures, Sound, and Interface
+BA2 archives.</li>
+<li>Updated <code>Magick.NET</code> and <code>Magick.NET.Core</code>
+dependencies to v14.14.0 across all projects to address security audit
+warnings.</li>
+<li>Completely removed the built-in updater utility and references to
+prevent conflicts with the original repository.</li>
+<li>Rebranded and updated GitHub project links on the Home view to point
+to the current repository fork.</li>
+<li>Removed the "Buy Me A Coffee" donation button from the Web Links
+panel.</li>
+<li>Modified the publish script to default to "No" on version update
+prompts.</li>
+</ul>
+<p><em>Released: June 30, 2026</em></p>
+<hr />
+<h3 id="whats-new-in-v112905">What's new in v1.12.9.05?</h3>
+<p>This update introduces a new mod manager grid layout with integrated
+search.</p>
+<ul>
+<li>Added a new grid system to the mod manager interface to improve
+layout and information density.</li>
+<li>Implemented built-in real-time search functionality, allowing you to
+instantly filter mods by name or keywords.</li>
+<li>Optimized rendering and load times for large lists of mods.</li>
+</ul>
+<p><em>Released: May 2, 2026</em></p>
+<hr />
+<h3 id="whats-new-in-v112902">What's new in v1.12.9.02?</h3>
+<p>This is a small maintenance update that fixes a few bugs in the mod
+manager.</p>
+<ul>
+<li>Fixed an issue where quickly checking a mod in a sorted list could
+accidentally check a second mod.</li>
+<li>You can now use the keyboard to jump to a mod in the list by typing
+the first few letters of its name.</li>
+<li>The "Check/uncheck all" button in the mod manager has been moved to
+the far left for better accessibility.</li>
+</ul>
+<p><em>Released: March 31, 2026</em></p>
+<hr />
 <h3 id="whats-new-in-v1129">What's new in v1.12.9?</h3>
 <p>Added/fixed a few tweaks and fixed the NexusMods profile picture not
 loading in.</p>

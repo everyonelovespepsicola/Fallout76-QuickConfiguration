@@ -1,4 +1,4 @@
-﻿namespace Fo76ini.Forms.FormMain
+namespace Fo76ini.Forms.FormMain
 {
     partial class UserControlTweaks
     {
@@ -348,6 +348,9 @@
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.checkBoxToggleAim = new System.Windows.Forms.CheckBox();
+            this.checkBoxMapCursorTweaks = new System.Windows.Forms.CheckBox();
+            this.checkBoxDisableVatsBlur = new System.Windows.Forms.CheckBox();
+            this.checkBoxDisableTAA = new System.Windows.Forms.CheckBox();
             this.tabControlTweaks.SuspendLayout();
             this.tabPageTweaksInfo.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
@@ -541,6 +544,7 @@
             this.groupBoxGameplay.BackColor = System.Drawing.Color.White;
             this.groupBoxGameplay.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxGameplay.BorderWidth = 1;
+            this.groupBoxGameplay.Controls.Add(this.checkBoxDisableVatsBlur);
             this.groupBoxGameplay.Controls.Add(this.comboBoxQuickHealStimpakPriority);
             this.groupBoxGameplay.Controls.Add(this.labelQuickHealStimpakPriority);
             this.groupBoxGameplay.Controls.Add(this.comboBoxVATSGrenadeMineTargetingMode);
@@ -552,7 +556,7 @@
             this.groupBoxGameplay.Controls.Add(this.comboBoxHighlightCorpses);
             this.groupBoxGameplay.Location = new System.Drawing.Point(9, 144);
             this.groupBoxGameplay.Name = "groupBoxGameplay";
-            this.groupBoxGameplay.Size = new System.Drawing.Size(400, 181);
+            this.groupBoxGameplay.Size = new System.Drawing.Size(400, 206);
             this.groupBoxGameplay.TabIndex = 2;
             this.groupBoxGameplay.TabStop = false;
             this.groupBoxGameplay.Text = "Gameplay";
@@ -560,6 +564,16 @@
             this.groupBoxGameplay.TitleBorderMargin = 6;
             this.groupBoxGameplay.TitleBorderPadding = 4;
             this.groupBoxGameplay.TitleForeColor = System.Drawing.Color.Black;
+            // 
+            // checkBoxDisableVatsBlur
+            // 
+            this.checkBoxDisableVatsBlur.AutoSize = true;
+            this.checkBoxDisableVatsBlur.Location = new System.Drawing.Point(10, 178);
+            this.checkBoxDisableVatsBlur.Name = "checkBoxDisableVatsBlur";
+            this.checkBoxDisableVatsBlur.Size = new System.Drawing.Size(111, 17);
+            this.checkBoxDisableVatsBlur.TabIndex = 12;
+            this.checkBoxDisableVatsBlur.Text = "Disable VATS blur";
+            this.checkBoxDisableVatsBlur.UseVisualStyleBackColor = true;
             // 
             // comboBoxQuickHealStimpakPriority
             // 
@@ -630,11 +644,11 @@
             // labelHighlightCorpses
             // 
             this.labelHighlightCorpses.AutoSize = true;
-            this.labelHighlightCorpses.Location = new System.Drawing.Point(6, 21);
+            this.labelHighlightCorpses.Location = new System.Drawing.Point(7, 21);
             this.labelHighlightCorpses.Name = "labelHighlightCorpses";
-            this.labelHighlightCorpses.Size = new System.Drawing.Size(91, 13);
+            this.labelHighlightCorpses.Size = new System.Drawing.Size(92, 13);
             this.labelHighlightCorpses.TabIndex = 3;
-            this.labelHighlightCorpses.Text = "Highlight corpses:";
+            this.labelHighlightCorpses.Text = "Highlight Corpses:";
             // 
             // comboBoxHighlightCorpses
             // 
@@ -656,7 +670,7 @@
             this.groupBoxDialogue.Controls.Add(this.checkBoxDialogueHistory);
             this.groupBoxDialogue.Controls.Add(this.checkBoxDialogueSubtitles);
             this.groupBoxDialogue.Controls.Add(this.checkBoxGeneralSubtitles);
-            this.groupBoxDialogue.Location = new System.Drawing.Point(9, 334);
+            this.groupBoxDialogue.Location = new System.Drawing.Point(9, 356);
             this.groupBoxDialogue.Margin = new System.Windows.Forms.Padding(6);
             this.groupBoxDialogue.Name = "groupBoxDialogue";
             this.groupBoxDialogue.Size = new System.Drawing.Size(400, 143);
@@ -1700,6 +1714,7 @@
             this.groupBoxTAASharpening.BackColor = System.Drawing.Color.White;
             this.groupBoxTAASharpening.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxTAASharpening.BorderWidth = 1;
+            this.groupBoxTAASharpening.Controls.Add(this.checkBoxDisableTAA);
             this.groupBoxTAASharpening.Controls.Add(this.sliderTAAPostSharpen);
             this.groupBoxTAASharpening.Controls.Add(this.labelTAAPostSharpen);
             this.groupBoxTAASharpening.Controls.Add(this.numTAAPostSharpen);
@@ -1708,7 +1723,7 @@
             this.groupBoxTAASharpening.Controls.Add(this.labelTAAPostOverlay);
             this.groupBoxTAASharpening.Location = new System.Drawing.Point(9, 1345);
             this.groupBoxTAASharpening.Name = "groupBoxTAASharpening";
-            this.groupBoxTAASharpening.Size = new System.Drawing.Size(381, 123);
+            this.groupBoxTAASharpening.Size = new System.Drawing.Size(381, 145);
             this.groupBoxTAASharpening.TabIndex = 18;
             this.groupBoxTAASharpening.TabStop = false;
             this.groupBoxTAASharpening.Text = "TAA Sharpening";
@@ -1735,7 +1750,7 @@
             0,
             0,
             0});
-            this.sliderTAAPostSharpen.Location = new System.Drawing.Point(9, 93);
+            this.sliderTAAPostSharpen.Location = new System.Drawing.Point(9, 113);
             this.sliderTAAPostSharpen.Maximum = new decimal(new int[] {
             200,
             0,
@@ -1783,7 +1798,7 @@
             // labelTAAPostSharpen
             // 
             this.labelTAAPostSharpen.AutoSize = true;
-            this.labelTAAPostSharpen.Location = new System.Drawing.Point(6, 77);
+            this.labelTAAPostSharpen.Location = new System.Drawing.Point(6, 97);
             this.labelTAAPostSharpen.Name = "labelTAAPostSharpen";
             this.labelTAAPostSharpen.Size = new System.Drawing.Size(69, 13);
             this.labelTAAPostSharpen.TabIndex = 3;
@@ -1798,7 +1813,7 @@
             0,
             0,
             65536});
-            this.numTAAPostSharpen.Location = new System.Drawing.Point(301, 93);
+            this.numTAAPostSharpen.Location = new System.Drawing.Point(301, 113);
             this.numTAAPostSharpen.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -1831,7 +1846,7 @@
             0,
             0,
             0});
-            this.sliderTAAPostOverlay.Location = new System.Drawing.Point(6, 41);
+            this.sliderTAAPostOverlay.Location = new System.Drawing.Point(9, 66);
             this.sliderTAAPostOverlay.Maximum = new decimal(new int[] {
             100,
             0,
@@ -1855,7 +1870,7 @@
             0});
             this.sliderTAAPostOverlay.ShowDivisionsText = false;
             this.sliderTAAPostOverlay.ShowSmallScale = false;
-            this.sliderTAAPostOverlay.Size = new System.Drawing.Size(289, 20);
+            this.sliderTAAPostOverlay.Size = new System.Drawing.Size(286, 20);
             this.sliderTAAPostOverlay.SmallChange = new decimal(new int[] {
             1,
             0,
@@ -1885,7 +1900,7 @@
             0,
             0,
             65536});
-            this.numTAAPostOverlay.Location = new System.Drawing.Point(301, 41);
+            this.numTAAPostOverlay.Location = new System.Drawing.Point(301, 66);
             this.numTAAPostOverlay.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -1903,7 +1918,7 @@
             // labelTAAPostOverlay
             // 
             this.labelTAAPostOverlay.AutoSize = true;
-            this.labelTAAPostOverlay.Location = new System.Drawing.Point(6, 25);
+            this.labelTAAPostOverlay.Location = new System.Drawing.Point(6, 50);
             this.labelTAAPostOverlay.Name = "labelTAAPostOverlay";
             this.labelTAAPostOverlay.Size = new System.Drawing.Size(65, 13);
             this.labelTAAPostOverlay.TabIndex = 0;
@@ -2053,6 +2068,16 @@
             this.comboBoxAntiAliasing.Name = "comboBoxAntiAliasing";
             this.comboBoxAntiAliasing.Size = new System.Drawing.Size(225, 21);
             this.comboBoxAntiAliasing.TabIndex = 1;
+            // 
+            // checkBoxDisableTAA
+            // 
+            this.checkBoxDisableTAA.AutoSize = true;
+            this.checkBoxDisableTAA.Location = new System.Drawing.Point(9, 20);
+            this.checkBoxDisableTAA.Name = "checkBoxDisableTAA";
+            this.checkBoxDisableTAA.Size = new System.Drawing.Size(86, 17);
+            this.checkBoxDisableTAA.TabIndex = 2;
+            this.checkBoxDisableTAA.Text = "Disable TAA";
+            this.checkBoxDisableTAA.UseVisualStyleBackColor = true;
             // 
             // groupBoxLOD
             // 
@@ -4004,7 +4029,7 @@
             this.groupBoxGamepad.Controls.Add(this.sliderGamepadSensitivityX);
             this.groupBoxGamepad.Controls.Add(this.numGamepadSensitivityX);
             this.groupBoxGamepad.Controls.Add(this.labelGamepadSensitivityX);
-            this.groupBoxGamepad.Location = new System.Drawing.Point(9, 277);
+            this.groupBoxGamepad.Location = new System.Drawing.Point(9, 293);
             this.groupBoxGamepad.Margin = new System.Windows.Forms.Padding(6);
             this.groupBoxGamepad.Name = "groupBoxGamepad";
             this.groupBoxGamepad.Size = new System.Drawing.Size(400, 204);
@@ -4259,6 +4284,7 @@
             this.groupBoxMouse.BackColor = System.Drawing.Color.White;
             this.groupBoxMouse.BorderColor = System.Drawing.Color.Silver;
             this.groupBoxMouse.BorderWidth = 1;
+            this.groupBoxMouse.Controls.Add(this.checkBoxMapCursorTweaks);
             this.groupBoxMouse.Controls.Add(this.checkBoxToggleAim);
             this.groupBoxMouse.Controls.Add(this.checkBoxMouseInvertX);
             this.groupBoxMouse.Controls.Add(this.checkBoxMouseInvertY);
@@ -4273,7 +4299,7 @@
             this.groupBoxMouse.Location = new System.Drawing.Point(9, 9);
             this.groupBoxMouse.Margin = new System.Windows.Forms.Padding(6);
             this.groupBoxMouse.Name = "groupBoxMouse";
-            this.groupBoxMouse.Size = new System.Drawing.Size(400, 256);
+            this.groupBoxMouse.Size = new System.Drawing.Size(400, 278);
             this.groupBoxMouse.TabIndex = 0;
             this.groupBoxMouse.TabStop = false;
             this.groupBoxMouse.Text = "Mouse";
@@ -4311,6 +4337,26 @@
             this.checkBoxFixAimSensitivity.TabIndex = 7;
             this.checkBoxFixAimSensitivity.Text = "Fix aim sensitivity";
             this.checkBoxFixAimSensitivity.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMapCursorTweaks
+            // 
+            this.checkBoxMapCursorTweaks.AutoSize = true;
+            this.checkBoxMapCursorTweaks.Location = new System.Drawing.Point(9, 225);
+            this.checkBoxMapCursorTweaks.Name = "checkBoxMapCursorTweaks";
+            this.checkBoxMapCursorTweaks.Size = new System.Drawing.Size(180, 17);
+            this.checkBoxMapCursorTweaks.TabIndex = 10;
+            this.checkBoxMapCursorTweaks.Text = "Map Speed High FPS";
+            this.checkBoxMapCursorTweaks.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxToggleAim
+            // 
+            this.checkBoxToggleAim.AutoSize = true;
+            this.checkBoxToggleAim.Location = new System.Drawing.Point(9, 248);
+            this.checkBoxToggleAim.Name = "checkBoxToggleAim";
+            this.checkBoxToggleAim.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxToggleAim.TabIndex = 11;
+            this.checkBoxToggleAim.Text = "Toggle Aim";
+            this.checkBoxToggleAim.UseVisualStyleBackColor = true;
             // 
             // checkBoxFixMouseSensitivity
             // 
@@ -7058,16 +7104,6 @@
             this.toolTip.ReshowDelay = 100;
             this.toolTip.ShowAlways = true;
             // 
-            // checkBoxToggleAim
-            // 
-            this.checkBoxToggleAim.AutoSize = true;
-            this.checkBoxToggleAim.Location = new System.Drawing.Point(9, 233);
-            this.checkBoxToggleAim.Name = "checkBoxToggleAim";
-            this.checkBoxToggleAim.Size = new System.Drawing.Size(78, 17);
-            this.checkBoxToggleAim.TabIndex = 10;
-            this.checkBoxToggleAim.Text = "Toggle aim";
-            this.checkBoxToggleAim.UseVisualStyleBackColor = true;
-            // 
             // UserControlTweaks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -7538,5 +7574,8 @@
         private ColorSlider.ColorSlider sliderViewmodelFOV;
         private System.Windows.Forms.NumericUpDown numViewmodelFOV;
         private System.Windows.Forms.CheckBox checkBoxToggleAim;
+        private System.Windows.Forms.CheckBox checkBoxMapCursorTweaks;
+        private System.Windows.Forms.CheckBox checkBoxDisableVatsBlur;
+        private System.Windows.Forms.CheckBox checkBoxDisableTAA;
     }
 }

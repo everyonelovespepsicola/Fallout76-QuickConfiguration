@@ -1,4 +1,4 @@
-﻿﻿namespace Fo76ini
+namespace Fo76ini
 {
     partial class FormMods
     {

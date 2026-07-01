@@ -9,7 +9,7 @@ VARS:
   BackColor: white
 
   # Home - App Version colors:
-  Version.LatestColor: "DarkGreen"
+  Version.LatestColor: "#43bb41"
   Version.OldColor: "Red"
   Version.UnknownColor: "DarkGray"
 

@@ -19,28 +19,28 @@ Added Seach and Sorting to Mod Manager
 </p>
   
 <p align="center">
-  <a href="https://github.com/FelisDiligens/Fallout76-QuickConfiguration/releases/latest">
-    <img src="https://github.com/FelisDiligens/Fallout76-QuickConfiguration/raw/master/Images/getitfromgithub_button.png"/>
+  <a href="https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/releases/latest">
+    <img src="https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/raw/master/Images/getitfromgithub_button.png"/>
   </a>
   <a href="https://www.nexusmods.com/fallout76/mods/546?tab=files#mod-page-tab-files">
-    <img src="https://github.com/FelisDiligens/Fallout76-QuickConfiguration/raw/master/Images/getitfromnexusmods_button.png"/>
+    <img src="https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/raw/master/Images/getitfromnexusmods_button.png"/>
   </a>
 </p>
 
 <p align="center">
   <a href="https://www.nexusmods.com/fallout76/mods/546?tab=images#list-modimages-1">Screenshots</a> |
-  <a href="https://github.com/FelisDiligens/Fallout76-QuickConfiguration/wiki">Wiki & Guides</a> |
+  <a href="https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/wiki">Wiki & Guides</a> |
   <a href="https://www.nexusmods.com/fallout76/mods/546?tab=posts#comment-container">Posts</a> |
   <a href="https://www.nexusmods.com/fallout76/mods/546?tab=bugs#tab-modbugs">Bugs</a>
 </p>
 
 <br>
 <p align="center">
-<img src="https://img.shields.io/github/v/release/FelisDiligens/Fallout76-QuickConfiguration?style=for-the-badge&labelColor=0D0D0D&color=D9AD2B" alt="">
+<img src="https://img.shields.io/github/v/release/everyonelovespepsicola/Fallout76-QuickConfiguration?style=for-the-badge&labelColor=0D0D0D&color=D9AD2B" alt="">
   <img src="https://img.shields.io/badge/platform-windows-D9AD2B?style=for-the-badge&logo=windows&labelColor=0D0D0D" alt="Platform: Windows">
-  <img src="https://img.shields.io/github/downloads/FelisDiligens/Fallout76-QuickConfiguration/total?style=for-the-badge&labelColor=0D0D0D&color=D9AD2B" alt="">
-  <img src="https://img.shields.io/github/downloads/FelisDiligens/Fallout76-QuickConfiguration/latest/total?style=for-the-badge&labelColor=0D0D0D&color=D9AD2B" alt="">
-  <!--<img src="https://img.shields.io/github/license/FelisDiligens/Fallout76-QuickConfiguration?style=for-the-badge&labelColor=0D0D0D" alt="License: MIT">-->
+  <img src="https://img.shields.io/github/downloads/everyonelovespepsicola/Fallout76-QuickConfiguration/total?style=for-the-badge&labelColor=0D0D0D&color=D9AD2B" alt="">
+  <img src="https://img.shields.io/github/downloads/everyonelovespepsicola/Fallout76-QuickConfiguration/latest/total?style=for-the-badge&labelColor=0D0D0D&color=D9AD2B" alt="">
+  <!--<img src="https://img.shields.io/github/license/everyonelovespepsicola/Fallout76-QuickConfiguration?style=for-the-badge&labelColor=0D0D0D" alt="License: MIT">-->
 </p>
 
 <br>
@@ -79,15 +79,15 @@ If you're still on Windows 7, make sure that you have Service Pack 1 and all upd
 Otherwise the .NET installer might fail or the tool might not start.
 
 ## ⚙️ Installation
-1. [Download](https://github.com/FelisDiligens/Fallout76-QuickConfiguration/releases/latest) and unzip.
+1. [Download](https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/releases/latest) and unzip.
 2. Run and set the game edition and path in the Welcome screen.
 3. Tweak to your heart's content.
 4. Don't forget to hit "Apply".
 
 ## 📚 Wikis & Guides
-* [Frequently Asked Questions](https://github.com/FelisDiligens/Fallout76-QuickConfiguration/wiki/Frequently-Asked-Questions-(FAQ))
-* [Troubleshooting](https://github.com/FelisDiligens/Fallout76-QuickConfiguration/wiki/Troubleshooting)
-* [Mod Manager Guide](https://github.com/FelisDiligens/Fallout76-QuickConfiguration/wiki/Mod-Manager-Guide)
+* [Frequently Asked Questions](https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/wiki/Frequently-Asked-Questions-(FAQ))
+* [Troubleshooting](https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/wiki/Troubleshooting)
+* [Mod Manager Guide](https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/wiki/Mod-Manager-Guide)
 
 ## 🧑‍💻 For developers
 See [Docs](Docs/README.md).
@@ -145,7 +145,7 @@ See [Docs](Docs/README.md).
   * for v1.9.5 by [ColaNaramon (可乐の魂)](https://forums.nexusmods.com/index.php?/user/91571998-colanaramon/)
 
 ## 📌 License
-> © [MIT](https://github.com/FelisDiligens/Fallout76-QuickConfiguration/blob/master/LICENSE)
+> © [MIT](https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/blob/master/LICENSE)
 
 ## Built with
 - C# and .NET Framework 4.7.2

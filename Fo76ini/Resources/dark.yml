@@ -9,7 +9,7 @@ VARS:
   BackColor: "#222"
 
   # Home - App Version colors:
-  Version.LatestColor: "rgb(50, 255, 50)"
+  Version.LatestColor: "#43bb41"
   Version.OldColor: "Red"
   Version.UnknownColor: "Silver"
 
@@ -189,12 +189,12 @@ ToolTip, CustomToolTip:
 
 # Side navigation:
 UserControlSideNav:
-  BackColor: black
+  BackColor: "var(BackColor)"
   ForeColor: "var(TextColor)"
 PictureBox.pictureBoxLogo:
   Image: "fallout76_logo_white"
 StyledButton.NavButton:
-  BackColor: black
+  BackColor: "var(BackColor)"
   MouseDownBackColor: "#444"
   MouseOverBackColor: "#333"
   HighlightBackColor: "#333"

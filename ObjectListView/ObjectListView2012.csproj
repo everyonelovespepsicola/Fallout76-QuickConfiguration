@@ -1,8 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{18FEDA0C-D147-4286-B39A-01204808106A}</ProjectGuid>
@@ -55,11 +56,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="Magick.NET-Q8-x64, Version=14.12.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=AMD64">
-      <HintPath>..\Fo76ini\packages\Magick.NET-Q8-x64.14.12.0\lib\netstandard20\Magick.NET-Q8-x64.dll</HintPath>
+    <Reference Include="Magick.NET-Q8-x64, Version=14.14.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=AMD64">
+      <HintPath>..\Fo76ini\packages\Magick.NET-Q8-x64.14.14.0\lib\netstandard20\Magick.NET-Q8-x64.dll</HintPath>
     </Reference>
-    <Reference Include="Magick.NET.Core, Version=14.12.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
-      <HintPath>..\Fo76ini\packages\Magick.NET.Core.14.12.0\lib\netstandard20\Magick.NET.Core.dll</HintPath>
+    <Reference Include="Magick.NET.Core, Version=14.14.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\Fo76ini\packages\Magick.NET.Core.14.14.0\lib\netstandard20\Magick.NET.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -208,11 +209,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="..\Fo76ini\packages\Magick.NET-Q8-x64.14.12.0\build\netstandard20\Magick.NET-Q8-x64.targets" Condition="Exists('..\Fo76ini\packages\Magick.NET-Q8-x64.14.12.0\build\netstandard20\Magick.NET-Q8-x64.targets')" />
+  <Import Project="..\Fo76ini\packages\Magick.NET-Q8-x64.14.14.0\build\netstandard20\Magick.NET-Q8-x64.targets" Condition="Exists('..\Fo76ini\packages\Magick.NET-Q8-x64.14.14.0\build\netstandard20\Magick.NET-Q8-x64.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\Fo76ini\packages\Magick.NET-Q8-x64.14.12.0\build\netstandard20\Magick.NET-Q8-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\Fo76ini\packages\Magick.NET-Q8-x64.14.12.0\build\netstandard20\Magick.NET-Q8-x64.targets'))" />
+    <Error Condition="!Exists('..\Fo76ini\packages\Magick.NET-Q8-x64.14.14.0\build\netstandard20\Magick.NET-Q8-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\Fo76ini\packages\Magick.NET-Q8-x64.14.14.0\build\netstandard20\Magick.NET-Q8-x64.targets'))" />
   </Target>
 </Project>

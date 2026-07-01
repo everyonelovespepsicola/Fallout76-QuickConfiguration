@@ -1,4 +1,4 @@
-﻿﻿using Fo76ini.Controls;
+﻿using Fo76ini.Controls;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -109,6 +109,7 @@ namespace Fo76ini
 
         private void FormMods_Load(object sender, EventArgs e)
         {
+            this.Size = new System.Drawing.Size(1340, 1000); // Default size for fresh installs
             Configuration.LoadWindowState("FormMods", this);
             // Configuration.LoadListViewState("FormMods.OLV", this.objectListViewMods);
 

@@ -1,4 +1,4 @@
-﻿using Fo76ini.Utilities;
+using Fo76ini.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -108,7 +108,7 @@ namespace Fo76ini.Mods
         /// </summary>
         public static void Unfreeze(ManagedMods mods, int index, Action<Progress> ProgressChanged = null)
         {
-            ModActions.Unfreeze(mods[index]);
+            ModActions.Unfreeze(mods[index], ProgressChanged);
             mods.Save();
             ProgressChanged?.Invoke(Progress.Done("Mod thawed."));
         }
@@ -122,15 +122,25 @@ namespace Fo76ini.Mods
             int n = 1;
             foreach (int index in indices)
             {
-                ModActions.Unfreeze(mods[index]);
+                ModActions.Unfreeze(mods[index], ProgressChanged);
                 ProgressChanged?.Invoke(Progress.Ongoing($"Unfreezing {n} of {count} mod(s)...", (float)n++ / (float)count));
             }
             mods.Save();
             ProgressChanged?.Invoke(Progress.Done($"{count} mod(s) thawed."));
         }
 
-        public static void Unfreeze(ManagedMod mod)
+        public static void Unfreeze(ManagedMod mod, Action<Progress> ProgressChanged = null)
         {
+            // Extract the frozen archive if the managed folder is empty
+            if (mod.Frozen && File.Exists(mod.FrozenArchivePath))
+            {
+                if (!Directory.Exists(mod.ManagedFolderPath) || Directory.EnumerateFileSystemEntries(mod.ManagedFolderPath).Count() == 0)
+                {
+                    ProgressChanged?.Invoke(Progress.Indetermined($"Extracting {mod.ArchiveName} before thawing..."));
+                    ModInstallations.ExtractArchive(mod.FrozenArchivePath, mod.ManagedFolderPath, ProgressChanged);
+                }
+            }
+
             // Delete *.ba2:
             if (File.Exists(mod.FrozenArchivePath))
                 File.Delete(mod.FrozenArchivePath);
@@ -323,6 +333,123 @@ namespace Fo76ini.Mods
                 else if (fileExtension == ".txt")
                     File.Delete(filePath);
             }
+        }
+
+        /// <summary>
+        /// Splits a single mod into multiple mods if it contains separate asset categories (textures, sounds, interface).
+        /// The original mod will retain any leftover files and will be renamed to "[Title] - Main".
+        /// </summary>
+        public static void SplitMod(ManagedMod mod, ManagedMods mods, Action<Progress> ProgressChanged = null)
+        {
+            ProgressChanged?.Invoke(Progress.Indetermined($"Splitting mod '{mod.Title}' into separate BA2s..."));
+
+            string originalManagedFolder = mod.ManagedFolderPath;
+
+            if (!Directory.Exists(originalManagedFolder))
+            {
+                ProgressChanged?.Invoke(Progress.Done($"Splitting mod failed: directory does not exist."));
+                return;
+            }
+
+            bool hasTextures = false;
+            bool hasSounds = false;
+            bool hasInterface = false;
+
+            // Analyze directories
+            foreach (string folderPath in Directory.EnumerateDirectories(originalManagedFolder))
+            {
+                string folderName = Path.GetFileName(folderPath).ToLower();
+                if (ModHelpers.TextureFolders.Contains(folderName)) hasTextures = true;
+                if (ModHelpers.SoundFolders.Contains(folderName)) hasSounds = true;
+                if (ModHelpers.InterfaceFolders.Contains(folderName)) hasInterface = true;
+            }
+
+            if (!hasTextures && !hasSounds && !hasInterface)
+            {
+                ProgressChanged?.Invoke(Progress.Done($"Splitting mod '{mod.Title}' finished. No splittable folders found."));
+                return;
+            }
+
+            // A helper to create and move folders
+            Action<string, Archive2.Format, Archive2.Compression, string[]> ExtractToNewMod = (suffix, format, compression, targetFolders) =>
+            {
+                ManagedMod newMod = new ManagedMod(mods.GamePath, mods.ModsPath);
+                newMod.Title = mod.Title + suffix;
+                
+                string originalArchiveName = Path.GetFileNameWithoutExtension(mod.ArchiveName);
+                if (string.IsNullOrEmpty(originalArchiveName)) originalArchiveName = "archive";
+                newMod.ArchiveName = originalArchiveName + suffix.Replace(" - ", "") + ".ba2";
+                
+                // Get a valid folder name
+                string baseFolderName = mod.ManagedFolderName + suffix.Replace(" - ", "_");
+                newMod.ManagedFolderName = baseFolderName;
+                if (!Utils.IsFileNameValid(newMod.ManagedFolderName))
+                    newMod.ManagedFolderName = newMod.DefaultManagedFolderName;
+                    
+                int suffixCounter = 1;
+                while (Directory.Exists(newMod.ManagedFolderPath))
+                {
+                    newMod.ManagedFolderName = baseFolderName + "_" + suffixCounter;
+                    suffixCounter++;
+                }
+
+                Directory.CreateDirectory(newMod.ManagedFolderPath);
+                
+                newMod.Method = ManagedMod.DeploymentMethod.SeparateBA2;
+                newMod.Format = format;
+                newMod.Compression = compression;
+                newMod.RootFolder = mod.RootFolder;
+
+                bool movedAny = false;
+                foreach (string folderName in targetFolders)
+                {
+                    string sourcePath = Path.Combine(originalManagedFolder, folderName);
+                    if (Directory.Exists(sourcePath))
+                    {
+                        string destPath = Path.Combine(newMod.ManagedFolderPath, folderName);
+                        Directory.Move(sourcePath, destPath);
+                        movedAny = true;
+                    }
+                }
+
+                if (movedAny)
+                {
+                    int index = mods.IndexOf(mod);
+                    if (index >= 0)
+                        mods.Insert(index + 1, newMod);
+                    else
+                        mods.Add(newMod);
+                }
+                else
+                {
+                    // Clean up if nothing was moved
+                    Utils.DeleteDirectory(newMod.ManagedFolderPath);
+                }
+            };
+
+            if (hasTextures)
+                ExtractToNewMod(" - Textures", Archive2.Format.DDS, Archive2.Compression.Default, ModHelpers.TextureFolders);
+            
+            if (hasSounds)
+                ExtractToNewMod(" - Sounds", Archive2.Format.General, Archive2.Compression.None, ModHelpers.SoundFolders);
+
+            if (hasInterface)
+                ExtractToNewMod(" - Interface", Archive2.Format.General, Archive2.Compression.None, ModHelpers.InterfaceFolders);
+
+            mod.Title = mod.Title + " - Main";
+            mod.Method = ManagedMod.DeploymentMethod.SeparateBA2;
+            mod.Format = Archive2.Format.General;
+            mod.Compression = Archive2.Compression.Default;
+            
+            // Check if the original folder is now empty
+            bool isEmpty = !Directory.EnumerateFileSystemEntries(originalManagedFolder).Any();
+            if (isEmpty)
+            {
+                // If empty, we can just delete it
+                ModActions.DeleteMod(mods, mods.IndexOf(mod), ProgressChanged);
+            }
+
+            ProgressChanged?.Invoke(Progress.Done($"Splitting mod '{mod.Title}' finished."));
         }
     }
 }

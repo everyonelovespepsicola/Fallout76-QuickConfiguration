@@ -1,4 +1,4 @@
-﻿using Fo76ini.Interface;
+using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
 using Fo76ini.Properties;
@@ -76,6 +76,7 @@ namespace Fo76ini
                     "General / Meshes / Materials / Animations", // [General, Default]  Meshes: *.nif; Materials: *.bgsm
                     "Textures (*.dds files)",                    // [DDS,     Default]
                     "Sound FX and Music / Interface and HUD",    // [General, None   ]  Interface: *.swf; Sound FX: *.xwm; Voice: *.fuz; Lip-Sync: *.lip;
+                    "Separate BA2s Grouping"
                 }
             ));
 
@@ -750,6 +751,9 @@ namespace Fo76ini
                     case 4: // Audio
                         mod.Format = Archive2.Format.General;
                         mod.Compression = Archive2.Compression.None;
+                        break;
+                    case 5: // Separate BA2s Grouping
+                        ModActions.SplitMod(mod, Mods);
                         break;
                 }
                 if (mod.Frozen &&

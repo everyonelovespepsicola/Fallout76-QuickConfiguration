@@ -81,6 +81,7 @@ def set_version():
         update_version_cpp()
         update_inno()
         update_assembly_info()
+        update_shared_cs()
     except KeyboardInterrupt:
         print("\nAbort.")
         return
@@ -132,23 +133,8 @@ def clean_publish_dir():
     mkdir(str(TARGET_BASE_DIR))
 
 def build_updater(debug = False):
-    """
-    Builds the updater project.
+    pass
 
-    Args:
-        debug (bool): If True, builds in Debug mode. Otherwise, builds in Release mode.
-    """
-    print("Building updater...")
-    configuration = "Debug" if debug else "Release"
-    msbuild_path = get_msbuild_path()
-    if msbuild_path is None:
-        print(Fore.RED + "ERROR: MSBuild not found!" + Fore.RESET)
-        return
-    subprocess.run([msbuild_path, str(SOLUTION_PATH), f"/p:Configuration={configuration}", "/t:Fo76ini_Updater"])
-    if debug:
-        copytree(str(UPDATER_BIN_DIR / configuration), str(PROGRAM_BIN_DIR / configuration))
-    else:
-        copytree(str(UPDATER_BIN_DIR / configuration), str(get_binaries_path()))
 
 def build_app(debug = False):
     """
@@ -290,6 +276,27 @@ def update_assembly_info():
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
 
+def update_shared_cs():
+    """
+    Updates the Shared.cs files with the current version.
+    """
+    print(f"Updating Shared.cs files with version {VERSION}...")
+    paths = [
+        PROJECT_GIT_DIR / "Fo76ini" / "Shared.cs",
+        PROJECT_GIT_DIR / "Fo76ini_Updater" / "Shared.cs"
+    ]
+    for path in paths:
+        if not path.exists():
+            continue
+        content = ""
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip().startswith('public const string VERSION ='):
+                    line = f'        public const string VERSION = "{VERSION}";\n'
+                content += line
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+
 # https://stackoverflow.com/a/7550424
 def mkdir(newdir):
     """Create a directory, including parent directories, if it doesn't exist."""
@@ -388,14 +395,13 @@ def run_interactive():
             update_nuget_packages()
         elif i == "4":
             clean_publish_dir()
-            build_updater(debug=True)
             build_app(debug=True)
             copy_additions(debug=True)
         elif i == "5":
             clean_publish_dir()
             update_version_cpp()
             update_assembly_info()
-            build_updater()
+            update_shared_cs()
             build_app()
             copy_additions()
             use_rcedit()
@@ -427,14 +433,13 @@ def run_args(args):
         restore_nuget()
     if args.build_debug:
         clean_publish_dir()
-        build_updater(debug=True)
         build_app(debug=True)
         copy_additions(debug=True)
     if args.build:
         update_version_cpp()
         update_assembly_info()
+        update_shared_cs()
         clean_publish_dir()
-        build_updater()
         build_app()
         copy_additions()
         use_rcedit()

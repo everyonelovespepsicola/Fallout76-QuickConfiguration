@@ -1,4 +1,4 @@
-﻿namespace Fo76ini
+namespace Fo76ini
 {
     partial class FormMain
     {
@@ -123,13 +123,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 611);
+            this.ClientSize = new System.Drawing.Size(884, 500);
             this.Controls.Add(this.pictureBoxLoadingGIF);
             this.Controls.Add(this.viewControl);
             this.Controls.Add(this.userControlSideNav);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.MinimumSize = new System.Drawing.Size(900, 650);
+            this.MinimumSize = new System.Drawing.Size(900, 640);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fallout 76 Quick Configuration";

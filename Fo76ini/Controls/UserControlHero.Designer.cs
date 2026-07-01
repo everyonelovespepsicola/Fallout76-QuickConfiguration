@@ -1,4 +1,4 @@
-﻿namespace Fo76ini.Controls
+namespace Fo76ini.Controls
 {
     partial class UserControlHero
     {

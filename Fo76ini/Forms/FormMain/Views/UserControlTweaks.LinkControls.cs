@@ -1,4 +1,4 @@
-﻿using Fo76ini.Tweaks;
+using Fo76ini.Tweaks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +64,7 @@ namespace Fo76ini.Forms.FormMain
             LinkedTweaks.LinkInfo(checkBoxRejectSharedPerks, toolTip, rejectSharedPerksEnabledTweak);
             LinkedTweaks.LinkInfo(labelVATSGrenadeMineTargetingMode, toolTip, vatsGrenadeMineTargetingModeTweak);
             LinkedTweaks.LinkInfo(comboBoxVATSGrenadeMineTargetingMode, toolTip, vatsGrenadeMineTargetingModeTweak);
+            LinkedTweaks.LinkInfo(checkBoxDisableVatsBlur, toolTip, disableVatsBlurTweak);
             LinkedTweaks.LinkInfo(checkBoxAdvancedModDescriptions, toolTip, advancedModDescriptionsTweak);
             LinkedTweaks.LinkInfo(checkBoxAutoScrollPipboyItemStats, toolTip, autoScrollPipboyItemStatsTweak);
             LinkedTweaks.LinkInfo(checkBoxShowCAMPWeather, toolTip, showCAMPWeatherTweak);
@@ -90,6 +91,7 @@ namespace Fo76ini.Forms.FormMain
             // Graphics:
             LinkedTweaks.LinkInfo(labelAntiAliasing, toolTip, antiAliasingTweak);
             LinkedTweaks.LinkInfo(comboBoxAntiAliasing, toolTip, antiAliasingTweak);
+            LinkedTweaks.LinkInfo(checkBoxDisableTAA, toolTip, disableTAATweak);
             LinkedTweaks.LinkInfo(labelAnisotropicFiltering, toolTip, anisotropicFilteringTweak);
             LinkedTweaks.LinkInfo(comboBoxAnisotropicFiltering, toolTip, anisotropicFilteringTweak);
             LinkedTweaks.LinkInfo(labelTextureQuality, toolTip, textureQualityTweak);
@@ -200,6 +202,7 @@ namespace Fo76ini.Forms.FormMain
             LinkedTweaks.LinkInfo(checkBoxGamepadEnabled, toolTip, gamepadEnableTweak);
             LinkedTweaks.LinkInfo(checkBoxGamepadRumble, toolTip, enableGamepadRumbleTweak);
             LinkedTweaks.LinkInfo(checkBoxAimAssist, toolTip, aimAssistTweak);
+            LinkedTweaks.LinkInfo(checkBoxMapCursorTweaks, toolTip, mapCursorTweaksActiveTweak);
 
             // Camera tab
             LinkedTweaks.LinkInfo(this.checkBoxbApplyCameraNodeAnimations, toolTip, applyCameraNodeAnimationsTweak);
@@ -417,6 +420,7 @@ namespace Fo76ini.Forms.FormMain
             LinkedTweaks.LinkTweak(comboBoxQuickHealStimpakPriority, quickHealStimpakPriorityTweak);
             LinkedTweaks.LinkTweak(checkBoxRejectSharedPerks, rejectSharedPerksEnabledTweak);
             LinkedTweaks.LinkTweak(comboBoxVATSGrenadeMineTargetingMode, vatsGrenadeMineTargetingModeTweak);
+            LinkedTweaks.LinkTweak(checkBoxDisableVatsBlur, disableVatsBlurTweak);
             LinkedTweaks.LinkTweak(checkBoxAdvancedModDescriptions, advancedModDescriptionsTweak);
             LinkedTweaks.LinkTweak(checkBoxAutoScrollPipboyItemStats, autoScrollPipboyItemStatsTweak);
             LinkedTweaks.LinkTweak(checkBoxShowCAMPWeather, showCAMPWeatherTweak);
@@ -477,6 +481,7 @@ namespace Fo76ini.Forms.FormMain
 
             // Anti aliasing
             LinkedTweaks.LinkTweak(comboBoxAntiAliasing, antiAliasingTweak);
+            LinkedTweaks.LinkTweak(checkBoxDisableTAA, disableTAATweak);
 
             // Anisotropic filtering
             LinkedTweaks.LinkTweak(
@@ -665,6 +670,9 @@ namespace Fo76ini.Forms.FormMain
 
             // Aim Assist
             LinkedTweaks.LinkTweak(checkBoxAimAssist, aimAssistTweak);
+
+            // Map Cursor Speed and Acceleration optimization
+            LinkedTweaks.LinkTweak(checkBoxMapCursorTweaks, mapCursorTweaksActiveTweak);
 
 
 
@@ -927,5 +935,8 @@ namespace Fo76ini.Forms.FormMain
         private SingleButtonNotificationCancelTweak singleButtonNotificationCancelTweak = new SingleButtonNotificationCancelTweak();
         private SpeechToTextTweak speechToTextTweak = new SpeechToTextTweak();
         private UseLargeEasyReadTextTweak useLargeEasyReadTextTweak = new UseLargeEasyReadTextTweak();
+        private MapCursorTweaksActiveTweak mapCursorTweaksActiveTweak = new MapCursorTweaksActiveTweak();
+        private DisableVatsBlurTweak disableVatsBlurTweak = new DisableVatsBlurTweak();
+        private DisableTAATweak disableTAATweak = new DisableTAATweak();
     }
 }

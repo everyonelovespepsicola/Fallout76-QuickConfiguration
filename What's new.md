@@ -1,3 +1,30 @@
+### What's new in v1.12.9.07?
+
+This update introduces mod archive preset improvements, security updates, and repo custom branding adjustments.
+
+- Added "Separate BA2s Grouping" archive preset to automatically split folder-based mods into separate General, Textures, Sound, and Interface BA2 archives.
+- Updated `Magick.NET` and `Magick.NET.Core` dependencies to v14.14.0 across all projects to address security audit warnings.
+- Completely removed the built-in updater utility and references to prevent conflicts with the original repository.
+- Rebranded and updated GitHub project links on the Home view to point to the current repository fork.
+- Removed the "Buy Me A Coffee" donation button from the Web Links panel.
+- Modified the publish script to default to "No" on version update prompts.
+
+*Released: June 30, 2026*
+
+---
+
+### What's new in v1.12.9.05?
+
+This update introduces a new mod manager grid layout with integrated search.
+
+- Added a new grid system to the mod manager interface to improve layout and information density.
+- Implemented built-in real-time search functionality, allowing you to instantly filter mods by name or keywords.
+- Optimized rendering and load times for large lists of mods.
+
+*Released: May 2, 2026*
+
+---
+
 ### What's new in v1.12.9.02?
 
 This is a small maintenance update that fixes a few bugs in the mod manager.

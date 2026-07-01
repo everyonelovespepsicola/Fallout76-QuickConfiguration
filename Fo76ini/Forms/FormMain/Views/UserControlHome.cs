@@ -1,4 +1,4 @@
-﻿using Fo76ini.Interface;
+using Fo76ini.Interface;
 using Fo76ini.API;
 using Fo76ini.Properties;
 using Fo76ini.Utilities;
@@ -41,6 +41,22 @@ namespace Fo76ini.Forms.FormMain.Tabs
 
         private void UserControlHome_Load(object sender, EventArgs e)
         {
+            // Hide the 'buy a coffee' button and specific links
+            this.pictureBoxButtonSupport.Visible = false;
+            this.styledButtonNexusMods.Visible = false;
+            this.styledButtonWikiAndGuides.Visible = false;
+            this.styledButtonBugReports.Visible = false;
+
+            // Adjust positions to prevent empty whitespace gaps
+            this.styledButtonGitHub.Top = 29;
+            this.pictureBoxSpacer1.Top = 60;
+            this.styledButtonBethesdaNetStatus.Top = 69;
+            this.pictureBoxSpacer2.Top = 100;
+            this.styledButtonNukesAndDragonsBuildPlanner.Top = 109;
+            this.styledButtonNukacrypt.Top = 136;
+            this.styledButtonMap76.Top = 163;
+            this.styledButtonxTranslator.Top = 190;
+
             // Check for updates:
             CheckVersion();
             IniFiles.Config.Set("General", "sPreviousVersion", Shared.VERSION);
@@ -77,25 +93,12 @@ namespace Fo76ini.Forms.FormMain.Tabs
 
         public void CheckVersion(bool force = false)
         {
-            if (this.backgroundWorkerGetLatestVersion.IsBusy)
-                return;
-
             this.labelConfigVersion.Text = Shared.VERSION;
             IniFiles.Config.Set("General", "sVersion", Shared.VERSION);
 
             panelUpdate.Visible = false;
-
-            if (!force && Configuration.IgnoreUpdates)
-            {
-                this.labelConfigVersion.ForeColor = Theming.GetColor("TextColor", Color.Black);
-                return;
-            }
-
-            this.labelConfigVersion.ForeColor = Theming.GetColor("Version.UnknownColor", Color.Gray);
-            this.pictureBoxSpinnerCheckForUpdates.Visible = true;
-
-            // Checking version in background:
-            this.backgroundWorkerGetLatestVersion.RunWorkerAsync();
+            this.labelConfigVersion.ForeColor = Theming.GetColor("Version.LatestColor", Utils.ParseColor("#7efc7c"));
+            return;
         }
 
         private void backgroundWorkerGetLatestVersion_DoWork(object sender, DoWorkEventArgs e)
@@ -213,12 +216,12 @@ namespace Fo76ini.Forms.FormMain.Tabs
 
         private void styledButtonGitHub_Click(object sender, EventArgs e)
         {
-            Utils.OpenURL("https://github.com/FelisDiligens/Fallout76-QuickConfiguration");
+            Utils.OpenURL("https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration");
         }
 
         private void styledButtonWikiAndGuides_Click(object sender, EventArgs e)
         {
-            Utils.OpenURL("https://github.com/FelisDiligens/Fallout76-QuickConfiguration/wiki");
+            Utils.OpenURL("https://github.com/everyonelovespepsicola/Fallout76-QuickConfiguration/wiki");
         }
 
         private void styledButtonBugReports_Click(object sender, EventArgs e)

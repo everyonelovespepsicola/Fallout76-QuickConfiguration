@@ -1,4 +1,4 @@
-﻿using Fo76ini.API;
+using Fo76ini.API;
 using Fo76ini.Utilities;
 using System;
 using System.Collections.Generic;
@@ -68,9 +68,19 @@ namespace Fo76ini.Mods
             if (!Utils.IsFileNameValid(newMod.ManagedFolderName) || Directory.Exists(newMod.ManagedFolderPath))
                 newMod.ManagedFolderName = newMod.DefaultManagedFolderName;
 
-            // Extract mod:
-            ProgressChanged?.Invoke(Progress.Indetermined($"Extracting {Path.GetFileName(filePath)}"));
-            ModInstallations.ExtractArchive(longFilePath, newMod.ManagedFolderPath);
+            bool isBA2 = fileExtension == ".ba2";
+            bool extractNow = !isBA2 || !useSourceBA2Archive;
+
+            if (extractNow)
+            {
+                // Extract mod:
+                ProgressChanged?.Invoke(Progress.Indetermined($"Extracting {Path.GetFileName(filePath)}"));
+                ModInstallations.ExtractArchive(longFilePath, newMod.ManagedFolderPath);
+            }
+            else
+            {
+                Directory.CreateDirectory(newMod.ManagedFolderPath);
+            }
 
             if (fileExtension == ".ba2")
             {

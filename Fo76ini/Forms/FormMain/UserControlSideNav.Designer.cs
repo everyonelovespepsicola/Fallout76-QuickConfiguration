@@ -1,4 +1,4 @@
-﻿namespace Fo76ini.Forms.FormMain
+namespace Fo76ini.Forms.FormMain
 {
     partial class UserControlSideNav
     {
@@ -204,7 +204,7 @@
             this.labelGameEditionDesc.AutoSize = true;
             this.labelGameEditionDesc.BackColor = System.Drawing.Color.Transparent;
             this.labelGameEditionDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelGameEditionDesc.Location = new System.Drawing.Point(5, 532);
+            this.labelGameEditionDesc.Location = new System.Drawing.Point(5, 496);
             this.labelGameEditionDesc.Name = "labelGameEditionDesc";
             this.labelGameEditionDesc.Size = new System.Drawing.Size(104, 16);
             this.labelGameEditionDesc.TabIndex = 49;
@@ -213,7 +213,7 @@
             // pictureBoxSpacer3
             // 
             this.pictureBoxSpacer3.BackColor = System.Drawing.Color.Silver;
-            this.pictureBoxSpacer3.Location = new System.Drawing.Point(0, 521);
+            this.pictureBoxSpacer3.Location = new System.Drawing.Point(0, 485);
             this.pictureBoxSpacer3.Margin = new System.Windows.Forms.Padding(6);
             this.pictureBoxSpacer3.Name = "pictureBoxSpacer3";
             this.pictureBoxSpacer3.Size = new System.Drawing.Size(200, 1);
@@ -310,7 +310,7 @@
             this.buttonProfile.Highlight = false;
             this.buttonProfile.Image = global::Fo76ini.Properties.Resources.help_24;
             this.buttonProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonProfile.Location = new System.Drawing.Point(0, 553);
+            this.buttonProfile.Location = new System.Drawing.Point(0, 517);
             this.buttonProfile.Margin = new System.Windows.Forms.Padding(0);
             this.buttonProfile.MouseDownBackColor = System.Drawing.Color.LightGray;
             this.buttonProfile.MouseOverBackColor = System.Drawing.Color.Silver;
@@ -524,6 +524,7 @@
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Visible = false;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
             // buttonApply
