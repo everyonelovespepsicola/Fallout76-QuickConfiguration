@@ -1,4 +1,4 @@
-﻿using Fo76ini.Forms.FormIniError;
+using Fo76ini.Forms.FormIniError;
 using Fo76ini.Forms.FormMain;
 using Fo76ini.Forms.FormMain.Tabs;
 using Fo76ini.Forms.FormWelcome;
@@ -174,6 +174,7 @@ namespace Fo76ini
             // Apply theme:
             Theming.ApplyTheme(Configuration.Appearance.AppTheme, this);
             Theming.ApplyTheme(Configuration.Appearance.AppTheme, this.formMods);
+            this.formMods.ApplyGridTheme(); // Re-apply grid cell styles — not reachable by the reflection-based theme walker
             //Theming.ApplyTheme(Configuration.Appearance.AppTheme, this.formWelcome);
         }
 
@@ -508,6 +509,7 @@ namespace Fo76ini
         {
             Theming.ApplyTheme(e.Theme, this);
             Theming.ApplyTheme(e.Theme, this.formMods);
+            this.formMods.ApplyGridTheme(); // Re-apply grid cell styles — not reachable by the reflection-based theme walker
             //Theming.ApplyTheme(e.Theme, this.formWelcome);
         }
 

@@ -467,7 +467,6 @@ namespace Fo76ini
             //
             this.labelModsDeploy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelModsDeploy.AutoSize = true;
-            this.labelModsDeploy.ForeColor = System.Drawing.Color.DarkGreen;
             this.labelModsDeploy.Location = new System.Drawing.Point(9, 527);
             this.labelModsDeploy.Name = "labelModsDeploy";
             this.labelModsDeploy.Size = new System.Drawing.Size(38, 13);
@@ -976,7 +975,6 @@ namespace Fo76ini
             this.pictureBoxCollapseDetails.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxCollapseDetails.TabIndex = 59;
             this.pictureBoxCollapseDetails.TabStop = false;
-            this.pictureBoxCollapseDetails.Click += new System.EventHandler(this.pictureBoxCollapseDetails_Click);
             //
             // panelModDetails
             //

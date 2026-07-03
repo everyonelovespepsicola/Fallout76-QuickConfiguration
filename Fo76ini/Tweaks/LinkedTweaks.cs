@@ -1,4 +1,4 @@
-﻿using Fo76ini.Controls;
+using Fo76ini.Controls;
 using Fo76ini.Interface;
 using Fo76ini.Tweaks.Video;
 using Fo76ini.Utilities;
@@ -54,6 +54,11 @@ namespace Fo76ini.Tweaks
             {
                 ITweakInfo info = pair.Value;
                 LinkedControl linkedControl = pair.Key;
+
+                // NumericUpDown counters (next to sliders) should always use the
+                // theme's normal text color, not a WarnLevel accent color.
+                if (linkedControl.Control is NumericUpDown)
+                    continue;
 
                 switch (info.WarnLevel)
                 {

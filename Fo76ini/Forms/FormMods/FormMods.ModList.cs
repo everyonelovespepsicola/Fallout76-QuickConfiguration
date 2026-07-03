@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+using System.Collections;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -296,25 +296,102 @@ namespace Fo76ini
             this.dataGridViewMods.DragOver += dataGridViewMods_DragOver;
             this.dataGridViewMods.DragDrop += dataGridViewMods_DragDrop;
 
-            this.dataGridViewMods.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+            ApplyGridTheme();
+        }
 
-            if (Theming.CurrentTheme == ThemeType.Dark)
+        /// <summary>
+        /// Applies the current theme's grid background colors to the mod list DataGridView.
+        /// Must be called after Theming.ApplyTheme() so that the theme vars are loaded.
+        /// Uses dedicated Mod.Grid.* vars to avoid colliding with text-color keys.
+        /// </summary>
+        public void ApplyGridTheme()
+        {
+            this.dataGridViewMods.BackgroundColor = Theming.GetColor("Mod.Grid.BackgroundColor", Color.White);
+            this.dataGridViewMods.GridColor = Theming.GetColor("Mod.Grid.GridLineColor", Color.LightGray);
+
+            this.dataGridViewMods.DefaultCellStyle.BackColor = Theming.GetColor("Mod.Grid.CellBackColor", Color.White);
+            this.dataGridViewMods.DefaultCellStyle.ForeColor = Theming.GetColor("Mod.Grid.CellForeColor", Color.Black);
+            this.dataGridViewMods.DefaultCellStyle.SelectionBackColor = Theming.GetColor("Mod.Grid.SelectionBackColor", Color.LightBlue);
+            this.dataGridViewMods.DefaultCellStyle.SelectionForeColor = Theming.GetColor("Mod.Grid.SelectionForeColor", Color.Black);
+
+            this.dataGridViewMods.AlternatingRowsDefaultCellStyle.BackColor = Theming.GetColor("Mod.Grid.AlternatingRowBackColor", Color.FromArgb(240, 240, 240));
+
+            this.dataGridViewMods.ColumnHeadersDefaultCellStyle.BackColor = Theming.GetColor("Mod.Grid.HeaderBackColor", Color.Gainsboro);
+            this.dataGridViewMods.ColumnHeadersDefaultCellStyle.ForeColor = Theming.GetColor("Mod.Grid.HeaderForeColor", Color.Black);
+            this.dataGridViewMods.EnableHeadersVisualStyles = false;
+
+            // Remove then re-add the checkbox cell painter so this method is safe to call multiple times.
+            this.dataGridViewMods.CellPainting -= DataGridViewMods_PaintCheckBoxCell;
+            this.dataGridViewMods.CellPainting += DataGridViewMods_PaintCheckBoxCell;
+        }
+
+        /// <summary>
+        /// Paints the "Enabled" checkbox column cells with a themed green glyph
+        /// instead of the default OS-rendered checkbox.
+        /// </summary>
+        private void DataGridViewMods_PaintCheckBoxCell(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            // Only intercept the checkbox column (column 0, DataPropertyName == "Enabled").
+            if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
+            if (this.dataGridViewMods.Columns[e.ColumnIndex].DataPropertyName != "Enabled") return;
+
+            e.Handled = true; // We take over all painting for this cell.
+
+            // --- Background ---
+            bool isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
+            bool isAltRow   = (e.RowIndex % 2 == 1);
+
+            Color cellBack = isSelected
+                ? Theming.GetColor("Mod.Grid.SelectionBackColor", Color.LightBlue)
+                : (isAltRow
+                    ? Theming.GetColor("Mod.Grid.AlternatingRowBackColor", Color.WhiteSmoke)
+                    : Theming.GetColor("Mod.Grid.CellBackColor",  Color.White));
+
+            using (var brush = new SolidBrush(cellBack))
+                e.Graphics.FillRectangle(brush, e.CellBounds);
+
+            // --- Grid line (bottom border) ---
+            using (var pen = new Pen(Theming.GetColor("Mod.Grid.GridLineColor", Color.LightGray)))
+                e.Graphics.DrawLine(pen,
+                    e.CellBounds.Left,  e.CellBounds.Bottom - 1,
+                    e.CellBounds.Right, e.CellBounds.Bottom - 1);
+
+            // --- Custom checkbox glyph ---
+            bool isChecked = (e.Value is bool b && b) ||
+                             (e.Value is CheckState cs && cs == CheckState.Checked);
+
+            Color accent = Theming.GetColor("Mod.ListEnabledColor", Color.Green);
+            Color back   = cellBack;
+
+            const int GlyphSize = 13;
+            int glyphX = e.CellBounds.Left + (e.CellBounds.Width  - GlyphSize) / 2;
+            int glyphY = e.CellBounds.Top  + (e.CellBounds.Height - GlyphSize) / 2;
+            var glyphRect = new Rectangle(glyphX, glyphY, GlyphSize, GlyphSize);
+
+            // Erase any residual OS rendering.
+            using (var brush = new SolidBrush(back))
+                e.Graphics.FillRectangle(brush, glyphRect);
+
+            // Border box.
+            using (var pen = new Pen(accent, 1f))
+                e.Graphics.DrawRectangle(pen, glyphRect.X, glyphRect.Y,
+                                         glyphRect.Width - 1, glyphRect.Height - 1);
+
+            if (isChecked)
             {
-                this.dataGridViewMods.BackgroundColor = Color.FromArgb(34, 34, 34);
-                this.dataGridViewMods.GridColor = Color.FromArgb(50, 50, 50);
-
-                this.dataGridViewMods.DefaultCellStyle.BackColor = Color.FromArgb(34, 34, 34);
-                this.dataGridViewMods.DefaultCellStyle.ForeColor = Color.White;
-                this.dataGridViewMods.DefaultCellStyle.SelectionBackColor = Color.FromArgb(65, 65, 65);
-                this.dataGridViewMods.DefaultCellStyle.SelectionForeColor = Color.White;
-
-                this.dataGridViewMods.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(42, 42, 42);
-
-                this.dataGridViewMods.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-                this.dataGridViewMods.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                this.dataGridViewMods.EnableHeadersVisualStyles = false;
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                using (var pen = new Pen(accent, 2f))
+                    e.Graphics.DrawLines(pen, new[]
+                    {
+                        new Point(glyphRect.X + 2,              glyphRect.Y + GlyphSize / 2 - 1),
+                        new Point(glyphRect.X + GlyphSize / 2 - 1, glyphRect.Bottom - 3),
+                        new Point(glyphRect.Right - 2,          glyphRect.Y + 2)
+                    });
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
             }
         }
+
+
 
         public void UpdateDataGridView()
         {

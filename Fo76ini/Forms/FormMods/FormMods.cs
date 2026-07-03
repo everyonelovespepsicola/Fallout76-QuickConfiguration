@@ -1,4 +1,4 @@
-﻿using Fo76ini.Controls;
+using Fo76ini.Controls;
 using Fo76ini.Interface;
 using Fo76ini.Mods;
 using Fo76ini.API;
@@ -801,7 +801,7 @@ namespace Fo76ini
         {
             Mods.Save();
             this.labelModsDeploy.Text = "Changes saved.";
-            this.labelModsDeploy.ForeColor = Color.DarkGreen;
+            this.labelModsDeploy.ForeColor = Theming.GetColor("Progress.Success", Color.DarkGreen);
         }
 
         // View > Show conflicting files

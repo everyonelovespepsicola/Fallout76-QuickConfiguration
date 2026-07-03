@@ -25,7 +25,6 @@ namespace Fo76ini
         }
 
         private SidePanelState sidePanelState = SidePanelState.Closed; // The current state of the side panel.
-        private bool sidePanelOpenCollapsed = false; // Remember whether the user has collapsed the side panel.
         private bool isUpdatingSidePanel = false;
         private List<ManagedMod> editedMods;
 
@@ -163,20 +162,7 @@ namespace Fo76ini
             Side panel
         */
 
-        // Toggle the side panel, when the user clicks on the "<-" or "->" button.
-        private void pictureBoxCollapseDetails_Click(object sender, EventArgs e)
-        {
-            if (sidePanelState == SidePanelState.Collapsed)
-            {
-                ExpandSidePanel();
-                sidePanelOpenCollapsed = false;
-            }
-            else if (sidePanelState == SidePanelState.Expanded)
-            {
-                CollapseSidePanel();
-                sidePanelOpenCollapsed = true;
-            }
-        }
+
 
         /// <summary>
         /// Hides the side panel with no way to open it again for the user.
@@ -390,7 +376,7 @@ namespace Fo76ini
                 {
                     case NMMod.EndorseStatus.Endorsed:
                         this.labelModEndorseStatus.Text = Localization.GetString("endorsedText");
-                        this.labelModEndorseStatus.ForeColor = Color.DarkGreen;
+                        this.labelModEndorseStatus.ForeColor = Theming.GetColor("Mod.ListEnabledColor", Color.DarkGreen);
                         this.buttonModEndorse.Enabled = false;
                         break;
                     case NMMod.EndorseStatus.Abstained:

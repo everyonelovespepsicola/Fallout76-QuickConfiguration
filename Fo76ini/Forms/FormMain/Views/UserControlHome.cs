@@ -97,7 +97,12 @@ namespace Fo76ini.Forms.FormMain.Tabs
             IniFiles.Config.Set("General", "sVersion", Shared.VERSION);
 
             panelUpdate.Visible = false;
-            this.labelConfigVersion.ForeColor = Theming.GetColor("Version.LatestColor", Utils.ParseColor("#7efc7c"));
+            Color defaultColor = Color.DarkGreen;
+            if (Configuration.Appearance.AppTheme == ThemeType.Dark || (Configuration.Appearance.AppTheme == ThemeType.System && Theming.DetectSystemTheme() == ThemeType.Dark))
+            {
+                defaultColor = Utils.ParseColor("#7efc7c");
+            }
+            this.labelConfigVersion.ForeColor = Theming.GetColor("Version.LatestColor", defaultColor);
             return;
         }
 

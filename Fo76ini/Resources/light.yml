@@ -9,43 +9,54 @@ VARS:
   BackColor: white
 
   # Home - App Version colors:
-  Version.LatestColor: "#43bb41"
+  Version.LatestColor: "#2d7a4f"
   Version.OldColor: "Red"
   Version.UnknownColor: "DarkGray"
 
   # Tweak colors:
-  WarnLevel.Notice: "Blue"
+  WarnLevel.Notice: "#2d7a4f"
   WarnLevel.Experimental: "Fuchsia"
   WarnLevel.Warning: "rgb(181, 124, 11)"
   WarnLevel.Unsafe: "Red"
 
   # Syntax highlighting colors in the Custom Tweaks tab:
-  SyntaxHL.Comment: "DarkGreen"
-  SyntaxHL.Section: "Blue"
-  SyntaxHL.Key: "Blue"
-  SyntaxHL.EqualsSign: "DarkGreen"
+  SyntaxHL.Comment: "#2d7a4f"
+  SyntaxHL.Section: "#2d7a4f"
+  SyntaxHL.Key: "#2d7a4f"
+  SyntaxHL.EqualsSign: "#2d7a4f"
   SyntaxHL.Value: "Red"
 
   # Mod list colors:
   Mod.ListUpdateAvailableColor: "Fuchsia"
-  Mod.ListLatestVersionColor: "Green"
-  Mod.ListEnabledColor: "Green"
+  Mod.ListLatestVersionColor: "#2d7a4f"
+  Mod.ListEnabledColor: "#2d7a4f"
   Mod.ListDisabledColor: "Red"
-  Mod.ListPendingColor: "Blue"
+  Mod.ListPendingColor: "#2d7a4f"
   Mod.PresetGeneralColor: "OrangeRed"
-  Mod.PresetSoundColor: "RoyalBlue"
-  Mod.PresetTexturesColor: "DarkGreen"
+  Mod.PresetSoundColor: "#2d7a4f"
+  Mod.PresetTexturesColor: "#2d7a4f"
   Mod.PresetAutoColor: "DimGray"
   Mod.InstallBundledColor: "OrangeRed"
-  Mod.InstallSeparateColor: "Indigo"
+  Mod.InstallSeparateColor: "#2d7a4f"
   Mod.InstallSeparateFrozenColor: "DarkCyan"
   Mod.InstallLooseColor: "MediumVioletRed"
   Mod.FrozenColor: "DarkCyan"
-  Mod.FreezePendingColor: "Blue"
+  Mod.FreezePendingColor: "#2d7a4f"
   Mod.ListItemDisabledColor: "Silver"
 
+  # Mod grid background colors (DataGridView):
+  Mod.Grid.BackgroundColor: "white"
+  Mod.Grid.GridLineColor: "LightGray"
+  Mod.Grid.CellBackColor: "white"
+  Mod.Grid.CellForeColor: "black"
+  Mod.Grid.SelectionBackColor: "#b5e8cb"
+  Mod.Grid.SelectionForeColor: "black"
+  Mod.Grid.AlternatingRowBackColor: "rgb(240, 240, 240)"
+  Mod.Grid.HeaderBackColor: "Gainsboro"
+  Mod.Grid.HeaderForeColor: "black"
+
   # Mod manager progress colors:
-  Progress.Success: "DarkGreen"
+  Progress.Success: "#2d7a4f"
   Progress.Failed: "Red"
 
   #
@@ -64,26 +75,26 @@ VARS:
   ProfessionalColorTable.StatusStrip: "#f0f0f0"
   
   # Top-level menu strip items - hovered:
-  ProfessionalColorTable.MenuTopItemSelected: "#b5d7f3"
+  ProfessionalColorTable.MenuTopItemSelected: "#b5e8cb"
 
   # Top-level menu strip items - pressed:
   ProfessionalColorTable.MenuTopItemPressed: "#fafafa"
   
   # Drop-down items:
-  ProfessionalColorTable.MenuItemBorder: "#0078d7"
-  ProfessionalColorTable.MenuItemSelected: "#b5d7f3"
+  ProfessionalColorTable.MenuItemBorder: "#2d7a4f"
+  ProfessionalColorTable.MenuItemSelected: "#b5e8cb"
   ProfessionalColorTable.ToolStripDropDownBackground: "#fdfdfd"
 
   # Drop-down items: the little square where the image is supposed to be
   ProfessionalColorTable.ImageMargin: "#f8f8f8"
 
   # Tool strip button - hovered:
-  ProfessionalColorTable.ButtonSelected: "#d8e6f2"
-  ProfessionalColorTable.ButtonSelectedBorder: "#c0dcf3"
+  ProfessionalColorTable.ButtonSelected: "#d0edd9"
+  ProfessionalColorTable.ButtonSelectedBorder: "#a8d9b8"
 
   # Tool strip button - pressed:
-  ProfessionalColorTable.ButtonPressed: "#c0dcf3"
-  ProfessionalColorTable.ButtonPressedBorder: "#90c8f6"
+  ProfessionalColorTable.ButtonPressed: "#a8d9b8"
+  ProfessionalColorTable.ButtonPressedBorder: "#78c496"
 
   # Separator:
   ProfessionalColorTable.SeparatorDark: "#848484"
@@ -143,7 +154,7 @@ StyledButton.styledButtonWhatsNew:
   MouseOverBackColor: "#FFC680"
 
 LinkLabel:
-  LinkColor: "rgb(0, 0, 255)"
+  LinkColor: "#2d7a4f"
   #VisitedLinkColor: "rgb(128, 0, 128)"
 
 ListView:
@@ -161,14 +172,24 @@ ColorSlider:
   BarInnerColor: "Silver"
   BarPenColorBottom: "Silver"
   BarPenColorTop: "Silver"
-  ElapsedInnerColor: "#2156e0"
-  ElapsedPenColorBottom: "#2156e0"
-  ElapsedPenColorTop: "#2156e0"
-  ThumbInnerColor: "#2156e0"
-  ThumbOuterColor: "#2156e0"
-  ThumbPenColor: "#2156e0"
+  ElapsedInnerColor: "#2d7a4f"
+  ElapsedPenColorBottom: "#2d7a4f"
+  ElapsedPenColorTop: "#2d7a4f"
+  ThumbInnerColor: "#2d7a4f"
+  ThumbOuterColor: "#2d7a4f"
+  ThumbPenColor: "#2d7a4f"
 
 Button:
+  ForeColor: "black"
+
+CheckBox:
+  ForeColor: "#2d7a4f"
+
+RadioButton:
+  ForeColor: "#2d7a4f"
+
+NumericUpDown:
+  BackColor: "white"
   ForeColor: "black"
 
 # UserControlTweaks > ComboBox, UserControlTweaks > ImagedComboBox, UserControlTweaks > NumericUpDown, UserControlTweaks > TextBox:
@@ -248,7 +269,7 @@ ObjectListView.*Mods:
   BackColor: "white"
   AlternateRowBackColor: "#f0f0f0"
   UseAlternatingBackColors: "true"
-  HighlightBackgroundColor: "#d0d0ff"
+  HighlightBackgroundColor: "#b5e8cb"
   HighlightForegroundColor: "black"
-  UnfocusedHighlightBackgroundColor: "#d0d0ff"
+  UnfocusedHighlightBackgroundColor: "#b5e8cb"
   UnfocusedHighlightForegroundColor: "black"

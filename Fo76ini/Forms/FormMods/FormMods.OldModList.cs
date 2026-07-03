@@ -1,4 +1,4 @@
-﻿using Fo76ini.Mods;
+using Fo76ini.Mods;
 using Fo76ini.NexusAPI;
 using System;
 using System.Collections.Generic;
@@ -90,7 +90,7 @@ namespace Fo76ini
                         {
                             // Latest version:
                             version.Text = $"{mod.Version}";
-                            version.ForeColor = Color.DarkGreen;
+                            version.ForeColor = Theming.GetColor("Mod.ListLatestVersionColor", Color.DarkGreen);
                         }
                     }
                     else
@@ -134,7 +134,7 @@ namespace Fo76ini
                             break;
                         case ManagedMod.ArchiveFormat.Textures:
                             archivePreset.Text = Localization.GetString("modsTablePresetTextures");    // Textures
-                            archivePreset.ForeColor = Color.DarkGreen;
+                            archivePreset.ForeColor = Theming.GetColor("Mod.PresetTexturesColor", Color.DarkGreen);
                             break;
                         case ManagedMod.ArchiveFormat.Auto:
                             archivePreset.Text = Localization.GetString("auto");                       // Auto-detect
@@ -244,7 +244,7 @@ namespace Fo76ini
 
                 ListViewItem modItem = new ListViewItem(mod.Title, i);
                 modItem.UseItemStyleForSubItems = false;
-                modItem.ForeColor = enabled ? Color.DarkGreen : Color.DarkRed;
+                modItem.ForeColor = enabled ? Theming.GetColor("Mod.ListEnabledColor", Color.DarkGreen) : Theming.GetColor("Mod.ListDisabledColor", Color.DarkRed);
                 modItem.SubItems.Add(version);
                 modItem.SubItems.Add(type);
                 //modItem.SubItems.Add(size);
@@ -322,7 +322,7 @@ namespace Fo76ini
             if (e.NewValue == CheckState.Checked)
             {
                 Mods.EnableMod(e.Index);
-                listViewMods.Items[e.Index].ForeColor = Color.DarkGreen;
+                listViewMods.Items[e.Index].ForeColor = Theming.GetColor("Mod.ListEnabledColor", Color.DarkGreen);
             }
             else if (e.NewValue == CheckState.Unchecked)
             {

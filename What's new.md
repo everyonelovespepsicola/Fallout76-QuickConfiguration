@@ -1,3 +1,14 @@
+### What's new in v1.12.9.08?
+
+This update resolves theming inconsistencies and color mismatches in the user interface.
+
+- Fixed a bug in light mode where the "Ready" label remained black (invisible against the dark panel).
+- Resolved an issue in the light theme where the green version number label used a light green font instead of the intended dark green, making it unreadable.
+
+*Released: July 3, 2026*
+
+---
+
 ### What's new in v1.12.9.07?
 
 This update introduces mod archive preset improvements, side panel enhancements, stability fixes, security updates, and repo custom branding adjustments.

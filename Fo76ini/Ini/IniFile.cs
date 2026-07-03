@@ -1,4 +1,4 @@
-﻿using Fo76ini.Ini;
+using Fo76ini.Ini;
 using Fo76ini.Utilities;
 using IniParser;
 using IniParser.Model;
@@ -80,11 +80,22 @@ namespace Fo76ini
                 return;
 
             RemoveEmptySections();
+            MoveArchiveSectionToBottom();
             bool readOnly = this.IsReadOnly;
             SetFileReadOnlyAttribute(false);
             this.iniParser.WriteFile(FilePath, data, encoding);
             SetFileReadOnlyAttribute(readOnly);
             UpdateLastModifiedDate();
+        }
+
+        private void MoveArchiveSectionToBottom()
+        {
+            if (data.Sections.ContainsSection("Archive"))
+            {
+                SectionData archive = data.Sections.GetSectionData("Archive");
+                data.Sections.RemoveSection("Archive");
+                data.Sections.Add(archive);
+            }
         }
 
         /// <summary>

@@ -7,10 +7,10 @@ namespace Fo76ini.Tweaks.Controls
         private readonly MapCursorAccelerationTweak accTweak = new MapCursorAccelerationTweak();
         private readonly MapCursorSpeedTweak speedTweak = new MapCursorSpeedTweak();
 
-        public string Description => "Optimizes map mouse cursor movement by reducing speed and acceleration (sets fMapMoveAcceleration to 7 and fMapMoveSpeed to 5).";
+        public string Description => "Optimizes map mouse cursor movement by reducing speed and acceleration (sets fMapCursorMoveAcceleration to 7 and fMapCursorMoveSpeed to 5).";
         public WarnLevel WarnLevel => WarnLevel.None;
         public string AffectedFiles => "Fallout76Custom.ini";
-        public string AffectedValues => "[Controls]fMapMoveAcceleration, [Controls]fMapMoveSpeed";
+        public string AffectedValues => "[Client]fMapCursorMoveAcceleration, [Client]fMapCursorMoveSpeed";
         public bool DefaultValue => false;
         public string Identifier => this.GetType().FullName;
         public bool UIReloadNecessary => false;

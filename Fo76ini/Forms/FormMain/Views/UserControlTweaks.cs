@@ -1,4 +1,4 @@
-﻿using Fo76ini.Interface;
+using Fo76ini.Interface;
 using Fo76ini.Profiles;
 using Fo76ini.Properties;
 using Fo76ini.Tweaks;
@@ -27,6 +27,8 @@ namespace Fo76ini.Forms.FormMain
 
             if (this.DesignMode)
                 return;
+
+            InitCustomCheckboxes();
 
             ProfileManager.ProfileChanged += OnProfileChanged;
 
@@ -605,6 +607,42 @@ namespace Fo76ini.Forms.FormMain
 
             // Show messagebox
             MsgBox.Get("iniGraphicsPresetChanged").FormatText(translatedPresetStr).Popup(MessageBoxIcon.Information);
+        }
+
+        private void InitCustomCheckboxes()
+        {
+            // Adjust VSync location to make room
+            this.checkBoxVSync.Location = new Point(9, 138);
+
+            // checkBoxSelectivePurge
+            this.checkBoxSelectivePurge = new CheckBox();
+            this.checkBoxSelectivePurge.AutoSize = true;
+            this.checkBoxSelectivePurge.Location = new Point(198, 178);
+            this.checkBoxSelectivePurge.Name = "checkBoxSelectivePurge";
+            this.checkBoxSelectivePurge.Size = new Size(180, 17);
+            this.checkBoxSelectivePurge.Text = "Selective Purge (Fast Travel)";
+            this.checkBoxSelectivePurge.UseVisualStyleBackColor = true;
+            this.groupBoxGameplay.Controls.Add(this.checkBoxSelectivePurge);
+
+            // checkBoxDynamicResolution
+            this.checkBoxDynamicResolution = new CheckBox();
+            this.checkBoxDynamicResolution.AutoSize = true;
+            this.checkBoxDynamicResolution.Location = new Point(9, 160);
+            this.checkBoxDynamicResolution.Name = "checkBoxDynamicResolution";
+            this.checkBoxDynamicResolution.Size = new Size(180, 17);
+            this.checkBoxDynamicResolution.Text = "Enable Dynamic Resolution";
+            this.checkBoxDynamicResolution.UseVisualStyleBackColor = true;
+            this.groupBoxGraphics.Controls.Add(this.checkBoxDynamicResolution);
+
+            // checkBoxSunShadowUpdateTime
+            this.checkBoxSunShadowUpdateTime = new CheckBox();
+            this.checkBoxSunShadowUpdateTime.AutoSize = true;
+            this.checkBoxSunShadowUpdateTime.Location = new Point(230, 138);
+            this.checkBoxSunShadowUpdateTime.Name = "checkBoxSunShadowUpdateTime";
+            this.checkBoxSunShadowUpdateTime.Size = new Size(180, 17);
+            this.checkBoxSunShadowUpdateTime.Text = "Smooth Sun Shadow Updates";
+            this.checkBoxSunShadowUpdateTime.UseVisualStyleBackColor = true;
+            this.groupBoxGraphics.Controls.Add(this.checkBoxSunShadowUpdateTime);
         }
 
         #endregion

@@ -234,6 +234,7 @@
     <Compile Include="Tweaks\General\Gameplay\RejectSharedPerksEnabledTweak.cs" />
     <Compile Include="Tweaks\General\Gameplay\VATSGrenadeMineTargetingModeTweak.cs" />
     <Compile Include="Tweaks\General\Gameplay\DisableVatsBlurTweak.cs" />
+    <Compile Include="Tweaks\General\Gameplay\SelectivePurgeOnFastTravelTweak.cs" />
     <Compile Include="Tweaks\Graphics\Effects\EnableIntenseWeatherEffectsTweak.cs" />
     <Compile Include="Tweaks\Graphics\Effects\EnableWeaponImpactEffectsTweak.cs" />
     <Compile Include="Tweaks\Graphics\Effects\EnableMuzzleFlashesTweaks.cs" />
@@ -433,6 +434,8 @@
     <Compile Include="Tweaks\Video\PresentIntervalTweak.cs" />
     <Compile Include="Tweaks\Video\TopMostWindowTweak.cs" />
     <Compile Include="Tweaks\Video\WindowAlwaysActiveTweak.cs" />
+    <Compile Include="Tweaks\Video\DynamicResolutionTweak.cs" />
+    <Compile Include="Tweaks\Video\SunShadowUpdateTimeTweak.cs" />
     <Compile Include="Tweaks\Audio\Volume\AudioMenuValTweak.cs" />
     <Compile Include="Tweaks\Audio\Volume\MasterVolumeTweak.cs" />
     <Compile Include="Tweaks\Audio\Volume\VivoxVoiceVolumeTweak.cs" />

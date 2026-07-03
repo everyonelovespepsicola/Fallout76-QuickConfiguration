@@ -65,6 +65,7 @@ namespace Fo76ini.Forms.FormMain
             LinkedTweaks.LinkInfo(labelVATSGrenadeMineTargetingMode, toolTip, vatsGrenadeMineTargetingModeTweak);
             LinkedTweaks.LinkInfo(comboBoxVATSGrenadeMineTargetingMode, toolTip, vatsGrenadeMineTargetingModeTweak);
             LinkedTweaks.LinkInfo(checkBoxDisableVatsBlur, toolTip, disableVatsBlurTweak);
+            LinkedTweaks.LinkInfo(checkBoxSelectivePurge, toolTip, selectivePurgeOnFastTravelTweak);
             LinkedTweaks.LinkInfo(checkBoxAdvancedModDescriptions, toolTip, advancedModDescriptionsTweak);
             LinkedTweaks.LinkInfo(checkBoxAutoScrollPipboyItemStats, toolTip, autoScrollPipboyItemStatsTweak);
             LinkedTweaks.LinkInfo(checkBoxShowCAMPWeather, toolTip, showCAMPWeatherTweak);
@@ -85,6 +86,8 @@ namespace Fo76ini.Forms.FormMain
             LinkedTweaks.LinkInfo(comboBoxDisplayMode, toolTip, displayModeTweak);
             LinkedTweaks.LinkInfo(labelDisplayMode, toolTip, displayModeTweak);
             LinkedTweaks.LinkInfo(checkBoxVSync, toolTip, presentIntervalTweak);
+            LinkedTweaks.LinkInfo(checkBoxDynamicResolution, toolTip, dynamicResolutionTweak);
+            LinkedTweaks.LinkInfo(checkBoxSunShadowUpdateTime, toolTip, sunShadowUpdateTimeTweak);
             LinkedTweaks.LinkInfo(checkBoxTopMostWindow, toolTip, topMostWindowTweak);
             LinkedTweaks.LinkInfo(checkBoxFixHUDFor5_4and4_3, toolTip, fixHUD4to3RatioTweak);
 
@@ -421,6 +424,7 @@ namespace Fo76ini.Forms.FormMain
             LinkedTweaks.LinkTweak(checkBoxRejectSharedPerks, rejectSharedPerksEnabledTweak);
             LinkedTweaks.LinkTweak(comboBoxVATSGrenadeMineTargetingMode, vatsGrenadeMineTargetingModeTweak);
             LinkedTweaks.LinkTweak(checkBoxDisableVatsBlur, disableVatsBlurTweak);
+            LinkedTweaks.LinkTweak(checkBoxSelectivePurge, selectivePurgeOnFastTravelTweak);
             LinkedTweaks.LinkTweak(checkBoxAdvancedModDescriptions, advancedModDescriptionsTweak);
             LinkedTweaks.LinkTweak(checkBoxAutoScrollPipboyItemStats, autoScrollPipboyItemStatsTweak);
             LinkedTweaks.LinkTweak(checkBoxShowCAMPWeather, showCAMPWeatherTweak);
@@ -438,7 +442,8 @@ namespace Fo76ini.Forms.FormMain
 
             // iPresentInterval
             LinkedTweaks.LinkTweak(checkBoxVSync, presentIntervalTweak);
-
+            LinkedTweaks.LinkTweak(checkBoxDynamicResolution, dynamicResolutionTweak);
+            LinkedTweaks.LinkTweak(checkBoxSunShadowUpdateTime, sunShadowUpdateTimeTweak);
             // Top most window
             LinkedTweaks.LinkTweak(checkBoxTopMostWindow, topMostWindowTweak);
 
@@ -938,5 +943,15 @@ namespace Fo76ini.Forms.FormMain
         private MapCursorTweaksActiveTweak mapCursorTweaksActiveTweak = new MapCursorTweaksActiveTweak();
         private DisableVatsBlurTweak disableVatsBlurTweak = new DisableVatsBlurTweak();
         private DisableTAATweak disableTAATweak = new DisableTAATweak();
+
+        // Custom Tweaks
+        private SelectivePurgeOnFastTravelTweak selectivePurgeOnFastTravelTweak = new SelectivePurgeOnFastTravelTweak();
+        private DynamicResolutionTweak dynamicResolutionTweak = new DynamicResolutionTweak();
+        private SunShadowUpdateTimeTweak sunShadowUpdateTimeTweak = new SunShadowUpdateTimeTweak();
+
+        // Custom UI CheckBoxes
+        private CheckBox checkBoxSelectivePurge;
+        private CheckBox checkBoxDynamicResolution;
+        private CheckBox checkBoxSunShadowUpdateTime;
     }
 }

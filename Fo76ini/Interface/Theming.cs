@@ -1,4 +1,4 @@
-﻿using FastColoredTextBoxNS;
+using FastColoredTextBoxNS;
 using Fo76ini.Controls;
 using Fo76ini.Properties;
 using Fo76ini.Utilities;
@@ -170,6 +170,12 @@ namespace Fo76ini.Interface
             foreach (VisualStyle style in theme.GetSpecializedStylesForControl(control))
                 ApplyStyle(style, control);
 
+            // Hook themed glyph painting for CheckBox and RadioButton.
+            // ForeColor is already set to green by the YAML above, so we use it
+            // as the accent color when drawing the custom glyph.
+            if (control is CheckBox || control is RadioButton)
+                EnsureGlyphPainted(control);
+
             /*
              * Special controls and components:
              */
@@ -246,6 +252,128 @@ namespace Fo76ini.Interface
                 SetProperty(property, comp, rule.Value.ToString());
             }
         }
+
+        #region Themed glyph painting (CheckBox / RadioButton)
+
+        // Tracks controls that already have a Paint handler attached so we never
+        // add a second one even when ApplyTheme is called multiple times.
+        private static readonly HashSet<Control> _glyphThemedControls = new HashSet<Control>();
+
+        private static void EnsureGlyphPainted(Control control)
+        {
+            if (_glyphThemedControls.Contains(control))
+            {
+                // Handler already wired – just trigger a repaint so the new
+                // ForeColor (which changed with the theme) is reflected.
+                control.Invalidate();
+                return;
+            }
+
+            _glyphThemedControls.Add(control);
+            // Clean up when the control is disposed so we don't leak.
+            control.Disposed += (s, e) => _glyphThemedControls.Remove((Control)s);
+
+            if (control is CheckBox cb)
+                cb.Paint += OnCheckBoxPaint;
+            else if (control is RadioButton rb)
+                rb.Paint += OnRadioButtonPaint;
+
+            control.Invalidate();
+        }
+
+        private static void OnCheckBoxPaint(object sender, PaintEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+            Color accent = cb.ForeColor;
+            Color back   = GetEffectiveBackColor(cb);
+            Graphics g   = e.Graphics;
+
+            // 13×13 logical units — the standard WinForms checkbox glyph size.
+            int size    = cb.LogicalToDeviceUnits(13);
+            int glyphY  = (cb.Height - size) / 2;
+            var glyphRect = new Rectangle(1, glyphY, size, size);
+
+            // Completely erase the OS-rendered glyph.
+            using (var brush = new SolidBrush(back))
+                g.FillRectangle(brush, glyphRect.X - 1, glyphRect.Y - 1,
+                                glyphRect.Width + 2, glyphRect.Height + 2);
+
+            // Border box.
+            using (var pen = new Pen(accent, 1f))
+                g.DrawRectangle(pen, glyphRect.X, glyphRect.Y,
+                                glyphRect.Width - 1, glyphRect.Height - 1);
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            if (cb.CheckState == CheckState.Checked)
+            {
+                // V-shaped checkmark.
+                using (var pen = new Pen(accent, 2f))
+                    g.DrawLines(pen, new[]
+                    {
+                        new Point(glyphRect.X + 2,                    glyphRect.Y + size / 2 - 1),
+                        new Point(glyphRect.X + size / 2 - 1,         glyphRect.Bottom - 3),
+                        new Point(glyphRect.Right - 2,                glyphRect.Y + 2)
+                    });
+            }
+            else if (cb.CheckState == CheckState.Indeterminate)
+            {
+                // Dash for indeterminate state.
+                int pad = 3;
+                using (var brush = new SolidBrush(accent))
+                    g.FillRectangle(brush,
+                        glyphRect.X + pad,
+                        glyphRect.Y + (glyphRect.Height - 2) / 2,
+                        glyphRect.Width - pad * 2, 2);
+            }
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+        }
+
+        private static void OnRadioButtonPaint(object sender, PaintEventArgs e)
+        {
+            RadioButton rb = (RadioButton)sender;
+            Color accent = rb.ForeColor;
+            Color back   = GetEffectiveBackColor(rb);
+            Graphics g   = e.Graphics;
+
+            int size    = rb.LogicalToDeviceUnits(13);
+            int glyphY  = (rb.Height - size) / 2;
+            var glyphRect = new Rectangle(1, glyphY, size, size);
+
+            // Erase OS glyph.
+            using (var brush = new SolidBrush(back))
+                g.FillRectangle(brush, glyphRect.X - 1, glyphRect.Y - 1,
+                                glyphRect.Width + 2, glyphRect.Height + 2);
+
+            // Outer circle.
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            using (var pen = new Pen(accent, 1f))
+                g.DrawEllipse(pen, glyphRect.X, glyphRect.Y,
+                              glyphRect.Width - 1, glyphRect.Height - 1);
+
+            // Filled bullet when selected.
+            if (rb.Checked)
+            {
+                int pad = 3;
+                var bullet = new Rectangle(
+                    glyphRect.X + pad, glyphRect.Y + pad,
+                    glyphRect.Width  - pad * 2 - 1,
+                    glyphRect.Height - pad * 2 - 1);
+                using (var brush = new SolidBrush(accent))
+                    g.FillEllipse(brush, bullet);
+            }
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+        }
+
+        /// <summary>Walks up the parent chain to find the first non-transparent BackColor.</summary>
+        private static Color GetEffectiveBackColor(Control control)
+        {
+            Control c = control;
+            while (c != null && (c.BackColor == Color.Transparent || c.BackColor.A == 0))
+                c = c.Parent;
+            return c?.BackColor ?? SystemColors.Control;
+        }
+
+        #endregion
 
         private static void SetProperty(PropertyInfo property, object parent, string value)
         {
